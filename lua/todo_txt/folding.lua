@@ -22,7 +22,7 @@ function M.setup_buffer_folding()
 	vim.opt_local.foldexpr = "v:lua.TodoFilterFoldExpr(v:lnum)"
 	vim.opt_local.foldenable = true
 	vim.opt_local.foldlevel = 0
-	vim.notify("ssetup_buffer_folding")
+	vim.opt_local.foldtext = " "
 
 	-- Force refresh folding
 	vim.cmd("normal! zM") -- Close all folds
