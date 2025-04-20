@@ -9,6 +9,9 @@ Uses `fzf-lua` for interactive selection and folding to hide non-matching lines.
 - Filter `todo.txt` by a single project or context.
 - Uses Neovim's folding mechanism (`foldmethod=expr`) to hide non-matching lines.
 - Integrates with [fzf-lua](https://github.com/ibhagwan/fzf-lua) for selecting filters.
+
+This tool is currently a personal project by Anthony, who is exploring using `todo.txt` for personal task management. As such, the functionality and maintenance of this plugin may vary.
+
 - Provides commands and keymaps for easy access.
 - Configurable `todo.txt` file path and key mappings.
 
