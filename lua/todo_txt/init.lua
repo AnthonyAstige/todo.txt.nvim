@@ -1,6 +1,6 @@
 local M = {}
 
-local config = require("todo_txt.config")
+local config = require("todo_txt/config")
 local cfg -- Holds merged user and default config
 
 local fn = vim.fn
