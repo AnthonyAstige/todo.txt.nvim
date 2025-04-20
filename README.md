@@ -47,7 +47,7 @@ return {
 }
 ```
 
-_(Replace `"your-github-username/todo-filter.nvim"` with the actual plugin repository path once published.)_
+_(Replace `"your-github-username/todo.txt.nvim"` with the actual plugin repository path once published.)_
 
 ## Configuration
 
