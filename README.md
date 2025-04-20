@@ -24,8 +24,10 @@ This tool is currently a personal project by Anthony, who is exploring using `to
 
 ### [Lazy.nvim](https://github.com/folke/lazy.nvim)
 
+Place somewhere like `~/.config/nvim/lua/plugins/todo.txt.lua`:
+
 ```lua
-{
+return {
   "AnthonyAstige/todo.txt.nvim",
   dependencies = { "ibhagwan/fzf-lua" },
   opts = {
