@@ -2,13 +2,12 @@
 
 A Neovim plugin to dynamically filter and fold your `todo.txt` file based on projects (`+Project`) and contexts (`@Context`).
 
-Uses `fzf-lua` for interactive selection and folding to hide non-matching lines.
+Uses `vim.ui.select` for interactive selection and folding to hide non-matching lines.
 
 ## Features
 
-- Filter `todo.txt` by a single project or context.
+- Filter `todo.txt` by a single project or context using `vim.ui.select`.
 - Uses Neovim's folding mechanism (`foldmethod=expr`) to hide non-matching lines.
-- Integrates with [fzf-lua](https://github.com/ibhagwan/fzf-lua) for selecting filters.
 
 This tool is currently a personal project by Anthony, who is exploring using `todo.txt` for personal task management. As such, the functionality and maintenance of this plugin may vary.
 
@@ -17,8 +16,7 @@ This tool is currently a personal project by Anthony, who is exploring using `to
 
 ## Dependencies
 
-- [Neovim](https://neovim.io/) (0.8+)
-- [fzf-lua](https://github.com/ibhagwan/fzf-lua)
+- [Neovim](https://neovim.io/) (0.8+) with a configured `vim.ui.select` backend (e.g., [dressing.nvim](https://github.com/stevearc/dressing.nvim) or the default TUI).
 
 ## Installation
 
@@ -29,7 +27,7 @@ Place somewhere like `~/.config/nvim/lua/plugins/todo.txt.lua`:
 ```lua
 return {
   "AnthonyAstige/todo.txt.nvim",
-  dependencies = { "ibhagwan/fzf-lua" },
+  -- No external dependencies needed anymore!
   opts = {
     -- Optional: Configure the path to your todo file
     -- todo_file = "~/path/to/your/todo.txt",
@@ -75,9 +73,10 @@ You can override these defaults by passing an `opts` table to the `setup()` func
 ## Usage
 
 1. Open your `todo.txt` file (or any file matching the configured `filetypes`).
-2. Use the keymaps (or commands) to filter:
-   - `<leader>tfp` (or `:TodoFilterProject`): Prompts with `fzf-lua` to select a project (`+ProjectName`). Only lines containing the selected project will remain unfolded.
-   - `<leader>tfc` (or `:TodoFilterContext`): Prompts with `fzf-lua` to select a context (`@ContextName`). Only lines containing the selected context will remain unfolded.
+2. Ensure you have a backend configured for `vim.ui.select` (like [dressing.nvim](https://github.com/stevearc/dressing.nvim) or use the default TUI).
+3. Use the keymaps (or commands) to filter:
+   - `<leader>tfp` (or `:TodoFilterProject`): Prompts with `vim.ui.select` to choose a project (`+ProjectName`). Only lines containing the selected project will remain unfolded.
+   - `<leader>tfc` (or `:TodoFilterContext`): Prompts with `vim.ui.select` to choose a context (`@ContextName`). Only lines containing the selected context will remain unfolded.
    - `<leader>tfx` (or `:TodoFilterClear`): Clears the current filter and unfolds all lines (`zR`).
 
 ## Commands
@@ -89,7 +88,7 @@ You can override these defaults by passing an `opts` table to the `setup()` func
 ## How it Works
 
 - The plugin scans the `todo_file` for `+Project` and `@Context` tags when you trigger a filter command.
-- It uses `fzf-lua` to present the found tags for selection.
+- It uses `vim.ui.select` to present the found tags for selection.
 - Once a tag is selected, it sets a global pattern (`vim.g.todo_filter_pattern`).
 - A buffer-local `foldexpr` (`TodoFilterFoldExpr`) is set for files matching the configured `filetypes`.
 - This `foldexpr` checks each line against the `vim.g.todo_filter_pattern`. If the pattern exists, the fold level is `0` (unfolded); otherwise, it's `1` (folded).

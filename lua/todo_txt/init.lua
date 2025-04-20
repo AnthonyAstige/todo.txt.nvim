@@ -64,12 +64,6 @@ end
 
 -- Creates the user commands for filtering.
 local function create_commands()
-	local fzf_lua_ok, fzf = pcall(require, "fzf-lua")
-	if not fzf_lua_ok then
-		vim.notify("todo-filter: fzf-lua is required for filtering commands.", vim.log.levels.ERROR)
-		return
-	end
-
 	-- Command to filter by project
 	api.nvim_create_user_command("TodoFilterProject", function()
 		local items = scan_tags("%+")
@@ -77,21 +71,16 @@ local function create_commands()
 			vim.notify("todo-filter: No projects (+) found in " .. cfg.todo_file, vim.log.levels.WARN)
 			return
 		end
-		fzf.fzf(items, {
-			prompt = "Project> ",
-			actions = {
-				["default"] = function(selected)
-					if selected[1] then
-						-- Escape '+' for Lua pattern matching and create the search pattern
-						vim.g.todo_filter_pattern = "%+" .. fn.escape(selected[1], "+")
-						vim.cmd("redraw!") -- Redraw to apply potential syntax changes
-						vim.cmd("normal! zx") -- Recalculate folds and apply them
-						vim.notify("todo-filter: Filtering by project: +" .. selected[1])
-					end
-				end,
-			},
-		})
-	end, { desc = "Filter todo list by project (+Tag)" })
+		vim.ui.select(items, { prompt = "Project> ", kind = "todo_project" }, function(selected)
+			if selected then
+				-- Escape '+' for Lua pattern matching and create the search pattern
+				vim.g.todo_filter_pattern = "%+" .. fn.escape(selected, "+")
+				vim.cmd("redraw!") -- Redraw to apply potential syntax changes
+				vim.cmd("normal! zx") -- Recalculate folds and apply them
+				vim.notify("todo-filter: Filtering by project: +" .. selected)
+			end
+		end)
+	end, { desc = "Filter todo list by project (+Tag) using vim.ui.select" })
 
 	-- Command to filter by context
 	api.nvim_create_user_command("TodoFilterContext", function()
@@ -100,21 +89,16 @@ local function create_commands()
 			vim.notify("todo-filter: No contexts (@) found in " .. cfg.todo_file, vim.log.levels.WARN)
 			return
 		end
-		fzf.fzf(items, {
-			prompt = "Context> ",
-			actions = {
-				["default"] = function(selected)
-					if selected[1] then
-						-- Escape '@' for Lua pattern matching and create the search pattern
-						vim.g.todo_filter_pattern = "@" .. fn.escape(selected[1], "@")
-						vim.cmd("redraw!")
-						vim.cmd("normal! zx") -- Recalculate folds
-						vim.notify("todo-filter: Filtering by context: @" .. selected[1])
-					end
-				end,
-			},
-		})
-	end, { desc = "Filter todo list by context (@Tag)" })
+		vim.ui.select(items, { prompt = "Context> ", kind = "todo_context" }, function(selected)
+			if selected then
+				-- Escape '@' for Lua pattern matching and create the search pattern
+				vim.g.todo_filter_pattern = "@" .. fn.escape(selected, "@")
+				vim.cmd("redraw!")
+				vim.cmd("normal! zx") -- Recalculate folds
+				vim.notify("todo-filter: Filtering by context: @" .. selected)
+			end
+		end)
+	end, { desc = "Filter todo list by context (@Tag) using vim.ui.select" })
 
 	-- Command to clear the filter
 	api.nvim_create_user_command("TodoFilterClear", function()
