@@ -3,8 +3,9 @@ local M = {}
 local api = vim.api
 local fn = vim.fn
 local tags = require("todo_txt.tags")
+local folding = require("todo_txt.folding")
 
--- Creates the user commands for filtering.
+-- Creates the user commands and autocommands.
 function M.create_commands(cfg)
 	-- Command to filter by project
 	api.nvim_create_user_command("TodoTxtFilterProject", function()
@@ -18,7 +19,7 @@ function M.create_commands(cfg)
 				-- Escape '+' for Lua pattern matching and create the search pattern
 				vim.g.todo_filter_pattern = "+" .. fn.escape(selected, "+")
 				vim.cmd("redraw!") -- Redraw to apply potential syntax changes
-				vim.cmd("normal! zx") -- Recalculate folds and apply them
+				folding.refresh_folding() -- Apply folding immediately
 				vim.notify("todo.txt: Filtering by project: +" .. selected)
 			end
 		end)
@@ -36,7 +37,7 @@ function M.create_commands(cfg)
 				-- Escape '@' for Lua pattern matching and create the search pattern
 				vim.g.todo_filter_pattern = "@" .. fn.escape(selected, "@")
 				vim.cmd("redraw!")
-				vim.cmd("normal! zx") -- Recalculate folds
+				folding.refresh_folding() -- Apply folding immediately
 				vim.notify("todo.txt: Filtering by context: @" .. selected)
 			end
 		end)
@@ -46,12 +47,17 @@ function M.create_commands(cfg)
 	api.nvim_create_user_command("TodoTxtFilterClear", function()
 		if vim.g.todo_filter_pattern then
 			vim.g.todo_filter_pattern = nil
-			vim.cmd("normal! zR") -- Open all folds
+			folding.refresh_folding() -- Apply folding immediately
 			vim.notify("todo.txt: Filter cleared.")
 		else
 			vim.notify("todo.txt: No filter active.", vim.log.levels.INFO)
 		end
 	end, { desc = "Clear current todo filter" })
+
+	-- Command to manually trigger buffer folding setup
+	api.nvim_create_user_command("TodoTxtRefreshFolding", function()
+		vim.notify("todo.txt: Folding refreshed by reloading buffer.", vim.log.levels.INFO)
+	end, { desc = "Manually refresh todo folding" })
 end
 
 return M

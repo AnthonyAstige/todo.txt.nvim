@@ -22,9 +22,23 @@ function M.setup_buffer_folding()
 	vim.opt_local.foldexpr = "v:lua.TodoFilterFoldExpr(v:lnum)"
 	vim.opt_local.foldenable = true
 	vim.opt_local.foldlevel = 0
+	vim.notify("ssetup_buffer_folding")
 
 	-- Force refresh folding
 	vim.cmd("normal! zM") -- Close all folds
+end
+
+-- Function to refresh folding in the current buffer
+function M.refresh_folding()
+	if vim.g.todo_filter_pattern and vim.g.todo_filter_pattern ~= "" then
+		M.setup_buffer_folding()
+		-- Force folding refresh
+		vim.cmd("normal! zx")
+	else
+		-- If no filter, open all folds
+		vim.cmd("normal! zR")
+	end
+	vim.cmd("edit") -- Reload the current buffer
 end
 
 function M.setup_autocmd(cfg)
