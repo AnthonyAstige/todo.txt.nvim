@@ -8,7 +8,7 @@ function M.scan_tags(sym, todo_file)
 	local tags = {}
 	local file = io.open(todo_file, "r")
 	if not file then
-		vim.notify("todo-filter: Could not open todo file: " .. todo_file, vim.log.levels.ERROR)
+		vim.notify("todo.txt: Could not open todo file: " .. todo_file, vim.log.levels.ERROR)
 		return {}
 	end
 

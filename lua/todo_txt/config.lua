@@ -1,4 +1,4 @@
--- Default configuration options for todo-filter.nvim
+-- Default configuration options for todo.txt.nvim
 local M = {}
 
 M.defaults = {
