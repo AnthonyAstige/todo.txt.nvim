@@ -23,7 +23,7 @@ Uses `fzf-lua` for interactive selection and folding to hide non-matching lines.
 
 ```lua
 {
-  "your-github-username/todo-filter.nvim",
+  "AnthonyAstige/todo-filter.nvim",
   dependencies = { "ibhagwan/fzf-lua" },
   opts = {
     -- Optional: Configure the path to your todo file
