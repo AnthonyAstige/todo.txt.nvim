@@ -16,13 +16,16 @@ _G.TodoFilterFoldExpr = function(lnum)
 	return string.find(line, pattern, 1, true) and "0" or "1"
 end
 
+_G.TodoFoldText = function()
+	return "Filtering by: " .. vim.g.todo_filter_pattern
+end
+
 function M.setup_buffer_folding()
-	-- Set folding options for the current buffer
 	vim.opt_local.foldmethod = "expr"
 	vim.opt_local.foldexpr = "v:lua.TodoFilterFoldExpr(v:lnum)"
 	vim.opt_local.foldenable = true
 	vim.opt_local.foldlevel = 0
-	vim.opt_local.foldtext = " "
+	vim.opt_local.foldtext = "v:lua.TodoFoldText()"
 
 	-- Force refresh folding
 	vim.cmd("normal! zM") -- Close all folds
