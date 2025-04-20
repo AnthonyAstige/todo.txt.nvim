@@ -150,7 +150,7 @@ M.setup = function(user_opts)
 
 	-- Validate todo_file existence (optional, provides early feedback)
 	if vim.fn.filereadable(cfg.todo_file) == 0 then
-		vim.notify("todo_txt: todo_file not found or readable: " .. cfg.todo_file, vim.log.levels.WARN)
+		vim.notify("todo.txt: todo_file not found or readable: " .. cfg.todo_file, vim.log.levels.WARN)
 	end
 
 	-- Create commands and keymaps
@@ -163,10 +163,10 @@ M.setup = function(user_opts)
 		pattern = cfg.filetypes,
 		group = group,
 		callback = setup_buffer_folding,
-		desc = "Setup todo_txt folding for relevant filetypes",
+		desc = "Setup todo.txt folding for relevant filetypes",
 	})
 
-	vim.notify("todo_txt.nvim loaded successfully!", vim.log.levels.INFO)
+	vim.notify("todo.txt.nvim loaded successfully!", vim.log.levels.INFO)
 end
 
 return M
