@@ -4,30 +4,7 @@ local function has_no_due_date(line)
 	return not string.find(line, "due:", 1, true)
 end
 
--- TODO: Combine with is_past_due ; rename
-local function is_due_today(line)
-	local due_date = string.match(line, "due:(%d%d%d%d%-%d%d%-%d%d)")
-	if not due_date then
-		return false
-	end
-
-	local year, month, day = string.match(due_date, "(%d%d%d%d)-(%d%d)-(%d%d)")
-	if not year or not month or not day then
-		return false
-	end
-	year, month, day = tonumber(year), tonumber(month), tonumber(day)
-
-	local today = os.date("*t")
-	local due = { year = year, month = month, day = day }
-
-	if due.year == today.year and due.month == today.month and due.day == today.day then
-		return true
-	end
-
-	return false
-end
-
-local function is_past_due(line)
+local function is_due_now(line)
 	local due_date = string.match(line, "due:(%d%d%d%d%-%d%d%-%d%d)")
 	if not due_date then
 		return false
@@ -48,6 +25,8 @@ local function is_past_due(line)
 		return true
 	elseif due.year == today.year and due.month == today.month and due.day < today.day then
 		return true
+	elseif due.year == today.year and due.month == today.month and due.day == today.day then
+		return true
 	end
 
 	return false
@@ -64,7 +43,7 @@ function M.foldexpr(lnum)
 
 	-- TODO: Fix so will fold on it's own ... only seems to fold when context/project are folded
 	if date_filter == "now" then
-		if not (is_past_due(line) or is_due_today(line) or has_no_due_date(line)) then
+		if not (is_due_now(line) or has_no_due_date(line)) then
 			return FOLD
 		end
 	end
