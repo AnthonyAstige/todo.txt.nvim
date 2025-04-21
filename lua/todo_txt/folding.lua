@@ -32,6 +32,7 @@ local function is_due(line)
 	return false
 end
 
+-- TODO: Fix single line filters (showing up due now?)
 function M.foldexpr(lnum)
 	local FOLD = "1"
 	local NORMAL = "0"
