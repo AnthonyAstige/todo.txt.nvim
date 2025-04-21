@@ -21,6 +21,9 @@ M.defaults = {
 	-- e.g., via vim.filetype.add() or an ftplugin
 	filetypes = { "todo", "todos", "todo.txt" },
 
+	-- TODO: Rename from 'filter' that's not right ; should be focus I think
+	-- TODO: Add default as "No Project"
+	-- TODO: Add default as "No Context"?
 	-- How to filter dates at app loading
 	date_filter_start = "now",
 }
