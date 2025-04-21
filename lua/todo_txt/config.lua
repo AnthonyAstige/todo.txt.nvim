@@ -9,6 +9,7 @@ M.defaults = {
 	keymaps = {
 		top = "<leader>t", -- Menu top
 		due = "<leader>td", -- Menu top: due
+		hyperfocustoggle = "<leader>th",
 		project = "<leader>t+", -- Set Project
 		context = "<leader>t@", -- Set Context
 		exit = "<leader>tx",

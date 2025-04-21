@@ -16,6 +16,12 @@ function M.create_keymaps(cfg)
 			group = "Due",
 			mode = { "n" },
 		})
+		wk.add({
+			cfg.keymaps.hyperfocustoggle,
+			"<Cmd>TodoTxtHyperfocus<CR>",
+			group = "Hyperfocus",
+			mode = { "n" },
+		})
 	end
 
 	if cfg.keymaps.project then
