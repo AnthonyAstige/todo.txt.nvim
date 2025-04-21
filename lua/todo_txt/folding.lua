@@ -34,10 +34,8 @@ function M.setup_buffer_folding()
 	vim.opt_local.foldtext = "v:lua.TodoFoldText()"
 end
 
--- Function to refresh folding in the current buffer
 function M.refresh_folding()
-	vim.cmd("normal! zx")
-	vim.cmd("edit") -- Reload the current buffer
+	vim.cmd("edit") -- Only thing that seems to 100% work since cursor position can't get in the way
 end
 
 function M.setup_autocmd(cfg)
