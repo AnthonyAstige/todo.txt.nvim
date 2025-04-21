@@ -24,16 +24,11 @@ function M.todo_fold_text()
 end
 
 function M.setup_buffer_folding()
-	-- Store the functions in buffer-local variables
-	vim.b.todo_txt_fold_expr = M.todo_txt_fold_expr
-	vim.b.todo_fold_text = M.todo_fold_text
-
-	-- Set up folding using buffer-local Lua functions
 	vim.opt_local.foldmethod = "expr"
-	vim.opt_local.foldexpr = "v:lua.vim.b.todo_txt_fold_expr(v:lnum)"
+	vim.opt_local.foldexpr = "v:lua.require('todo_txt.folding').todo_txt_fold_expr(v:lnum)"
 	vim.opt_local.foldenable = true
 	vim.opt_local.foldlevel = 0 -- Close all folds
-	vim.opt_local.foldtext = "v:lua.vim.b.todo_fold_text()"
+	vim.opt_local.foldtext = "v:lua.require('todo_txt.folding').todo_fold_text()"
 end
 
 function M.refresh_folding()
