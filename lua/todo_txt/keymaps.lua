@@ -1,6 +1,5 @@
 local M = {}
 
--- Sets up the keymaps based on the configuration.
 function M.create_keymaps(cfg)
 	local map_opts = { noremap = true, silent = true }
 
