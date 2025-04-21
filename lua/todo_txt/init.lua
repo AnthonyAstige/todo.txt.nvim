@@ -24,9 +24,9 @@ M.setup = function(user_opts)
 	end
 
 	-- Set global date_filter from config
-	vim.g.todo_txt_date_filter = cfg.date_focus_start
-	vim.g.todo_txt_context_pattern = cfg.context_focus_start
-	vim.g.todo_txt_project_pattern = cfg.project_focus_start
+	vim.g.todo_txt_date_filter = cfg.startup_focus_date
+	vim.g.todo_txt_context_pattern = cfg.startup_focus_context
+	vim.g.todo_txt_project_pattern = cfg.startup_focus_project
 
 	-- Create commands, keymaps, and setup folding autocmd
 	commands.create_commands(cfg)
@@ -39,7 +39,7 @@ M.setup = function(user_opts)
 		group = group,
 		callback = function()
 			-- TODO: Fix this so hypfocus works on loading
-			if cfg.hyperfocus_on_startup then
+			if cfg.startup_hyperfocus_enabled then
 				vim.notify("todo.txt hyperfocus enabled")
 				hyperfocus.enable_hyperfocus()
 			end

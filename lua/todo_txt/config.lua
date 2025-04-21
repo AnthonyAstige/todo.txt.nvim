@@ -24,10 +24,10 @@ M.defaults = {
 
 	-- TODO: Better naming here
 	-- Focus at loading
-	date_focus_start = "now",
-	project_focus_start = nil, -- Focus on todo's with no project
-	context_focus_start = "",
-	hyperfocus_on_startup = true,
+	startup_focus_date = "now",
+	startup_focus_project = nil, -- Focus on todo's with no project
+	startup_focus_context = "",
+	startup_hyperfocus_enabled = true,
 }
 
 return M

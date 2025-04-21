@@ -44,9 +44,10 @@ return {
     -- },
 
     -- How to focus at app loading
-    -- date_focus_start = "now",
-    -- project_focus_start = nil, -- Focus on todo's with no project
-    -- context_focus_start = "",
+    -- startup_focus_date = "now",
+    -- startup_focus_project = nil, -- Focus on todo's with no project
+    -- startup_focus_context = "",
+    -- startup_hyperfocus_enabled -- Enable hyperfocus
 
     -- Filetypes to activate folding and commands for
     filetypes = { "todo", "todos", "todo.txt" },
