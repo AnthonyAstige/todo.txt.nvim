@@ -31,16 +31,26 @@ return {
   "AnthonyAstige/todo.txt.nvim",
   opts = {
     -- todo_file = "~/path/to/your/todo.txt",
+
+    -- Keymaps for actions
     -- keymaps = {
-    --   filter {
-    --     project = "<leader>fp",
-    --     context = "<leader>fc",
-    --     clear = "<leader>fx",
-    --   }
-    -- }
+    --   top = "<leader>t", -- Menu top
+    --   due = "<leader>td", -- Menu top: due
+    --   project = "<leader>t+", -- Set Project
+    --   context = "<leader>t@", -- Set Context
+    --   exit = "<leader>tx",
+    --   all = "<leader>tda", -- Show Dates: All
+    --   now = "<leader>tdn", -- Show Dates: Now
+    -- },
+
+    -- How to focus at app loading
+    -- date_focus_start = "now",
+    -- project_focus_start = nil, -- Focus on todo's with no project
+    -- context_focus_start = "",
+
+    -- Filetypes to activate folding and commands for
+    filetypes = { "todo", "todos", "todo.txt" },
   },
-  -- Filetypes to activate folding and commands for
-  -- filetypes = { 'todo', 'todos', 'todo.txt' },
 }
 ```
 

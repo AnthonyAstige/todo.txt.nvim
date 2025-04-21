@@ -21,8 +21,7 @@ M.defaults = {
 	-- e.g., via vim.filetype.add() or an ftplugin
 	filetypes = { "todo", "todos", "todo.txt" },
 
-	-- TODO: Add these to README
-	-- How to focus at app loading
+	-- Focus at loading
 	date_focus_start = "now",
 	project_focus_start = nil, -- Focus on todo's with no project
 	context_focus_start = "",
