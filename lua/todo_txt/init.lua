@@ -43,7 +43,7 @@ M.setup = function(user_opts)
 		end,
 	})
 
-	-- TODO: Optomize so it doesn't flash at start
+	-- TODO: Optomize so it doesn't flash todo content at start
 	if cfg.startup.hyperfocus_enabled then
 		vim.api.nvim_create_autocmd("BufReadPre", {
 			pattern = cfg.todo_file,
