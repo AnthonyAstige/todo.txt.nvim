@@ -52,6 +52,7 @@ function M.create_commands(cfg)
 		vim.g.todo_txt_project_pattern = ""
 		set_date_filter("all")
 		sorting.sort_buffer()
+		hyperfocus.disable_hyperfocus()
 		folding.refresh_folding()
 	end, { desc = "Clear all focus" })
 

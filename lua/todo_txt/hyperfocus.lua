@@ -3,7 +3,7 @@ local M = {}
 local started_up = false
 local enabled = false
 
-local function disable_hyperfocus()
+function M.disable_hyperfocus()
 	vim.opt_local.conceallevel = 0
 	vim.cmd([[syntax clear TodoTxtConceal]])
 	enabled = false
@@ -22,7 +22,7 @@ end
 
 function M.toggle()
 	if enabled then
-		disable_hyperfocus()
+		M.disable_hyperfocus()
 	else
 		M.enable_hyperfocus()
 	end
