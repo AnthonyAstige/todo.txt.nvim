@@ -6,8 +6,8 @@ Uses `vim.ui.select` for interactive selection and folding to hide non-matching 
 
 ## Features
 
-- Filter `todo.txt` by a single project or context using `vim.ui.select`.
-- Uses Neovim's folding mechanism (`foldmethod=expr`) to hide non-matching lines.
+- Focus by project, context, and due dates via sorting & folding
+- `Hyperfocus` to show single lines
 
 This tool is currently a personal project by Anthony, who is exploring using `todo.txt` for personal task management. As such, the functionality and maintenance of this plugin may vary.
 
@@ -60,13 +60,13 @@ You can override these defaults by passing an `opts` table to the `setup()` func
 
 1. Open your `todo.txt` file (or any file matching the configured `filetypes`).
 2. Ensure you have a backend configured for `vim.ui.select` (like [dressing.nvim](https://github.com/stevearc/dressing.nvim) or use the default TUI).
-3. Use the keymaps (or commands) to filter:
+3. Use the keymaps (or commands) to focus:
    - `<leader>t+` (or `:TodoTxtProject`): Prompts with `vim.ui.select` to choose a project (`+ProjectName`). Only lines containing the selected project will remain unfolded.
    - `<leader>t@` (or `:TodoTxtContext`): Prompts with `vim.ui.select` to choose a context (`@ContextName`). Only lines containing the selected context will remain unfolded.
-   - `<leader>tu` (or `:TodoTxtUnfocus`): Clears the current filter and unfolds all lines (`zR`).
+   - `<leader>tu` (or `:TodoTxtUnfocus`): Clears the current focus and unfolds all lines (`zR`).
 
 ## Commands
 
-- `:TodoTxtProject`: Filter by project.
-- `:TodoTxtContext`: Filter by context.
-- `:TodoTxtUnfocus`: Clear active filter.
+- `:TodoTxtProject`: Focus by project.
+- `:TodoTxtContext`: Focus by context.
+- `:TodoTxtUnfocus`: Clear active focus.
