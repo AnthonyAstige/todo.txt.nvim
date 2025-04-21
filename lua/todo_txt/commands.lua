@@ -10,7 +10,6 @@ local function set_date_filter(filter)
 	folding.refresh_folding()
 end
 
--- TODO: Show current selection in menu
 function M.create_commands(cfg)
 	api.nvim_create_user_command("TodoTxtProject", function()
 		local items = tags.scan_tags("%+", cfg.todo_file)
