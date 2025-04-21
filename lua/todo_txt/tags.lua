@@ -1,7 +1,5 @@
 local M = {}
 
-local fn = vim.fn
-
 -- Scan for tags (symbol: '+' for projects, '@' for contexts)
 -- Returns a list of unique tags found in the configured todo_file.
 function M.scan_tags(sym, todo_file)

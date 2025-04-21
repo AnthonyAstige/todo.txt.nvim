@@ -13,7 +13,7 @@ M.setup = function(user_opts)
 	-- Merge user options with defaults
 	cfg = vim.tbl_deep_extend("force", {}, config.defaults, user_opts or {})
 
-	-- Validate todo_file existence (optional, provides early feedback)
+	-- Validate todo_file existence
 	if vim.fn.filereadable(cfg.todo_file) == 0 then
 		vim.notify("todo.txt: todo_file not found or readable: " .. cfg.todo_file, vim.log.levels.WARN)
 	end
