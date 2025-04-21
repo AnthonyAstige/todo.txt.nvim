@@ -40,7 +40,6 @@ function M.foldexpr(lnum)
 	local context_pattern = vim.g.todo_txt_context_pattern or ""
 	local project_pattern = vim.g.todo_txt_project_pattern or ""
 
-	-- TODO: Fix so will fold on it's own ... only seems to fold when context/project are folded
 	if date_filter == "now" then
 		if not (is_due(line) or has_no_due_date(line)) then
 			return FOLD
