@@ -66,7 +66,6 @@ function M.foldtext()
 		.. vim.g.todo_txt_date_filter
 end
 
--- TODO: Make load soon as open file
 function M.setup_buffer_folding()
 	vim.opt_local.foldmethod = "expr"
 	vim.opt_local.foldexpr = "v:lua.require('todo_txt.folding').foldexpr(v:lnum)"
