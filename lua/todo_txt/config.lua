@@ -23,10 +23,14 @@ M.defaults = {
 	filetypes = { "todo", "todos", "todo.txt" },
 
 	-- Focus at loading
-	startup_focus_date = "now",
-	startup_focus_project = nil, -- Focus on todo's with no project
-	startup_focus_context = "",
-	startup_hyperfocus_enabled = true,
+	startup = {
+		focus = {
+			date = "now",
+			project = nil, -- Focus on todo's with no project
+			context = "",
+		},
+		hyperfocus_enabled = true,
+	},
 }
 
 return M
