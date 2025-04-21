@@ -63,10 +63,10 @@ You can override these defaults by passing an `opts` table to the `setup()` func
 3. Use the keymaps (or commands) to filter:
    - `<leader>t+` (or `:TodoTxtProject`): Prompts with `vim.ui.select` to choose a project (`+ProjectName`). Only lines containing the selected project will remain unfolded.
    - `<leader>t@` (or `:TodoTxtContext`): Prompts with `vim.ui.select` to choose a context (`@ContextName`). Only lines containing the selected context will remain unfolded.
-   - `<leader>tx` (or `:TodoTxtExit`): Clears the current filter and unfolds all lines (`zR`).
+   - `<leader>tu` (or `:TodoTxtUnfocus`): Clears the current filter and unfolds all lines (`zR`).
 
 ## Commands
 
-- `:TodoFilterProject`: Filter by project.
-- `:TodoFilterContext`: Filter by context.
-- `:TodoFilterClear`: Clear active filter.
+- `:TodoTxtProject`: Filter by project.
+- `:TodoTxtContext`: Filter by context.
+- `:TodoTxtUnfocus`: Clear active filter.

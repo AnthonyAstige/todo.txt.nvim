@@ -47,7 +47,7 @@ function M.create_commands(cfg)
 		end)
 	end, { desc = "Focus context (@Tag) todo's" })
 
-	api.nvim_create_user_command("TodoTxtExit", function()
+	api.nvim_create_user_command("TodoTxtUnfocus", function()
 		vim.g.todo_txt_context_pattern = ""
 		vim.g.todo_txt_project_pattern = ""
 		set_date_filter("all")

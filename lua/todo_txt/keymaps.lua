@@ -40,12 +40,12 @@ function M.create_keymaps(cfg)
 			vim.tbl_extend("force", map_opts, { desc = "Context" })
 		)
 	end
-	if cfg.keymaps.exit then
+	if cfg.keymaps.unfocus then
 		vim.keymap.set(
 			"n",
-			cfg.keymaps.exit,
-			"<Cmd>TodoTxtExit<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Exit" })
+			cfg.keymaps.unfocus,
+			"<Cmd>TodoTxtUnfocus<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Unfocus" })
 		)
 	end
 

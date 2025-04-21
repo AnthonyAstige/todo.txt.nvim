@@ -12,7 +12,7 @@ M.defaults = {
 		hyperfocustoggle = "<leader>th",
 		project = "<leader>t+", -- Set Project
 		context = "<leader>t@", -- Set Context
-		exit = "<leader>tx",
+		unfocus = "<leader>tu",
 		all = "<leader>tda", -- Show Dates: All
 		now = "<leader>tdn", -- Show Dates: Now
 	},
