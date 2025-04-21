@@ -15,7 +15,6 @@ local function ensure_first_line_blank()
 	end
 end
 
--- TODO: Fix bug: It seems when all lines are folded, it shows all lines (when I'd expect to see none)
 function M.foldexpr(lnum)
 	local FOLD = "1"
 	local NORMAL = "0"
