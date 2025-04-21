@@ -4,6 +4,7 @@ local api = vim.api
 local fn = vim.fn
 local tags = require("todo_txt.tags")
 local folding = require("todo_txt.folding")
+local sorting = require("todo_txt.sorting")
 
 local function set_date_filter(filter)
 	vim.g.todo_txt_date_filter = filter
@@ -24,6 +25,7 @@ function M.create_commands(cfg)
 			elseif selected then
 				vim.g.todo_txt_project_pattern = "+" .. fn.escape(selected, "+")
 			end
+			sorting.sort_buffer()
 			folding.refresh_folding()
 		end)
 	end, { desc = "Focus project (+Tag) todo's" })
@@ -41,6 +43,7 @@ function M.create_commands(cfg)
 			elseif selected then
 				vim.g.todo_txt_context_pattern = "@" .. fn.escape(selected, "@")
 			end
+			sorting.sort_buffer()
 			folding.refresh_folding()
 		end)
 	end, { desc = "Focus context (@Tag) todo's" })
@@ -49,16 +52,24 @@ function M.create_commands(cfg)
 		vim.g.todo_txt_context_pattern = ""
 		vim.g.todo_txt_project_pattern = ""
 		set_date_filter("all")
+		sorting.sort_buffer()
 		folding.refresh_folding()
 	end, { desc = "Clear all focus" })
 
+	api.nvim_create_user_command("TodoTxtSort", function()
+		sorting.sort_buffer()
+		folding.refresh_folding()
+	end, { desc = "Sort buffer by focus then alphabetically" })
+
 	api.nvim_create_user_command("TodoTxtAll", function()
 		set_date_filter("all")
+		sorting.sort_buffer()
 		folding.refresh_folding()
 	end, { desc = "Focus todos due: all" })
 
 	api.nvim_create_user_command("TodoTxtNow", function()
 		set_date_filter("now")
+		sorting.sort_buffer()
 		folding.refresh_folding()
 	end, { desc = "Focus todos due: today, past, or without due date" })
 end
