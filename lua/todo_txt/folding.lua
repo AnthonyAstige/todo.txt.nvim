@@ -80,12 +80,12 @@ function M.setup_buffer_folding()
 end
 
 function M.refresh_folding()
-  -- Schedule folding refresh and buffer edit for the next event loop
-  -- to allow background tasks to complete before refreshing the view.
-  vim.schedule(function()
-    vim.cmd("normal! zx")
-    vim.cmd("edit")
-  end)
+	-- Schedule folding refresh and buffer edit for the next event loop
+	-- to allow background tasks to complete before refreshing the view.
+	vim.schedule(function()
+		vim.cmd("normal! zx")
+		vim.cmd("edit")
+	end)
 end
 
 function M.setup_autocmd(cfg)
