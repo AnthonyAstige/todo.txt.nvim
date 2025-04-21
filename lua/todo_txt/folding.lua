@@ -58,7 +58,12 @@ function M.foldexpr(lnum)
 end
 
 function M.foldtext()
-	return "Filters: " .. (vim.g.todo_txt_context_pattern or "") .. " " .. (vim.g.todo_txt_project_pattern or "")
+	return "Filters: "
+		.. (vim.g.todo_txt_context_pattern or "")
+		.. " "
+		.. (vim.g.todo_txt_project_pattern or "")
+		.. " due:"
+		.. vim.g.todo_txt_date_filter
 end
 
 -- TODO: Make load soon as open file
