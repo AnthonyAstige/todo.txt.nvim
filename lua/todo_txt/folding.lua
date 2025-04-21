@@ -1,7 +1,6 @@
 local M = {}
 
--- Private functions for folding
-local function todo_txt_fold_expr(lnum)
+function M.todo_txt_fold_expr(lnum)
 	local FOLD = "1"
 	local NORMAL = "0"
 	local line = vim.fn.getline(lnum)
@@ -17,16 +16,12 @@ local function todo_txt_fold_expr(lnum)
 	return NORMAL
 end
 
-local function todo_fold_text()
+function M.todo_fold_text()
 	return "Filters: "
 		.. (vim.g.todo_txt_filter_context_pattern or "")
 		.. " "
 		.. (vim.g.todo_txt_filter_project_pattern or "")
 end
-
--- Expose the functions to the module
-M.todo_txt_fold_expr = todo_txt_fold_expr
-M.todo_fold_text = todo_fold_text
 
 function M.setup_buffer_folding()
 	-- Store the functions in buffer-local variables
