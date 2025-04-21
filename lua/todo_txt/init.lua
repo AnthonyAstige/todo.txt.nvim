@@ -8,6 +8,8 @@ local sorting = require("todo_txt.sorting")
 
 local cfg -- Holds merged user and default config
 
+-- TODO: Integrate with lualine?
+
 -- Main setup function, called by users (e.g., via LazyVim opts)
 -- Merges user options with defaults and initializes the plugin features.
 M.setup = function(user_opts)
