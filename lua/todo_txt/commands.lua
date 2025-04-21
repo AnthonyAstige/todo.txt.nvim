@@ -5,13 +5,13 @@ local fn = vim.fn
 local tags = require("todo_txt.tags")
 local folding = require("todo_txt.folding")
 local sorting = require("todo_txt.sorting")
+local myopic = require("todo_txt.myopic")
 
 local function set_date_filter(filter)
 	vim.g.todo_txt_date_filter = filter
 	folding.refresh_folding()
 end
 
--- TODO: Implement a myopic focus mode that hides everythign by the current cursor's line
 function M.create_commands(cfg)
 	api.nvim_create_user_command("TodoTxtProject", function()
 		local items = tags.scan_tags("%+", cfg.todo_file)
@@ -71,6 +71,10 @@ function M.create_commands(cfg)
 		sorting.sort_buffer()
 		folding.refresh_folding()
 	end, { desc = "Focus todos due: today, past, or without due date" })
+
+	api.nvim_create_user_command("TodoTxtMyopic", function()
+		myopic.toggle()
+	end, { desc = "Toggle myopic focus (show only current line)" })
 end
 
 return M
