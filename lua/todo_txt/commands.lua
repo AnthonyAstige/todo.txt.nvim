@@ -6,7 +6,7 @@ local tags = require("todo_txt.tags")
 local folding = require("todo_txt.folding")
 
 function M.create_commands(cfg)
-	api.nvim_create_user_command("TodoTxtFilterProject", function()
+	api.nvim_create_user_command("TodoTxtProject", function()
 		local items = tags.scan_tags("%+", cfg.todo_file)
 		if #items == 0 then
 			vim.notify("todo.txt: No projects (+) found in " .. cfg.todo_file, vim.log.levels.WARN)
@@ -20,7 +20,7 @@ function M.create_commands(cfg)
 		end)
 	end, { desc = "Filter todo list by project (+Tag) using vim.ui.select" })
 
-	api.nvim_create_user_command("TodoTxtFilterContext", function()
+	api.nvim_create_user_command("TodoTxtContext", function()
 		local items = tags.scan_tags("@", cfg.todo_file)
 		if #items == 0 then
 			vim.notify("todo.txt: No contexts (@) found in " .. cfg.todo_file, vim.log.levels.WARN)
@@ -34,7 +34,7 @@ function M.create_commands(cfg)
 		end)
 	end, { desc = "Filter todo list by context (@Tag) using vim.ui.select" })
 
-	api.nvim_create_user_command("TodoTxtFilterClear", function()
+	api.nvim_create_user_command("TodoTxtClear", function()
 		vim.g.todo_txt_context_pattern = ""
 		vim.g.todo_txt_project_pattern = ""
 		folding.refresh_folding()

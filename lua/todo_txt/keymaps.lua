@@ -8,7 +8,7 @@ function M.create_keymaps(cfg)
 		vim.keymap.set(
 			"n",
 			cfg.keymaps.project,
-			"<Cmd>TodoTxtFilterProject<CR>",
+			"<Cmd>TodoTxtProject<CR>",
 			vim.tbl_extend("force", map_opts, { desc = "Filter TODO by Project" })
 		)
 	end
@@ -16,7 +16,7 @@ function M.create_keymaps(cfg)
 		vim.keymap.set(
 			"n",
 			cfg.keymaps.context,
-			"<Cmd>TodoTxtFilterContext<CR>",
+			"<Cmd>TodoTxtContext<CR>",
 			vim.tbl_extend("force", map_opts, { desc = "Filter TODO by Context" })
 		)
 	end
@@ -24,7 +24,7 @@ function M.create_keymaps(cfg)
 		vim.keymap.set(
 			"n",
 			cfg.keymaps.clear,
-			"<Cmd>TodoTxtFilterClear<CR>",
+			"<Cmd>TodoTxtClear<CR>",
 			vim.tbl_extend("force", map_opts, { desc = "Clear TODO Filters (eXpand)" })
 		)
 	end
