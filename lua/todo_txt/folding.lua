@@ -3,7 +3,7 @@ local M = {}
 local fn = vim.fn
 local api = vim.api
 
-_G.TodoFilterFoldExpr = function(lnum)
+_G.TodoTxtFoldExpr = function(lnum)
 	local FOLD = "1"
 	local NORMAL = "0"
 	local line = fn.getline(lnum)
@@ -28,7 +28,7 @@ end
 
 function M.setup_buffer_folding()
 	vim.opt_local.foldmethod = "expr"
-	vim.opt_local.foldexpr = "v:lua.TodoFilterFoldExpr(v:lnum)"
+	vim.opt_local.foldexpr = "v:lua.TodoTxtFoldExpr(v:lnum)"
 	vim.opt_local.foldenable = true
 	vim.opt_local.foldlevel = 0
 	vim.opt_local.foldtext = "v:lua.TodoFoldText()"
@@ -39,7 +39,7 @@ function M.refresh_folding()
 end
 
 function M.setup_autocmd(cfg)
-	local group = api.nvim_create_augroup("TodoFilterFolding", { clear = true })
+	local group = api.nvim_create_augroup("TodoTxtFolding", { clear = true })
 
 	-- Set up autocmd for specified filetypes
 	api.nvim_create_autocmd("FileType", {
