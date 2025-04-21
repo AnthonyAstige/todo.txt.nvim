@@ -58,7 +58,7 @@ function M.foldexpr(lnum)
 end
 
 function M.foldtext()
-	return "Filters: "
+	return "Focus : "
 		.. (vim.g.todo_txt_context_pattern or "")
 		.. " "
 		.. (vim.g.todo_txt_project_pattern or "")
