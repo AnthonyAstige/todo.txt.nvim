@@ -1,6 +1,6 @@
 local M = {}
 
-function M.todo_txt_fold_expr(lnum)
+function M.foldexpr(lnum)
 	local FOLD = "1"
 	local NORMAL = "0"
 	local line = vim.fn.getline(lnum)
@@ -16,7 +16,7 @@ function M.todo_txt_fold_expr(lnum)
 	return NORMAL
 end
 
-function M.todo_fold_text()
+function M.foldtext()
 	return "Filters: "
 		.. (vim.g.todo_txt_filter_context_pattern or "")
 		.. " "
@@ -25,10 +25,10 @@ end
 
 function M.setup_buffer_folding()
 	vim.opt_local.foldmethod = "expr"
-	vim.opt_local.foldexpr = "v:lua.require('todo_txt.folding').todo_txt_fold_expr(v:lnum)"
+	vim.opt_local.foldexpr = "v:lua.require('todo_txt.folding').foldexpr(v:lnum)"
 	vim.opt_local.foldenable = true
 	vim.opt_local.foldlevel = 0 -- Close all folds
-	vim.opt_local.foldtext = "v:lua.require('todo_txt.folding').todo_fold_text()"
+	vim.opt_local.foldtext = "v:lua.require('todo_txt.folding').foldtext()"
 end
 
 function M.refresh_folding()
