@@ -36,11 +36,7 @@ M.setup = function(user_opts)
 		callback = function()
 			sorting.sort_buffer()
 			folding.setup_buffer_folding()
-			-- TODO: Figur eout if I can just refresh or need custom schedule here
-			vim.schedule(function()
-				vim.cmd("normal! ggzx")
-			end)
-			-- folding.refresh_folding()
+			folding.refresh_folding()
 		end,
 	})
 
