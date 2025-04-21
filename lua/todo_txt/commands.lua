@@ -13,7 +13,6 @@ end
 function M.create_commands(cfg)
 	api.nvim_create_user_command("TodoTxtProject", function()
 		local items = tags.scan_tags("%+", cfg.todo_file)
-		-- TODO: Review & Test No, All, and regression test general
 		table.insert(items, 1, "No Project")
 		table.insert(items, 2, "All Projects")
 		vim.ui.select(items, { prompt = "Project> ", kind = "todo_project" }, function(selected)
@@ -31,7 +30,6 @@ function M.create_commands(cfg)
 
 	api.nvim_create_user_command("TodoTxtContext", function()
 		local items = tags.scan_tags("@", cfg.todo_file)
-		-- TODO: Review & Test No, All, and regression test general
 		table.insert(items, 1, "No Context")
 		table.insert(items, 2, "All Contexts")
 		vim.ui.select(items, { prompt = "Context> ", kind = "todo_context" }, function(selected)
