@@ -38,14 +38,20 @@ M.setup = function(user_opts)
 		pattern = cfg.filetypes,
 		group = group,
 		callback = function()
-			-- TODO: Fix this so hypfocus works on loading
+			sorting.sort_buffer()
+			folding.setup_buffer_folding()
+		end,
+	})
+
+	-- TODO: Adjust this so it's based on the setting for the buffer and isn't re-enabled for it somehow, maybe store if already set / started up
+	vim.api.nvim_create_autocmd("BufReadPost", {
+		pattern = cfg.todo_file,
+		group = group,
+		callback = function()
 			if cfg.startup.hyperfocus_enabled then
 				vim.notify("todo.txt hyperfocus enabled")
 				hyperfocus.enable_hyperfocus()
 			end
-			sorting.sort_buffer()
-			folding.setup_buffer_folding()
-			folding.refresh_folding()
 		end,
 	})
 
