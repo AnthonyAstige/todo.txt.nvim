@@ -45,8 +45,6 @@ return {
 }
 ```
 
-You can override these defaults by passing an `opts` table to the `setup()` function or in your LazyVim configuration as shown above.
-
 ## Usage
 
 1. Open your `todo.txt` file (or any file matching the configured `filetypes`).
@@ -55,9 +53,3 @@ You can override these defaults by passing an `opts` table to the `setup()` func
    - `<leader>t+` (or `:TodoTxtProject`): Prompts with `vim.ui.select` to choose a project (`+ProjectName`). Only lines containing the selected project will remain unfolded.
    - `<leader>t@` (or `:TodoTxtContext`): Prompts with `vim.ui.select` to choose a context (`@ContextName`). Only lines containing the selected context will remain unfolded.
    - `<leader>tu` (or `:TodoTxtUnfocus`): Clears the current focus and unfolds all lines (`zR`).
-
-## Commands
-
-- `:TodoTxtProject`: Focus by project.
-- `:TodoTxtContext`: Focus by context.
-- `:TodoTxtUnfocus`: Clear active focus.
