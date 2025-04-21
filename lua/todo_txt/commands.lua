@@ -15,11 +15,11 @@ function M.create_commands(cfg)
 	api.nvim_create_user_command("TodoTxtProject", function()
 		local items = tags.scan_tags("%+", cfg.todo_file)
 		table.insert(items, 1, "No Project")
-		table.insert(items, 2, "All Projects")
+		table.insert(items, 2, "Any Project")
 		vim.ui.select(items, { prompt = "Project> ", kind = "todo_project" }, function(selected)
 			if selected == "No Project" then
 				vim.g.todo_txt_project_pattern = nil -- Indicate we want no project
-			elseif selected == "All Projects" then
+			elseif selected == "Any Project" then
 				vim.g.todo_txt_project_pattern = "" -- Clear focus
 			elseif selected then
 				vim.g.todo_txt_project_pattern = "+" .. fn.escape(selected, "+")
@@ -32,11 +32,11 @@ function M.create_commands(cfg)
 	api.nvim_create_user_command("TodoTxtContext", function()
 		local items = tags.scan_tags("@", cfg.todo_file)
 		table.insert(items, 1, "No Context")
-		table.insert(items, 2, "All Contexts")
+		table.insert(items, 2, "Any Context")
 		vim.ui.select(items, { prompt = "Context> ", kind = "todo_context" }, function(selected)
 			if selected == "No Context" then
 				vim.g.todo_txt_context_pattern = nil -- Indicate we want no context
-			elseif selected == "All Contexts" then
+			elseif selected == "Any Context" then
 				vim.g.todo_txt_context_pattern = "" -- Clear focus
 			elseif selected then
 				vim.g.todo_txt_context_pattern = "@" .. fn.escape(selected, "@")
