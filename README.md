@@ -1,18 +1,6 @@
 # todo.txt.nvim
 
-A Neovim plugin to dynamically filter and fold your `todo.txt` file based on projects (`+Project`) and contexts (`@Context`).
-
-Uses `vim.ui.select` for interactive selection and folding to hide non-matching lines.
-
-## Features
-
-- Focus by project, context, and due dates via sorting & folding
-- `Hyperfocus` to show single lines
-
-This tool is currently a personal project by Anthony, who is exploring using `todo.txt` for personal task management. As such, the functionality and maintenance of this plugin may vary.
-
-- Provides commands and keymaps for easy access.
-- Configurable `todo.txt` file path and key mappings.
+A Neovim plugin to dynamically focus on todo's in your `todo.txt` file based on projects (`+Project`) and contexts (`@Context`).
 
 ## Dependencies
 
