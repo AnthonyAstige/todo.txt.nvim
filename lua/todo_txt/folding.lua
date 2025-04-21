@@ -30,7 +30,7 @@ function M.setup_buffer_folding()
 	vim.opt_local.foldmethod = "expr"
 	vim.opt_local.foldexpr = "v:lua.TodoTxtFoldExpr(v:lnum)"
 	vim.opt_local.foldenable = true
-	vim.opt_local.foldlevel = 0
+	vim.opt_local.foldlevel = 0 -- Close all folds
 	vim.opt_local.foldtext = "v:lua.TodoFoldText()"
 end
 
