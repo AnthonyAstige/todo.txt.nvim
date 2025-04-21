@@ -18,51 +18,29 @@ This tool is currently a personal project by Anthony, who is exploring using `to
 
 - [Neovim](https://neovim.io/) (0.8+) with a configured `vim.ui.select` backend (e.g., [dressing.nvim](https://github.com/stevearc/dressing.nvim) or the default TUI).
 
-## Installation
+## Installation / configuration
 
 ### [Lazy.nvim](https://github.com/folke/lazy.nvim)
 
 Place somewhere like `~/.config/nvim/lua/plugins/todo.txt.lua`:
 
-```lua
-return {
-  "AnthonyAstige/todo.txt.nvim",
-  -- No external dependencies needed anymore!
-  opts = {
-    -- Optional: Configure the path to your todo file
-    -- todo_file = "~/path/to/your/todo.txt",
-    -- Optional: Override default keymaps
-    -- keymaps = {
-    --   project = "<leader>fp",
-    --   context = "<leader>fc",
-    --   clear = "<leader>fx",
-    -- }
-  },
-  -- Optional: Only load when editing todo.txt files
-  -- ft = { "todo", "todos" },
-  -- Or uncomment the line below to load it eagerly
-  -- lazy = false,
-}
-```
-
-## Configuration
-
 The plugin comes with the following default configuration:
 
 ```lua
-{
-  -- Path to your todo.txt file
-  todo_file = vim.fn.expand('~/todo.txt'),
-
-  -- Keymaps for filtering actions
-  keymaps = {
-    project = '<leader>tfp', -- Filter by Project
-    context = '<leader>tfc', -- Filter by Context
-    clear   = '<leader>tfx', -- Clear filter (eXpand folds)
+return {
+  "AnthonyAstige/todo.txt.nvim",
+  opts = {
+    -- todo_file = "~/path/to/your/todo.txt",
+    -- keymaps = {
+    --   filter {
+    --     project = "<leader>fp",
+    --     context = "<leader>fc",
+    --     clear = "<leader>fx",
+    --   }
+    -- }
   },
-
   -- Filetypes to activate folding and commands for
-  filetypes = { 'todo', 'todos', 'todo.txt' },
+  -- filetypes = { 'todo', 'todos', 'todo.txt' },
 }
 ```
 
@@ -82,18 +60,3 @@ You can override these defaults by passing an `opts` table to the `setup()` func
 - `:TodoFilterProject`: Filter by project.
 - `:TodoFilterContext`: Filter by context.
 - `:TodoFilterClear`: Clear active filter.
-
-## How it Works
-
-- The plugin scans the `todo_file` for `+Project` and `@Context` tags when you trigger a filter command.
-- It uses `vim.ui.select` to present the found tags for selection.
-- Once a tag is selected, it sets a global pattern (`vim.g.todo_filter_pattern`).
-- A buffer-local `foldexpr` (`TodoFilterFoldExpr`) is set for files matching the configured `filetypes`.
-- This `foldexpr` checks each line against the `vim.g.todo_filter_pattern`. If the pattern exists, the fold level is `0` (unfolded); otherwise, it's `1` (folded).
-- Clearing the filter sets the pattern to `nil` and opens all folds (`zR`).
-
-## Future Improvements
-
-- Caching of tags for large files.
-- Support for filtering by multiple tags (AND/OR logic).
-- Async tag scanning.
