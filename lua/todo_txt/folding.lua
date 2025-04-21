@@ -3,27 +3,20 @@ local M = {}
 local fn = vim.fn
 local api = vim.api
 
--- Global fold expression function that folds every line
-local function escape_pattern(pattern)
-	return pattern
-	-- return string.gsub(pattern, "[%-%.%+%?%[%^%$%(%)%{%}]", "%%%1")
-end
-
 _G.TodoFilterFoldExpr = function(lnum)
+	local FOLD = "1"
+	local NORMAL = "0"
 	local line = fn.getline(lnum)
 	local context_pattern = vim.g.todo_txt_filter_context_pattern or ""
 	local project_pattern = vim.g.todo_txt_filter_project_pattern or ""
-	-- local escaped_context_pattern = escape_pattern(context_pattern)
-	-- local escaped_project_pattern = escape_pattern(project_pattern)
-	vim.notify("TodoFilterFoldExpr(" .. lnum .. "): " .. context_pattern .. " " .. project_pattern)
 	if
 		(context_pattern ~= "" and (not string.find(line, context_pattern, 1, true)))
 		or (project_pattern ~= "" and (not string.find(line, project_pattern, 1, true)))
 	then
-		return "1" -- FOLD
+		return FOLD
 	end
 
-	return "0" -- NORMAL
+	return NORMAL
 end
 
 _G.TodoFoldText = function()
