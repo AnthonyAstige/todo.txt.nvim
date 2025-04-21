@@ -53,7 +53,7 @@ function M.foldexpr(lnum)
 		return FOLD
 	elseif
 		(context_pattern ~= nil and context_pattern ~= "" and (not string.find(line, context_pattern, 1, true)))
-		or (projet_pattern ~= nil and project_pattern ~= "" and (not string.find(line, project_pattern, 1, true)))
+		or (project_pattern ~= nil and project_pattern ~= "" and (not string.find(line, project_pattern, 1, true)))
 	then
 		return FOLD
 	end
