@@ -5,6 +5,7 @@ A Neovim plugin to dynamically focus on todo's in your `todo.txt` file based on 
 ## Dependencies
 
 - [Neovim](https://neovim.io/) (0.8+) with a configured `vim.ui.select` backend (e.g., [dressing.nvim](https://github.com/stevearc/dressing.nvim) or the default TUI).
+- (Optional) [which-key.nvim](https://github.com/folke/which-key.nvim) for improved keymap descriptions.
 
 ## Installation / configuration
 
