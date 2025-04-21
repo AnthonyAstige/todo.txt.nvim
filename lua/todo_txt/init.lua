@@ -44,19 +44,19 @@ M.setup = function(user_opts)
 	})
 
 	-- TODO: Optomize so it doesn't flash at start
-	vim.api.nvim_create_autocmd("BufReadPre", {
-		pattern = cfg.todo_file,
-		group = group,
-		callback = function()
-			if cfg.startup.hyperfocus_enabled then
+	if cfg.startup.hyperfocus_enabled then
+		vim.api.nvim_create_autocmd("BufReadPre", {
+			pattern = cfg.todo_file,
+			group = group,
+			callback = function()
 				hyperfocus.enable_hyperfocus(true)
 				vim.schedule(function()
 					vim.notify("todo.txt hyperfocus enabled")
 					hyperfocus.enable_hyperfocus(true)
 				end)
-			end
-		end,
-	})
+			end,
+		})
+	end
 
 	vim.notify("todo.txt.nvim loaded successfully!", vim.log.levels.INFO)
 end
