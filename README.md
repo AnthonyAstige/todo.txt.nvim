@@ -45,8 +45,6 @@ return {
 }
 ```
 
-_(Replace `"your-github-username/todo.txt.nvim"` with the actual plugin repository path once published.)_
-
 ## Configuration
 
 The plugin comes with the following default configuration:
