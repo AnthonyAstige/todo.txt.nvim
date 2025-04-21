@@ -22,6 +22,7 @@ M.defaults = {
 	-- e.g., via vim.filetype.add() or an ftplugin
 	filetypes = { "todo", "todos", "todo.txt" },
 
+	-- TODO: Better naming here
 	-- Focus at loading
 	date_focus_start = "now",
 	project_focus_start = nil, -- Focus on todo's with no project
