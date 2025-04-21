@@ -4,26 +4,26 @@ local M = {}
 function M.create_keymaps(cfg)
 	local map_opts = { noremap = true, silent = true }
 
-	if cfg.keymaps.filter.project then
+	if cfg.keymaps.project then
 		vim.keymap.set(
 			"n",
-			cfg.keymaps.filter.project,
+			cfg.keymaps.project,
 			"<Cmd>TodoTxtFilterProject<CR>",
 			vim.tbl_extend("force", map_opts, { desc = "Filter TODO by Project" })
 		)
 	end
-	if cfg.keymaps.filter.context then
+	if cfg.keymaps.context then
 		vim.keymap.set(
 			"n",
-			cfg.keymaps.filter.context,
+			cfg.keymaps.context,
 			"<Cmd>TodoTxtFilterContext<CR>",
 			vim.tbl_extend("force", map_opts, { desc = "Filter TODO by Context" })
 		)
 	end
-	if cfg.keymaps.filter.clear then
+	if cfg.keymaps.clear then
 		vim.keymap.set(
 			"n",
-			cfg.keymaps.filter.clear,
+			cfg.keymaps.clear,
 			"<Cmd>TodoTxtFilterClear<CR>",
 			vim.tbl_extend("force", map_opts, { desc = "Clear TODO Filters (eXpand)" })
 		)

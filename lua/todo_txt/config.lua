@@ -7,11 +7,9 @@ M.defaults = {
 
 	-- Keymaps for filtering actions
 	keymaps = {
-		filter = {
-			project = "<leader>tfp", -- Filter by Project
-			context = "<leader>tfc", -- Filter by Context
-			clear = "<leader>tfx", -- Clear filter (eXpand folds)
-		},
+		project = "<leader>tp", -- Filter by Project
+		context = "<leader>tc", -- Filter by Context
+		clear = "<leader>tx", -- Clear filter (eXpand folds)
 	},
 
 	-- Filetypes to activate folding and commands for
