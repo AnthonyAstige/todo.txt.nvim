@@ -32,7 +32,6 @@ local function is_due(line)
 	return false
 end
 
--- TODO: Fix single line filters (showing up due now?)
 function M.foldexpr(lnum)
 	local FOLD = "1"
 	local NORMAL = "0"
@@ -72,6 +71,7 @@ function M.setup_buffer_folding()
 	vim.opt_local.foldexpr = "v:lua.require('todo_txt.folding').foldexpr(v:lnum)"
 	vim.opt_local.foldenable = true
 	vim.opt_local.foldlevel = 0 -- Close all folds
+	vim.opt_local.foldminlines = 0 -- Allow single line folds
 	vim.opt_local.foldtext = "v:lua.require('todo_txt.folding').foldtext()"
 end
 
