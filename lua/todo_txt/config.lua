@@ -22,7 +22,6 @@ M.defaults = {
 	-- e.g., via vim.filetype.add() or an ftplugin
 	filetypes = { "todo", "todos", "todo.txt" },
 
-	-- Focus at loading
 	startup = {
 		focus = {
 			date = "now",
