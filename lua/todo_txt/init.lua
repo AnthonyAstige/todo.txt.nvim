@@ -10,8 +10,6 @@ local hyperfocus = require("todo_txt.hyperfocus")
 
 local cfg -- Holds merged user and default config
 
--- TODO: Integrate with lualine?
-
 -- Main setup function, called by users (e.g., via LazyVim opts)
 -- Merges user options with defaults and initializes the plugin features.
 M.setup = function(user_opts)
