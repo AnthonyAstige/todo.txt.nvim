@@ -51,9 +51,9 @@ You can override these defaults by passing an `opts` table to the `setup()` func
 1. Open your `todo.txt` file (or any file matching the configured `filetypes`).
 2. Ensure you have a backend configured for `vim.ui.select` (like [dressing.nvim](https://github.com/stevearc/dressing.nvim) or use the default TUI).
 3. Use the keymaps (or commands) to filter:
-   - `<leader>tp` (or `:TodoFilterProject`): Prompts with `vim.ui.select` to choose a project (`+ProjectName`). Only lines containing the selected project will remain unfolded.
-   - `<leader>tc` (or `:TodoFilterContext`): Prompts with `vim.ui.select` to choose a context (`@ContextName`). Only lines containing the selected context will remain unfolded.
-   - `<leader>tx` (or `:TodoFilterClear`): Clears the current filter and unfolds all lines (`zR`).
+   - `<leader>t+` (or `:TodoTxtProject`): Prompts with `vim.ui.select` to choose a project (`+ProjectName`). Only lines containing the selected project will remain unfolded.
+   - `<leader>t@` (or `:TodoTxtContext`): Prompts with `vim.ui.select` to choose a context (`@ContextName`). Only lines containing the selected context will remain unfolded.
+   - `<leader>tx` (or `:TodoTxtExit`): Clears the current filter and unfolds all lines (`zR`).
 
 ## Commands
 
