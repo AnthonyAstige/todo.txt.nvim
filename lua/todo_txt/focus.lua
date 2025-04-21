@@ -38,6 +38,12 @@ end
 --- @param line string The line content to check.
 --- @return boolean True if the line is in focus, false otherwise.
 function M.is_focused(line)
+	-- TODO: Get rid of bandaid and the blank line always showing?
+	-- Part of (foling.lua).ensure_first_line_blank bandaid
+	if line == "" then
+		return true
+	end
+
 	local date_filter = vim.g.todo_txt_date_filter
 	local context_pattern = vim.g.todo_txt_context_pattern
 	local project_pattern = vim.g.todo_txt_project_pattern
