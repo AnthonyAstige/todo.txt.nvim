@@ -75,11 +75,12 @@ function M.setup_buffer_folding()
 end
 
 function M.refresh_folding()
-	-- TODO: Reduce overkill here
-	vim.cmd("normal! zx") -- Refresh folds
-	vim.cmd("edit") -- Refresh buffer. Only thing that seems to 100% work since cursor position can't get in the way
-	vim.cmd("normal! zx") -- Refresh folds
-	vim.cmd("edit") -- Refresh buffer. Only thing that seems to 100% work since cursor position can't get in the way
+  -- Schedule folding refresh and buffer edit for the next event loop
+  -- to allow background tasks to complete before refreshing the view.
+  vim.schedule(function()
+    vim.cmd("normal! zx")
+    vim.cmd("edit")
+  end)
 end
 
 function M.setup_autocmd(cfg)
