@@ -11,6 +11,11 @@ function M.create_keymaps(cfg)
 			group = "Todo.txt",
 			mode = { "n" },
 		})
+		wk.add({
+			cfg.keymaps.due,
+			group = "Due",
+			mode = { "n" },
+		})
 	end
 
 	if cfg.keymaps.project then
@@ -36,6 +41,14 @@ function M.create_keymaps(cfg)
 			"<Cmd>TodoTxtExit<CR>",
 			vim.tbl_extend("force", map_opts, { desc = "Exit" })
 		)
+	end
+
+	if cfg.keymaps.all then
+		vim.keymap.set("n", cfg.keymaps.all, "<Cmd>TodoTxtAll<CR>", vim.tbl_extend("force", map_opts, { desc = "All" }))
+	end
+
+	if cfg.keymaps.now then
+		vim.keymap.set("n", cfg.keymaps.now, "<Cmd>TodoTxtNow<CR>", vim.tbl_extend("force", map_opts, { desc = "Now" }))
 	end
 end
 

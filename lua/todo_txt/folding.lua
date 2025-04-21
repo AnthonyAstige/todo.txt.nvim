@@ -1,5 +1,32 @@
 local M = {}
 
+local function has_no_due_date(line)
+	return not string.find(line, "due:", 1, true)
+end
+
+-- TODO: Combine with is_past_due ; rename
+local function is_due_today(line)
+	local due_date = string.match(line, "due:(%d%d%d%d%-%d%d%-%d%d)")
+	if not due_date then
+		return false
+	end
+
+	local year, month, day = string.match(due_date, "(%d%d%d%d)-(%d%d)-(%d%d)")
+	if not year or not month or not day then
+		return false
+	end
+	year, month, day = tonumber(year), tonumber(month), tonumber(day)
+
+	local today = os.date("*t")
+	local due = { year = year, month = month, day = day }
+
+	if due.year == today.year and due.month == today.month and due.day == today.day then
+		return true
+	end
+
+	return false
+end
+
 local function is_past_due(line)
 	local due_date = string.match(line, "due:(%d%d%d%d%-%d%d%-%d%d)")
 	if not due_date then
@@ -30,11 +57,16 @@ function M.foldexpr(lnum)
 	local FOLD = "1"
 	local NORMAL = "0"
 	local line = vim.fn.getline(lnum)
+	-- TODO: Set this in initialization instead
+	local date_filter = vim.g.todo_txt_date_filter or "all"
 	local context_pattern = vim.g.todo_txt_context_pattern or ""
 	local project_pattern = vim.g.todo_txt_project_pattern or ""
 
-	if is_past_due(line) then
-		return FOLD
+	-- TODO: Fix so will fold on it's own ... only seems to fold when context/project are folded
+	if date_filter == "now" then
+		if not (is_past_due(line) or is_due_today(line) or has_no_due_date(line)) then
+			return FOLD
+		end
 	end
 
 	if
@@ -57,11 +89,14 @@ function M.setup_buffer_folding()
 	vim.opt_local.foldenable = true
 	vim.opt_local.foldlevel = 0 -- Close all folds
 	vim.opt_local.foldtext = "v:lua.require('todo_txt.folding').foldtext()"
-	vim.cmd("normal! zx")
 end
 
 function M.refresh_folding()
-	vim.cmd("edit") -- Only thing that seems to 100% work since cursor position can't get in the way
+	-- TODO: Reduce overkill here
+	vim.cmd("normal! zx") -- Refresh folds
+	vim.cmd("edit") -- Refresh buffer. Only thing that seems to 100% work since cursor position can't get in the way
+	vim.cmd("normal! zx") -- Refresh folds
+	vim.cmd("edit") -- Refresh buffer. Only thing that seems to 100% work since cursor position can't get in the way
 end
 
 function M.setup_autocmd(cfg)

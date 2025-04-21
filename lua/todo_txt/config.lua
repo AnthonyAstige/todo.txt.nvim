@@ -8,9 +8,12 @@ M.defaults = {
 	-- Keymaps for filtering actions
 	keymaps = {
 		top = "<leader>t", -- Menu top
+		due = "<leader>td", -- Menu top: due
 		project = "<leader>tp", -- Set Project
 		context = "<leader>tc", -- Set Context
 		exit = "<leader>tx",
+		all = "<leader>tda", -- Show Dates: All
+		now = "<leader>tdn", -- Show Dates: Now
 	},
 
 	-- Filetypes to activate folding and commands for
