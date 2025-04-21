@@ -32,7 +32,6 @@ return {
   opts = {
     -- todo_file = "~/path/to/your/todo.txt",
 
-    -- Keymaps for actions
     -- keymaps = {
     --   top = "<leader>t", -- Menu top
     --   due = "<leader>td", -- Menu top: due
@@ -43,7 +42,6 @@ return {
     --   now = "<leader>tdn", -- Show Dates: Now
     -- },
 
-    -- How to focus at app loading
     -- startup = {
     --   focus = {
     --     date = "now",
@@ -54,7 +52,7 @@ return {
     -- }
 
     -- Filetypes to activate folding and commands for
-    filetypes = { "todo", "todos", "todo.txt" },
+    -- filetypes = { "todo", "todos", "todo.txt" },
   },
 }
 ```
