@@ -29,10 +29,10 @@ function M.create_keymaps(cfg)
 			vim.tbl_extend("force", map_opts, { desc = "Context" })
 		)
 	end
-	if cfg.keymaps.clear then
+	if cfg.keymaps.exit then
 		vim.keymap.set(
 			"n",
-			cfg.keymaps.clear,
+			cfg.keymaps.exit,
 			"<Cmd>TodoTxtExit<CR>",
 			vim.tbl_extend("force", map_opts, { desc = "Exit" })
 		)
