@@ -13,29 +13,37 @@ end
 function M.create_commands(cfg)
 	api.nvim_create_user_command("TodoTxtProject", function()
 		local items = tags.scan_tags("%+", cfg.todo_file)
-		if #items == 0 then
-			vim.notify("todo.txt: No projects (+) found in " .. cfg.todo_file, vim.log.levels.WARN)
-			return
-		end
+		-- TODO: Review & Test No, All, and regression test general
+		table.insert(items, 1, "No Project")
+		table.insert(items, 2, "All Projects")
 		vim.ui.select(items, { prompt = "Project> ", kind = "todo_project" }, function(selected)
-			if selected then
+			if selected == "No Project" then
+				-- vim.g.todo_txt_project_pattern = ".-%+." -- Match any line with a project tag
+				vim.g.todo_txt_project_pattern = nil -- Indicate we want no project
+			elseif selected == "All Projects" then
+				vim.g.todo_txt_project_pattern = "" -- Clear focus
+			elseif selected then
 				vim.g.todo_txt_project_pattern = "+" .. fn.escape(selected, "+")
-				folding.refresh_folding()
 			end
+			folding.refresh_folding()
 		end)
 	end, { desc = "Focus project (+Tag) todo's" })
 
 	api.nvim_create_user_command("TodoTxtContext", function()
 		local items = tags.scan_tags("@", cfg.todo_file)
-		if #items == 0 then
-			vim.notify("todo.txt: No contexts (@) found in " .. cfg.todo_file, vim.log.levels.WARN)
-			return
-		end
+		-- TODO: Review & Test No, All, and regression test general
+		table.insert(items, 1, "No Context")
+		table.insert(items, 2, "All Contexts")
 		vim.ui.select(items, { prompt = "Context> ", kind = "todo_context" }, function(selected)
-			if selected then
+			if selected == "No Context" then
+				-- vim.g.todo_txt_context_pattern = ".-@." -- Match any line with a context tag
+				vim.g.todo_txt_context_pattern = nil -- Indicate we want no context
+			elseif selected == "All Contexts" then
+				vim.g.todo_txt_context_pattern = "" -- Clear focus
+			elseif selected then
 				vim.g.todo_txt_context_pattern = "@" .. fn.escape(selected, "@")
-				folding.refresh_folding()
 			end
+			folding.refresh_folding()
 		end)
 	end, { desc = "Focus context (@Tag) todo's" })
 

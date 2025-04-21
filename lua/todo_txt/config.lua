@@ -21,11 +21,12 @@ M.defaults = {
 	-- e.g., via vim.filetype.add() or an ftplugin
 	filetypes = { "todo", "todos", "todo.txt" },
 
-	-- TODO: Rename from 'filter' that's not right ; should be focus I think
-	-- TODO: Add default as "No Project"
-	-- TODO: Add default as "No Context"?
-	-- How to filter dates at app loading
-	date_filter_start = "now",
+	-- TODO: Add these to README
+	-- How to focus at app loading
+	date_focus_start = "now",
+	project_focus_start = "",
+	-- project_focus_start = nil, -- TODO: Make work with nil default
+	context_focus_start = "",
 }
 
 return M

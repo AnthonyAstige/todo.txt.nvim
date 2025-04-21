@@ -19,7 +19,9 @@ M.setup = function(user_opts)
 	end
 
 	-- Set global date_filter from config
-	vim.g.todo_txt_date_filter = cfg.date_filter_start
+	vim.g.todo_txt_date_filter = cfg.date_focus_start
+	vim.g.todo_txt_context_pattern = cfg.context_focus_start
+	vim.g.todo_txt_project_pattern = cfg.project_focus_start
 
 	-- Create commands, keymaps, and setup folding autocmd
 	commands.create_commands(cfg)

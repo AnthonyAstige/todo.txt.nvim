@@ -37,8 +37,8 @@ function M.foldexpr(lnum)
 	local NORMAL = "0"
 	local line = vim.fn.getline(lnum)
 	local date_filter = vim.g.todo_txt_date_filter
-	local context_pattern = vim.g.todo_txt_context_pattern or ""
-	local project_pattern = vim.g.todo_txt_project_pattern or ""
+	local context_pattern = vim.g.todo_txt_context_pattern
+	local project_pattern = vim.g.todo_txt_project_pattern
 
 	if date_filter == "now" then
 		if not (is_due(line) or has_no_due_date(line)) then
@@ -46,7 +46,11 @@ function M.foldexpr(lnum)
 		end
 	end
 
-	if
+	if context_pattern == nil and string.find(line, "@", 1, true) then
+		return FOLD
+	elseif project_pattern == nil and string.find(line, "+", 1, true) then
+		return FOLD
+	elseif
 		(context_pattern ~= "" and (not string.find(line, context_pattern, 1, true)))
 		or (project_pattern ~= "" and (not string.find(line, project_pattern, 1, true)))
 	then
