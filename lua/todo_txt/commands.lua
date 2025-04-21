@@ -18,7 +18,6 @@ function M.create_commands(cfg)
 		table.insert(items, 2, "All Projects")
 		vim.ui.select(items, { prompt = "Project> ", kind = "todo_project" }, function(selected)
 			if selected == "No Project" then
-				-- vim.g.todo_txt_project_pattern = ".-%+." -- Match any line with a project tag
 				vim.g.todo_txt_project_pattern = nil -- Indicate we want no project
 			elseif selected == "All Projects" then
 				vim.g.todo_txt_project_pattern = "" -- Clear focus
@@ -36,7 +35,6 @@ function M.create_commands(cfg)
 		table.insert(items, 2, "All Contexts")
 		vim.ui.select(items, { prompt = "Context> ", kind = "todo_context" }, function(selected)
 			if selected == "No Context" then
-				-- vim.g.todo_txt_context_pattern = ".-@." -- Match any line with a context tag
 				vim.g.todo_txt_context_pattern = nil -- Indicate we want no context
 			elseif selected == "All Contexts" then
 				vim.g.todo_txt_context_pattern = "" -- Clear focus
