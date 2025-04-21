@@ -7,7 +7,7 @@ function M.create_keymaps(cfg)
 
 	if wk_status then
 		wk.add({
-			"<leader>t",
+			cfg.keymaps.top,
 			group = "Todo.txt",
 			mode = { "n" },
 		})
