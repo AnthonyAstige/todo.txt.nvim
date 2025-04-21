@@ -18,8 +18,7 @@ function M.create_commands(cfg)
 			if selected then
 				-- Escape '+' for Lua pattern matching and create the search pattern
 				vim.g.todo_txt_project_pattern = "+" .. fn.escape(selected, "+")
-				vim.cmd("redraw!") -- Redraw to apply potential syntax changes
-				folding.refresh_folding() -- Apply folding immediately
+				folding.refresh_folding()
 				vim.notify("todo.txt: Filtering by project: +" .. selected)
 			end
 		end)
@@ -36,8 +35,7 @@ function M.create_commands(cfg)
 			if selected then
 				-- Escape '@' for Lua pattern matching and create the search pattern
 				vim.g.todo_txt_context_pattern = "@" .. fn.escape(selected, "@")
-				vim.cmd("redraw!")
-				folding.refresh_folding() -- Apply folding immediately
+				folding.refresh_folding()
 				vim.notify("todo.txt: Filtering by context: @" .. selected)
 			end
 		end)
