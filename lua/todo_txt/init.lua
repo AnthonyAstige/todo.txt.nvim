@@ -4,6 +4,7 @@ local config = require("todo_txt.config")
 local folding = require("todo_txt.folding")
 local commands = require("todo_txt.commands")
 local keymaps = require("todo_txt.keymaps")
+local sorting = require("todo_txt.sorting")
 
 local cfg -- Holds merged user and default config
 
@@ -26,7 +27,22 @@ M.setup = function(user_opts)
 	-- Create commands, keymaps, and setup folding autocmd
 	commands.create_commands(cfg)
 	keymaps.create_keymaps(cfg)
-	folding.setup_autocmd(cfg)
+
+	-- Setup autocmd for filetype detection (sort and fold)
+	local group = vim.api.nvim_create_augroup("TodoTxtSetup", { clear = true })
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = cfg.filetypes,
+		group = group,
+		callback = function()
+			sorting.sort_buffer()
+			folding.setup_buffer_folding()
+			-- TODO: Figur eout if I can just refresh or need custom schedule here
+			vim.schedule(function()
+				vim.cmd("normal! ggzx")
+			end)
+			-- folding.refresh_folding()
+		end,
+	})
 
 	vim.notify("todo.txt.nvim loaded successfully!", vim.log.levels.INFO)
 end
