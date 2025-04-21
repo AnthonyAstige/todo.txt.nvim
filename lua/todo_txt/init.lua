@@ -6,6 +6,7 @@ local folding = require("todo_txt.folding")
 local commands = require("todo_txt.commands")
 local keymaps = require("todo_txt.keymaps")
 local sorting = require("todo_txt.sorting")
+local hyperfocus = require("todo_txt.hyperfocus")
 
 local cfg -- Holds merged user and default config
 
@@ -37,6 +38,11 @@ M.setup = function(user_opts)
 		pattern = cfg.filetypes,
 		group = group,
 		callback = function()
+			-- TODO: Fix this so hypfocus works on loading
+			if cfg.hyperfocus_on_startup then
+				vim.notify("todo.txt hyperfocus enabled")
+				hyperfocus.enable_hyperfocus()
+			end
 			sorting.sort_buffer()
 			folding.setup_buffer_folding()
 			folding.refresh_folding()

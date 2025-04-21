@@ -26,6 +26,7 @@ M.defaults = {
 	date_focus_start = "now",
 	project_focus_start = nil, -- Focus on todo's with no project
 	context_focus_start = "",
+	hyperfocus_on_startup = true,
 }
 
 return M
