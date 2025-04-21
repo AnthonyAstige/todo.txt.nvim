@@ -67,7 +67,19 @@ function M.foldtext()
 	local context_str = context or "@nil"
 	local project_str = project or "+nil"
 
-	return "Focus : " .. context_str .. " " .. project_str .. " due:" .. vim.g.todo_txt_date_filter
+	local parts = {}
+	if context_str ~= "" then
+		table.insert(parts, context_str)
+	end
+	if project_str ~= "" then
+		table.insert(parts, project_str)
+	end
+
+	local focus_str = table.concat(parts, " ")
+
+	local display_str = focus_str ~= "" and (focus_str .. " ") or ""
+
+	return "Focus: " .. display_str .. "due:" .. vim.g.todo_txt_date_filter
 end
 
 function M.setup_buffer_folding()
