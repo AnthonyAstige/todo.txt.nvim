@@ -2,24 +2,24 @@ local M = {}
 
 local enabled = false
 
-local function enable_myopic()
+local function disable_hyperfocus()
+	vim.opt_local.conceallevel = 0
+	vim.cmd([[syntax clear TodoTxtConceal]])
+	enabled = false
+end
+
+function M.enable_hyperfocus()
 	vim.opt_local.conceallevel = 2
 	vim.opt_local.concealcursor = "" -- Set concealcursor to empty to show text under cursor
 	vim.cmd([[syntax match TodoTxtConceal /./ conceal]])
 	enabled = true
 end
 
-local function disable_myopic()
-	vim.opt_local.conceallevel = 0
-	vim.cmd([[syntax clear TodoTxtConceal]])
-	enabled = false
-end
-
 function M.toggle()
 	if enabled then
-		disable_myopic()
+		disable_hyperfocus()
 	else
-		enable_myopic()
+		M.enable_hyperfocus()
 	end
 end
 
