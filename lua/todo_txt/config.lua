@@ -24,8 +24,7 @@ M.defaults = {
 	-- TODO: Add these to README
 	-- How to focus at app loading
 	date_focus_start = "now",
-	project_focus_start = "",
-	-- project_focus_start = nil, -- TODO: Make work with nil default
+	project_focus_start = nil, -- Focus on todo's with no project
 	context_focus_start = "",
 }
 
