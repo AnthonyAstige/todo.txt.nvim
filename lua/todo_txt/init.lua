@@ -43,8 +43,8 @@ M.setup = function(user_opts)
 		end,
 	})
 
-	-- TODO: Optomize so it doesn't flash todo content at start
 	if cfg.startup.hyperfocus_enabled then
+		-- TODO: Solve flashing screen .. this is pretty early in lifecycle, so may need a folding hack
 		vim.api.nvim_create_autocmd("BufReadPre", {
 			pattern = cfg.todo_file,
 			group = group,
