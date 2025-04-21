@@ -13,6 +13,7 @@ M.defaults = {
 		project = "<leader>t+", -- Set Project
 		context = "<leader>t@", -- Set Context
 		unfocus = "<leader>tu",
+		refresh = "<leader>tr",
 		all = "<leader>tda", -- Show Dates: All
 		now = "<leader>tdn", -- Show Dates: Now
 	},

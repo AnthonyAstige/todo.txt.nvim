@@ -56,6 +56,15 @@ function M.create_keymaps(cfg)
 	if cfg.keymaps.now then
 		vim.keymap.set("n", cfg.keymaps.now, "<Cmd>TodoTxtNow<CR>", vim.tbl_extend("force", map_opts, { desc = "Now" }))
 	end
+
+	if cfg.keymaps.refresh then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.refresh,
+			"<Cmd>TodoTxtRefresh<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Refresh" })
+		)
+	end
 end
 
 return M

@@ -76,6 +76,11 @@ function M.create_commands(cfg)
 	api.nvim_create_user_command("TodoTxtHyperfocus", function()
 		hyperfocus.toggle()
 	end, { desc = "Toggle myopic focus (show only current line)" })
+
+	api.nvim_create_user_command("TodoTxtRefresh", function()
+		sorting.sort_buffer()
+		folding.refresh_folding()
+	end, { desc = "Sort and refresh folding" })
 end
 
 return M
