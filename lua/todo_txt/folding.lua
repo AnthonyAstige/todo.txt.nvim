@@ -46,7 +46,6 @@ function M.foldexpr(lnum)
 		end
 	end
 
-	-- TODO: Make these nil patterns work
 	if context_pattern == nil and string.find(line, "@", 1, true) then
 		return FOLD
 	elseif project_pattern == nil and string.find(line, "+", 1, true) then
