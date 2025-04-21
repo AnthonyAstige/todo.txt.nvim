@@ -18,6 +18,9 @@ M.setup = function(user_opts)
 		vim.notify("todo.txt: todo_file not found or readable: " .. cfg.todo_file, vim.log.levels.WARN)
 	end
 
+	-- Set global date_filter from config
+	vim.g.todo_txt_date_filter = cfg.date_filter_start
+
 	-- Create commands, keymaps, and setup folding autocmd
 	commands.create_commands(cfg)
 	keymaps.create_keymaps(cfg)

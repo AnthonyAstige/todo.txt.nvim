@@ -20,6 +20,9 @@ M.defaults = {
 	-- Ensure 'todo' or similar is set for your todo.txt files
 	-- e.g., via vim.filetype.add() or an ftplugin
 	filetypes = { "todo", "todos", "todo.txt" },
+
+	-- How to filter dates at app loading
+	date_filter_start = "now",
 }
 
 return M

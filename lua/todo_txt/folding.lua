@@ -4,7 +4,7 @@ local function has_no_due_date(line)
 	return not string.find(line, "due:", 1, true)
 end
 
-local function is_due_now(line)
+local function is_due(line)
 	local due_date = string.match(line, "due:(%d%d%d%d%-%d%d%-%d%d)")
 	if not due_date then
 		return false
@@ -36,14 +36,13 @@ function M.foldexpr(lnum)
 	local FOLD = "1"
 	local NORMAL = "0"
 	local line = vim.fn.getline(lnum)
-	-- TODO: Set this in initialization instead
-	local date_filter = vim.g.todo_txt_date_filter or "all"
+	local date_filter = vim.g.todo_txt_date_filter
 	local context_pattern = vim.g.todo_txt_context_pattern or ""
 	local project_pattern = vim.g.todo_txt_project_pattern or ""
 
 	-- TODO: Fix so will fold on it's own ... only seems to fold when context/project are folded
 	if date_filter == "now" then
-		if not (is_due_now(line) or has_no_due_date(line)) then
+		if not (is_due(line) or has_no_due_date(line)) then
 			return FOLD
 		end
 	end
