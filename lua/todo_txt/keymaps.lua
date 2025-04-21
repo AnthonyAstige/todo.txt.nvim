@@ -1,15 +1,17 @@
 local M = {}
 
-local wk = require("which-key")
+local wk_status, wk = pcall(require, "which-key")
 
 function M.create_keymaps(cfg)
 	local map_opts = { noremap = true, silent = true }
 
-	wk.add({
-		"<leader>t",
-		group = "Todo.txt",
-		mode = { "n" },
-	})
+	if wk_status then
+		wk.add({
+			"<leader>t",
+			group = "Todo.txt",
+			mode = { "n" },
+		})
+	end
 
 	if cfg.keymaps.project then
 		vim.keymap.set(
