@@ -4,8 +4,8 @@ function M.foldexpr(lnum)
 	local FOLD = "1"
 	local NORMAL = "0"
 	local line = vim.fn.getline(lnum)
-	local context_pattern = vim.g.todo_txt_filter_context_pattern or ""
-	local project_pattern = vim.g.todo_txt_filter_project_pattern or ""
+	local context_pattern = vim.g.todo_txt_context_pattern or ""
+	local project_pattern = vim.g.todo_txt_project_pattern or ""
 	if
 		(context_pattern ~= "" and (not string.find(line, context_pattern, 1, true)))
 		or (project_pattern ~= "" and (not string.find(line, project_pattern, 1, true)))
@@ -17,10 +17,7 @@ function M.foldexpr(lnum)
 end
 
 function M.foldtext()
-	return "Filters: "
-		.. (vim.g.todo_txt_filter_context_pattern or "")
-		.. " "
-		.. (vim.g.todo_txt_filter_project_pattern or "")
+	return "Filters: " .. (vim.g.todo_txt_context_pattern or "") .. " " .. (vim.g.todo_txt_project_pattern or "")
 end
 
 function M.setup_buffer_folding()

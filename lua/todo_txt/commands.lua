@@ -17,7 +17,7 @@ function M.create_commands(cfg)
 		vim.ui.select(items, { prompt = "Project> ", kind = "todo_project" }, function(selected)
 			if selected then
 				-- Escape '+' for Lua pattern matching and create the search pattern
-				vim.g.todo_txt_filter_project_pattern = "+" .. fn.escape(selected, "+")
+				vim.g.todo_txt_project_pattern = "+" .. fn.escape(selected, "+")
 				vim.cmd("redraw!") -- Redraw to apply potential syntax changes
 				folding.refresh_folding() -- Apply folding immediately
 				vim.notify("todo.txt: Filtering by project: +" .. selected)
@@ -35,7 +35,7 @@ function M.create_commands(cfg)
 		vim.ui.select(items, { prompt = "Context> ", kind = "todo_context" }, function(selected)
 			if selected then
 				-- Escape '@' for Lua pattern matching and create the search pattern
-				vim.g.todo_txt_filter_context_pattern = "@" .. fn.escape(selected, "@")
+				vim.g.todo_txt_context_pattern = "@" .. fn.escape(selected, "@")
 				vim.cmd("redraw!")
 				folding.refresh_folding() -- Apply folding immediately
 				vim.notify("todo.txt: Filtering by context: @" .. selected)
@@ -45,8 +45,8 @@ function M.create_commands(cfg)
 
 	-- Command to clear the filter
 	api.nvim_create_user_command("TodoTxtFilterClear", function()
-		vim.g.todo_txt_filter_context_pattern = ""
-		vim.g.todo_txt_filter_project_pattern = ""
+		vim.g.todo_txt_context_pattern = ""
+		vim.g.todo_txt_project_pattern = ""
 		folding.refresh_folding()
 		vim.notify("todo.txt: Filter cleared.")
 	end, { desc = "Clear current todo filter" })
