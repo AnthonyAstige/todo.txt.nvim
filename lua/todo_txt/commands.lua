@@ -34,7 +34,7 @@ function M.create_commands(cfg)
 		end)
 	end, { desc = "Filter todo list by context (@Tag) using vim.ui.select" })
 
-	api.nvim_create_user_command("TodoTxtClear", function()
+	api.nvim_create_user_command("TodoTxtExit", function()
 		vim.g.todo_txt_context_pattern = ""
 		vim.g.todo_txt_project_pattern = ""
 		folding.refresh_folding()

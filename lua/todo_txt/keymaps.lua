@@ -8,7 +8,7 @@ function M.create_keymaps(cfg)
 			"n",
 			cfg.keymaps.project,
 			"<Cmd>TodoTxtProject<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Filter TODO by Project" })
+			vim.tbl_extend("force", map_opts, { desc = "TODO Project" })
 		)
 	end
 	if cfg.keymaps.context then
@@ -16,15 +16,15 @@ function M.create_keymaps(cfg)
 			"n",
 			cfg.keymaps.context,
 			"<Cmd>TodoTxtContext<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Filter TODO by Context" })
+			vim.tbl_extend("force", map_opts, { desc = "TODO Context" })
 		)
 	end
 	if cfg.keymaps.clear then
 		vim.keymap.set(
 			"n",
 			cfg.keymaps.clear,
-			"<Cmd>TodoTxtClear<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Clear TODO Filters (eXpand)" })
+			"<Cmd>TodoTxtExit<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "TODO Exit" })
 		)
 	end
 end
