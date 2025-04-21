@@ -1,4 +1,5 @@
 local M = {}
+-- TODO: Look through all code "filter" and replace with "focus" as appropriate
 
 local config = require("todo_txt.config")
 local folding = require("todo_txt.folding")
