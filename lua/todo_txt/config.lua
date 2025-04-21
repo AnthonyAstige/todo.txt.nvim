@@ -7,6 +7,7 @@ M.defaults = {
 
 	-- Keymaps for filtering actions
 	keymaps = {
+		top = "<leader>t", -- Menu top
 		project = "<leader>tp", -- Filter by Project
 		context = "<leader>tc", -- Filter by Context
 		clear = "<leader>tx", -- Clear filter (eXpand folds)

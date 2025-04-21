@@ -1,14 +1,22 @@
 local M = {}
 
+local wk = require("which-key")
+
 function M.create_keymaps(cfg)
 	local map_opts = { noremap = true, silent = true }
+
+	wk.add({
+		"<leader>t",
+		group = "Todo.txt",
+		mode = { "n" },
+	})
 
 	if cfg.keymaps.project then
 		vim.keymap.set(
 			"n",
 			cfg.keymaps.project,
 			"<Cmd>TodoTxtProject<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "TODO Project" })
+			vim.tbl_extend("force", map_opts, { desc = "Project" })
 		)
 	end
 	if cfg.keymaps.context then
@@ -16,7 +24,7 @@ function M.create_keymaps(cfg)
 			"n",
 			cfg.keymaps.context,
 			"<Cmd>TodoTxtContext<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "TODO Context" })
+			vim.tbl_extend("force", map_opts, { desc = "Context" })
 		)
 	end
 	if cfg.keymaps.clear then
@@ -24,7 +32,7 @@ function M.create_keymaps(cfg)
 			"n",
 			cfg.keymaps.clear,
 			"<Cmd>TodoTxtExit<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "TODO Exit" })
+			vim.tbl_extend("force", map_opts, { desc = "Exit" })
 		)
 	end
 end
