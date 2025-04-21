@@ -43,14 +43,17 @@ M.setup = function(user_opts)
 		end,
 	})
 
-	-- TODO: Adjust this so it's based on the setting for the buffer and isn't re-enabled for it somehow, maybe store if already set / started up
-	vim.api.nvim_create_autocmd("BufReadPost", {
+	-- TODO: Optomize so it doesn't flash at start
+	vim.api.nvim_create_autocmd("BufReadPre", {
 		pattern = cfg.todo_file,
 		group = group,
 		callback = function()
 			if cfg.startup.hyperfocus_enabled then
-				vim.notify("todo.txt hyperfocus enabled")
-				hyperfocus.enable_hyperfocus()
+				hyperfocus.enable_hyperfocus(true)
+				vim.schedule(function()
+					vim.notify("todo.txt hyperfocus enabled")
+					hyperfocus.enable_hyperfocus(true)
+				end)
 			end
 		end,
 	})
