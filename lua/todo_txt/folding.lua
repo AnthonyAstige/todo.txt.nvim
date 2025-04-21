@@ -1,12 +1,9 @@
 local M = {}
 
-local fn = vim.fn
-local api = vim.api
-
 _G.TodoTxtFoldExpr = function(lnum)
 	local FOLD = "1"
 	local NORMAL = "0"
-	local line = fn.getline(lnum)
+	local line = vim.fn.getline(lnum)
 	local context_pattern = vim.g.todo_txt_filter_context_pattern or ""
 	local project_pattern = vim.g.todo_txt_filter_project_pattern or ""
 	if
@@ -39,10 +36,10 @@ function M.refresh_folding()
 end
 
 function M.setup_autocmd(cfg)
-	local group = api.nvim_create_augroup("TodoTxtFolding", { clear = true })
+	local group = vim.api.nvim_create_augroup("TodoTxtFolding", { clear = true })
 
 	-- Set up autocmd for specified filetypes
-	api.nvim_create_autocmd("FileType", {
+	vim.api.nvim_create_autocmd("FileType", {
 		pattern = cfg.filetypes,
 		group = group,
 		callback = M.setup_buffer_folding,
