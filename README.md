@@ -50,6 +50,6 @@ return {
 1. Open your `todo.txt` file (or any file matching the configured `filetypes`).
 2. Ensure you have a backend configured for `vim.ui.select` (like [dressing.nvim](https://github.com/stevearc/dressing.nvim) or use the default TUI).
 3. Use the keymaps (or commands) to focus:
-   - `<leader>t+` (or `:TodoTxtProject`): Prompts with `vim.ui.select` to choose a project (`+ProjectName`). Only lines containing the selected project will remain unfolded.
-   - `<leader>t@` (or `:TodoTxtContext`): Prompts with `vim.ui.select` to choose a context (`@ContextName`). Only lines containing the selected context will remain unfolded.
-   - `<leader>tu` (or `:TodoTxtUnfocus`): Clears the current focus and unfolds all lines (`zR`).
+   - `<leader>t+` (or `:TodoTxtProject`): Prompts to select a project (`+ProjectName`) to focus on. Only lines containing the selected project will remain unfolded.
+   - `<leader>t@` (or `:TodoTxtContext`): Prompts to select a context (`@ContextName`) to focus on. Only lines containing the selected context will remain unfolded.
+   - `<leader>tu` (or `:TodoTxtUnfocus`): Clears all current focuses
