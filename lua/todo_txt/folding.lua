@@ -39,7 +39,6 @@ function M.refresh_folding()
 end
 
 function M.setup_autocmd(cfg)
-	vim.notify("Setting up autocmd")
 	local group = api.nvim_create_augroup("TodoFilterFolding", { clear = true })
 
 	-- Set up autocmd for specified filetypes
@@ -47,19 +46,6 @@ function M.setup_autocmd(cfg)
 		pattern = cfg.filetypes,
 		group = group,
 		callback = M.setup_buffer_folding,
-	})
-
-	-- Also set up BufEnter to ensure folding is applied when switching buffers
-	api.nvim_create_autocmd("BufEnter", {
-		pattern = "*",
-		group = group,
-		callback = function()
-			local ft = vim.bo.filetype
-			-- Only apply to configured filetypes
-			if vim.tbl_contains(cfg.filetypes, ft) then
-				M.setup_buffer_folding()
-			end
-		end,
 	})
 end
 
