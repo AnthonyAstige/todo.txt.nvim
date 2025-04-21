@@ -19,7 +19,6 @@ function M.create_commands(cfg)
 				-- Escape '+' for Lua pattern matching and create the search pattern
 				vim.g.todo_txt_project_pattern = "+" .. fn.escape(selected, "+")
 				folding.refresh_folding()
-				vim.notify("todo.txt: Filtering by project: +" .. selected)
 			end
 		end)
 	end, { desc = "Filter todo list by project (+Tag) using vim.ui.select" })
@@ -36,7 +35,6 @@ function M.create_commands(cfg)
 				-- Escape '@' for Lua pattern matching and create the search pattern
 				vim.g.todo_txt_context_pattern = "@" .. fn.escape(selected, "@")
 				folding.refresh_folding()
-				vim.notify("todo.txt: Filtering by context: @" .. selected)
 			end
 		end)
 	end, { desc = "Filter todo list by context (@Tag) using vim.ui.select" })
@@ -46,7 +44,6 @@ function M.create_commands(cfg)
 		vim.g.todo_txt_context_pattern = ""
 		vim.g.todo_txt_project_pattern = ""
 		folding.refresh_folding()
-		vim.notify("todo.txt: Filter cleared.")
 	end, { desc = "Clear current todo filter" })
 end
 
