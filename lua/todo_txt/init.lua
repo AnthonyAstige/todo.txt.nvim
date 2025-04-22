@@ -35,7 +35,13 @@ M.setup = function(user_opts)
 	vim.api.nvim_create_autocmd("FileType", {
 		pattern = cfg.filetypes,
 		group = group,
-		callback = function()
+		callback = function(args)
+			-- Set buffer-local keymaps for physical line movement (ignoring wrapping)
+			-- This is the default, but just in case it was overridden
+			local map_opts = { noremap = true, silent = true, buffer = args.buf }
+			vim.keymap.set("n", "j", "j", map_opts)
+			vim.keymap.set("n", "k", "k", map_opts)
+
 			sorting.sort_buffer()
 			folding.setup_buffer_folding()
 		end,
