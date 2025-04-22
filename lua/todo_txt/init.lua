@@ -55,8 +55,6 @@ M.setup = function(user_opts)
 			end,
 		})
 	end
-
-	vim.notify("todo.txt.nvim loaded successfully!", vim.log.levels.INFO)
 end
 
 return M
