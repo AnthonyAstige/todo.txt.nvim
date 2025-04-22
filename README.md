@@ -22,13 +22,16 @@ return {
     -- todo_file = "~/path/to/your/todo.txt",
 
     -- keymaps = {
-    --   top = "<leader>t", -- Menu top
-    --   due = "<leader>td", -- Menu top: due
-    --   project = "<leader>t+", -- Set Project
-    --   context = "<leader>t@", -- Set Context
-    --   exit = "<leader>tx",
-    --   all = "<leader>tda", -- Show Dates: All
-    --   now = "<leader>tdn", -- Show Dates: Now
+    --   top = "<leader>t", -- Base menu key
+    --   focus = "<leader>tf", -- Focus submenu key
+    --   due = "<leader>tfd", -- Due date focus submenu key
+    --   hyperfocustoggle = "<leader>th", -- Toggle hyperfocus mode
+    --   project = "<leader>tf+", -- Focus: Project
+    --   context = "<leader>tf@", -- Focus: Context
+    --   unfocus = "<leader>tu", -- Unfocus / Clear all focus
+    --   refresh = "<leader>tr", -- Refresh view (sort & fold)
+    --   all = "<leader>tfda", -- Focus Due: All
+    --   now = "<leader>tfdn", -- Focus Due: Now
     -- },
 
     -- startup = {
@@ -51,6 +54,10 @@ return {
 1. Open your `todo.txt` file (or any file matching the configured `filetypes`).
 2. Ensure you have a backend configured for `vim.ui.select` (like [dressing.nvim](https://github.com/stevearc/dressing.nvim) or use the default TUI).
 3. Use the keymaps (or commands) to focus:
-   - `<leader>t+` (or `:TodoTxtProject`): Prompts to select a project (`+ProjectName`) to focus on. Only lines containing the selected project will remain unfolded.
-   - `<leader>t@` (or `:TodoTxtContext`): Prompts to select a context (`@ContextName`) to focus on. Only lines containing the selected context will remain unfolded.
-   - `<leader>tu` (or `:TodoTxtUnfocus`): Clears all current focuses
+   - `<leader>tf+` (or `:TodoTxtProject`): Prompts to select a project (`+ProjectName`) to focus on.
+   - `<leader>tf@` (or `:TodoTxtContext`): Prompts to select a context (`@ContextName`) to focus on.
+   - `<leader>tfdn` (or `:TodoTxtNow`): Focus on tasks due now (today, past due, or no due date).
+   - `<leader>tfda` (or `:TodoTxtAll`): Focus on tasks regardless of due date.
+   - `<leader>tu` (or `:TodoTxtUnfocus`): Clears all current focuses (project, context, date).
+   - `<leader>th` (or `:TodoTxtHyperfocus`): Toggle hyperfocus mode (shows only the current line).
+   - `<leader>tr` (or `:TodoTxtRefresh`): Manually refresh the sorting and folding.

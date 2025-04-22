@@ -12,6 +12,11 @@ function M.create_keymaps(cfg)
 			mode = { "n" },
 		})
 		wk.add({
+			cfg.keymaps.focus,
+			group = "Focus",
+			mode = { "n" },
+		})
+		wk.add({
 			cfg.keymaps.due,
 			group = "Due",
 			mode = { "n" },
@@ -50,11 +55,21 @@ function M.create_keymaps(cfg)
 	end
 
 	if cfg.keymaps.all then
-		vim.keymap.set("n", cfg.keymaps.all, "<Cmd>TodoTxtAll<CR>", vim.tbl_extend("force", map_opts, { desc = "All" }))
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.all,
+			"<Cmd>TodoTxtAll<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Due: All" })
+		)
 	end
 
 	if cfg.keymaps.now then
-		vim.keymap.set("n", cfg.keymaps.now, "<Cmd>TodoTxtNow<CR>", vim.tbl_extend("force", map_opts, { desc = "Now" }))
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.now,
+			"<Cmd>TodoTxtNow<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Due: Now" })
+		)
 	end
 
 	if cfg.keymaps.refresh then

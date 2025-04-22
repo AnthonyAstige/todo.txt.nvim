@@ -5,17 +5,18 @@ M.defaults = {
 	-- Path to your todo.txt file
 	todo_file = vim.fn.expand("~/todo.txt/todo.txt"),
 
-	-- Keymaps for filtering actions
+	-- Keymaps for plugin actions
 	keymaps = {
-		top = "<leader>t", -- Menu top
-		due = "<leader>td", -- Menu top: due
-		hyperfocustoggle = "<leader>th",
-		project = "<leader>t+", -- Set Project
-		context = "<leader>t@", -- Set Context
-		unfocus = "<leader>tu",
-		refresh = "<leader>tr",
-		all = "<leader>tda", -- Show Dates: All
-		now = "<leader>tdn", -- Show Dates: Now
+		top = "<leader>t", -- Base menu key
+		focus = "<leader>tf", -- Focus submenu key
+		due = "<leader>tfd", -- Due date focus submenu key
+		hyperfocustoggle = "<leader>th", -- Toggle hyperfocus mode
+		project = "<leader>tf+", -- Focus: Project
+		context = "<leader>tf@", -- Focus: Context
+		unfocus = "<leader>tu", -- Unfocus / Clear all focus
+		refresh = "<leader>tr", -- Refresh view (sort & fold)
+		all = "<leader>tfda", -- Focus Due: All
+		now = "<leader>tfdn", -- Focus Due: Now
 	},
 
 	-- Filetypes to activate folding and commands for
