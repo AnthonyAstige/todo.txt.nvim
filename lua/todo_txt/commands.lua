@@ -6,6 +6,7 @@ local tags = require("todo_txt.tags")
 local folding = require("todo_txt.folding")
 local sorting = require("todo_txt.sorting")
 local hyperfocus = require("todo_txt.hyperfocus")
+local jot = require("todo_txt.jot")
 
 local function set_date_filter(filter)
 	vim.g.todo_txt_date_filter = filter
@@ -89,6 +90,10 @@ function M.create_commands(cfg)
 		sorting.sort_buffer()
 		folding.refresh_folding()
 	end, { desc = "Sort and refresh folding" })
+
+	api.nvim_create_user_command("TodoTxtJot", function()
+		jot.jot_todo(cfg)
+	end, { desc = "Jot down a new todo item" })
 end
 
 return M

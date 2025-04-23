@@ -24,6 +24,7 @@ return {
     -- keymaps = {
     --   top = "<leader>t", -- Base menu key
     --   open_file = "<leader>to", -- Open the configured todo.txt file
+    --   jot = "<leader>tj", -- Jot down a new todo
     --   focus = "<leader>tf", -- Focus submenu key
     --   due = "<leader>tfd", -- Due date focus submenu key
     --   hyperfocustoggle = "<leader>th", -- Toggle hyperfocus mode
@@ -54,8 +55,9 @@ return {
 
 1. Open your `todo.txt` file (or any file matching the configured `filetypes`).
 2. Ensure you have a backend configured for `vim.ui.select` (like [dressing.nvim](https://github.com/stevearc/dressing.nvim) or use the default TUI).
-3. Use the keymaps (or commands) to focus:
+3. Use the keymaps (or commands) to manage your todos:
    - `<leader>to` (or `:TodoTxtOpen`): Opens the configured `todo.txt` file.
+   - `<leader>tj` (or `:TodoTxtJot`): Prompts to quickly jot down and append a new todo item.
    - `<leader>tf+` (or `:TodoTxtProject`): Prompts to select a project (`+ProjectName`) to focus on.
    - `<leader>tf@` (or `:TodoTxtContext`): Prompts to select a context (`@ContextName`) to focus on.
    - `<leader>tfdn` (or `:TodoTxtNow`): Focus on tasks due now (today, past due, or no due date).

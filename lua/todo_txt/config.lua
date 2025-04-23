@@ -11,6 +11,7 @@ M.defaults = {
 		open_file = "<leader>to", -- Open the configured todo.txt file
 		focus = "<leader>tf", -- Focus submenu key
 		due = "<leader>tfd", -- Due date focus submenu key
+		jot = "<leader>tj", -- Jot down a new todo
 		hyperfocustoggle = "<leader>th", -- Toggle hyperfocus mode
 		project = "<leader>tf+", -- Focus: Project
 		context = "<leader>tf@", -- Focus: Context

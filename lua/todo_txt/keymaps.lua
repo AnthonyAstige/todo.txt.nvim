@@ -89,6 +89,10 @@ function M.create_keymaps(cfg)
 			vim.tbl_extend("force", map_opts, { desc = "Refresh" })
 		)
 	end
+
+	if cfg.keymaps.jot then
+		vim.keymap.set("n", cfg.keymaps.jot, "<Cmd>TodoTxtJot<CR>", vim.tbl_extend("force", map_opts, { desc = "Jot" }))
+	end
 end
 
 return M
