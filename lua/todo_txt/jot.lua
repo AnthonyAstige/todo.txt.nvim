@@ -2,7 +2,6 @@
 local M = {}
 
 local api = vim.api
-local fn = vim.fn
 
 --- Prompts the user for a new todo item and appends it to the configured todo file.
 --- @param cfg table The plugin configuration table, expected to have `cfg.todo_file`.
