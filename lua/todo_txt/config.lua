@@ -8,6 +8,7 @@ M.defaults = {
 	-- Keymaps for plugin actions
 	keymaps = {
 		top = "<leader>t", -- Base menu key
+		open_file = "<leader>to", -- Open the configured todo.txt file
 		focus = "<leader>tf", -- Focus submenu key
 		due = "<leader>tfd", -- Due date focus submenu key
 		hyperfocustoggle = "<leader>th", -- Toggle hyperfocus mode

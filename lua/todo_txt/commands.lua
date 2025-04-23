@@ -13,6 +13,14 @@ local function set_date_filter(filter)
 end
 
 function M.create_commands(cfg)
+	api.nvim_create_user_command("TodoTxtOpen", function()
+		if cfg.todo_file and cfg.todo_file ~= "" then
+			vim.cmd.edit(cfg.todo_file)
+		else
+			vim.notify("todo.txt file path is not configured.", vim.log.levels.WARN)
+		end
+	end, { desc = "Open the configured todo.txt file" })
+
 	api.nvim_create_user_command("TodoTxtProject", function()
 		local items = tags.scan_tags("%+", cfg.todo_file)
 		table.insert(items, 1, "No Project")

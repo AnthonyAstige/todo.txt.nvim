@@ -29,6 +29,15 @@ function M.create_keymaps(cfg)
 		})
 	end
 
+	if cfg.keymaps.open_file then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.open_file,
+			"<Cmd>TodoTxtOpen<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Open todo.txt" })
+		)
+	end
+
 	if cfg.keymaps.project then
 		vim.keymap.set(
 			"n",
