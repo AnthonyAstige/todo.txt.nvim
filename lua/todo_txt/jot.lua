@@ -17,27 +17,20 @@ function M.jot_todo(cfg)
 			return
 		end
 
-		-- Ensure the file exists, create if not? For now, assume it exists or error.
 		local file = io.open(cfg.todo_file, "a")
 		if not file then
 			vim.notify("Error opening todo file: " .. cfg.todo_file, vim.log.levels.ERROR)
 			return
 		end
 
-		-- Append the new todo item on a new line
 		file:write(input .. "\n")
 		file:close()
 
 		vim.notify("Todo added: " .. input, vim.log.levels.INFO)
 
-		-- Optional: Refresh view if the todo file is currently open
 		for _, bufnr in ipairs(api.nvim_list_bufs()) do
 			if api.nvim_buf_is_loaded(bufnr) and api.nvim_buf_get_name(bufnr) == cfg.todo_file then
-				-- Use 'e' to reload the buffer from disk
-				vim.cmd("silent! checktime") -- Update buffer status without user prompt
-				-- Consider if a full refresh (sort/fold) is desired here
-				-- require("todo_txt.sorting").sort_buffer(bufnr)
-				-- require("todo_txt.folding").refresh_folding(bufnr)
+				vim.cmd("silent! checktime")
 				break
 			end
 		end
