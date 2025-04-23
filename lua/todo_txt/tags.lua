@@ -1,4 +1,5 @@
 local M = {}
+local utils = require("todo_txt.utils")
 
 -- Scan for tags (symbol: '+' for projects, '@' for contexts)
 -- Returns a list of unique tags found in the configured todo_file.
@@ -6,7 +7,7 @@ function M.scan_tags(sym, todo_file)
 	local tags = {}
 	local file = io.open(todo_file, "r")
 	if not file then
-		vim.notify("todo.txt: Could not open todo file: " .. todo_file, vim.log.levels.ERROR)
+		utils.notify("Could not open todo file: " .. todo_file, vim.log.levels.ERROR)
 		return {}
 	end
 

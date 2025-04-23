@@ -7,6 +7,7 @@ local commands = require("todo_txt.commands")
 local keymaps = require("todo_txt.keymaps")
 local sorting = require("todo_txt.sorting")
 local hyperfocus = require("todo_txt.hyperfocus")
+local utils = require("todo_txt.utils")
 
 local cfg -- Holds merged user and default config
 
@@ -18,7 +19,7 @@ M.setup = function(user_opts)
 
 	-- Validate todo_file existence
 	if vim.fn.filereadable(cfg.todo_file) == 0 then
-		vim.notify("todo.txt: todo_file not found or readable: " .. cfg.todo_file, vim.log.levels.WARN)
+		utils.notify("todo_file not found or readable: " .. cfg.todo_file, vim.log.levels.WARN)
 	end
 
 	-- Set global date_filter from config
@@ -55,7 +56,7 @@ M.setup = function(user_opts)
 			callback = function()
 				hyperfocus.enable_hyperfocus(true)
 				vim.schedule(function()
-					vim.notify("todo.txt hyperfocus enabled")
+					utils.notify("Hyperfocus enabled", vim.log.levels.INFO)
 					hyperfocus.enable_hyperfocus(true)
 				end)
 			end,
