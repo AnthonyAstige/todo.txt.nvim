@@ -8,6 +8,7 @@ local keymaps = require("todo_txt.keymaps")
 local sorting = require("todo_txt.sorting")
 local hyperfocus = require("todo_txt.hyperfocus")
 local utils = require("todo_txt.utils")
+local state = require("todo_txt.state")
 
 local cfg -- Holds merged user and default config
 
@@ -22,10 +23,13 @@ M.setup = function(user_opts)
 		utils.notify("todo_file not found or readable: " .. cfg.todo_file, vim.log.levels.WARN)
 	end
 
-	-- Set global date_filter from config
+	-- Set global date_filter from config (may be overridden by saved state)
 	vim.g.todo_txt_date_filter = cfg.startup.focus.date
 	vim.g.todo_txt_context_pattern = cfg.startup.focus.context
 	vim.g.todo_txt_project_pattern = cfg.startup.focus.project
+
+	-- Restore previous focus state if present
+	state.load()
 
 	-- Create commands, keymaps, and setup folding autocmd
 	commands.create_commands(cfg)

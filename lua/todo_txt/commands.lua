@@ -8,9 +8,11 @@ local sorting = require("todo_txt.sorting")
 local hyperfocus = require("todo_txt.hyperfocus")
 local jot = require("todo_txt.jot")
 local links = require("todo_txt.links")
+local state = require("todo_txt.state")
 
 local function set_date_filter(filter)
 	vim.g.todo_txt_date_filter = filter
+	state.save()
 	folding.refresh_folding()
 end
 
@@ -35,6 +37,7 @@ function M.create_commands(cfg)
 			elseif selected then
 				vim.g.todo_txt_project_pattern = "+" .. fn.escape(selected, "+")
 			end
+			state.save()
 			sorting.sort_buffer()
 			folding.refresh_folding()
 		end)
@@ -52,6 +55,7 @@ function M.create_commands(cfg)
 			elseif selected then
 				vim.g.todo_txt_context_pattern = "@" .. fn.escape(selected, "@")
 			end
+			state.save()
 			sorting.sort_buffer()
 			folding.refresh_folding()
 		end)
@@ -61,6 +65,7 @@ function M.create_commands(cfg)
 		vim.g.todo_txt_context_pattern = ""
 		vim.g.todo_txt_project_pattern = ""
 		set_date_filter("all")
+		state.save()
 		sorting.sort_buffer()
 		hyperfocus.disable_hyperfocus()
 		folding.refresh_folding()
