@@ -1,5 +1,12 @@
 local M = {}
 
+-- Helper function to check if a line has a project tag (e.g., +ProjectName)
+local function has_project_tag(line)
+  -- match '+tag' at start of line or preceded by whitespace,
+  -- with at least one non-space character after '+'
+  return string.match(line, "^%+%S+") or string.match(line, "%s%+%S+")
+end
+
 -- Helper function to check if a line has no due date tag.
 local function has_no_due_date(line)
 	return not string.find(line, "due:", 1, true)
@@ -70,7 +77,7 @@ function M.is_focused(line)
 
 	-- Check project filter
 	if project_pattern == nil then -- Filter requires *no* project tag
-		if string.find(line, "+", 1, true) then
+		if has_project_tag(line) then
 			return false -- Line has a project tag, so out of focus
 		end
 	elseif project_pattern ~= "" then -- Filter requires a specific project tag
