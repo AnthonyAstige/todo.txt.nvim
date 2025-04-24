@@ -19,6 +19,7 @@ M.defaults = {
 		refresh = "<leader>tr", -- Refresh view (sort & fold)
 		all = "<leader>tfda", -- Focus Due: All
 		now = "<leader>tfdn", -- Focus Due: Now
+		open_link = "<leader>tl", -- Open link on current line
 	},
 
 	-- Filetypes to activate folding and commands for
@@ -37,6 +38,39 @@ M.defaults = {
 
 	-- Projects to always include in the jot project selection list
 	seeded_projects = { "shop", "health", "work", "personal" },
+
+	-- List of file extensions considered text files for the open_link command.
+	-- Files with these extensions will be opened in Neovim. Others externally.
+	text_file_extensions = {
+		".c",
+		".cfg",
+		".conf",
+		".cpp",
+		".css",
+		".editorconfig",
+		".gitattributes",
+		".gitignore",
+		".h",
+		".hpp",
+		".html",
+		".ini",
+		".js",
+		".json",
+		".log",
+		".lua",
+		".md",
+		".nix",
+		".py",
+		".sh",
+		".toml",
+		".ts",
+		".tsx",
+		".txt",
+		".vim",
+		".xml",
+		".yaml",
+		".yml",
+	},
 }
 
 return M

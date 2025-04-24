@@ -7,6 +7,7 @@ local folding = require("todo_txt.folding")
 local sorting = require("todo_txt.sorting")
 local hyperfocus = require("todo_txt.hyperfocus")
 local jot = require("todo_txt.jot")
+local links = require("todo_txt.links")
 
 local function set_date_filter(filter)
 	vim.g.todo_txt_date_filter = filter
@@ -100,6 +101,10 @@ function M.create_commands(cfg)
 	end, {
 		desc = "Jot down a new todo item and quit Neovim. Helps OS level shortcuts.",
 	})
+
+	api.nvim_create_user_command("TodoTxtOpenLink", function()
+		links.open_link_on_current_line(cfg)
+	end, { desc = "Open link on current line" })
 end
 
 return M

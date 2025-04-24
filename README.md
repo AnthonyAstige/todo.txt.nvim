@@ -34,6 +34,7 @@ return {
     --   refresh = "<leader>tr", -- Refresh view (sort & fold)
     --   all = "<leader>tfda", -- Focus Due: All
     --   now = "<leader>tfdn", -- Focus Due: Now
+    --   open_link = "<leader>tl", -- Open link on current line
     -- },
 
     -- startup = {
@@ -47,6 +48,10 @@ return {
 
     -- Filetypes to activate folding and commands for
     -- filetypes = { "todo", "todos", "todo.txt" },
+
+    -- List of file extensions considered text files for the open_link command.
+    -- Files with these extensions will be opened in Neovim. Others externally.
+    -- text_file_extensions = { ".txt", ".md", ... }, -- Uncomment and customize if needed
   },
 }
 ```
@@ -65,3 +70,4 @@ return {
    - `<leader>tu` (or `:TodoTxtUnfocus`): Clears all current focuses (project, context, date).
    - `<leader>th` (or `:TodoTxtHyperfocus`): Toggle hyperfocus mode (shows only the current line).
    - `<leader>tr` (or `:TodoTxtRefresh`): Manually refresh the sorting and folding.
+   - `<leader>tl` (or `:TodoTxtOpenLink`): Find and open links (URLs or file paths) on the current line. Prompts if multiple links are found. (New!)

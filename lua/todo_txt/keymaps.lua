@@ -93,6 +93,15 @@ function M.create_keymaps(cfg)
 	if cfg.keymaps.jot then
 		vim.keymap.set("n", cfg.keymaps.jot, "<Cmd>TodoTxtJot<CR>", vim.tbl_extend("force", map_opts, { desc = "Jot" }))
 	end
+
+	if cfg.keymaps.open_link then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.open_link,
+			"<Cmd>TodoTxtOpenLink<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Open link" })
+		)
+	end
 end
 
 return M
