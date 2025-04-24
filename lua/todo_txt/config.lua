@@ -34,6 +34,9 @@ M.defaults = {
 		},
 		hyperfocus_enabled = true,
 	},
+
+	-- Projects to always include in the jot project selection list
+	seeded_projects = { "shop", "health", "work", "personal" },
 }
 
 return M

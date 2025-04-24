@@ -3,9 +3,122 @@ local M = {}
 
 local api = vim.api
 local utils = require("todo_txt.utils")
+local tags = require("todo_txt.tags") -- Added dependency
+
+local function has_project_tag(line)
+	return string.match(line, "^%+%S+") or string.match(line, "%s%+%S+")
+end
+
+--- Helper function to write a todo item to the configured file.
+--- Handles file opening, writing, closing, and error/success notifications/callbacks.
+--- @param file_path string The path to the todo.txt file.
+--- @param todo_item string The todo item string to write.
+--- @param error_prefix string The prefix for the error message if the file cannot be opened.
+--- @param success_prefix string|nil The prefix for the success message. If nil, no message.
+--- @param success_cb function|nil A function to call after the todo is successfully added and file is closed.
+local function write_todo_to_file(file_path, todo_item, error_prefix, success_prefix, success_cb)
+	local file = io.open(file_path, "a")
+	if not file then
+		utils.notify(error_prefix .. file_path, vim.log.levels.ERROR)
+		return
+	end
+
+	file:write(todo_item .. "\n")
+	file:close()
+
+	if success_prefix then
+		utils.notify(success_prefix .. todo_item, vim.log.levels.INFO)
+	end
+
+	if success_cb then
+		success_cb()
+	end
+end
+
+--- Helper function to prompt the user to select or enter a project.
+--- This is called after the initial todo input if no project tag was found.
+--- @param cfg table The plugin configuration table, expected to have `cfg.todo_file` and `cfg.seeded_projects`.
+--- @param original_input string The todo item string entered by the user (without a project tag).
+--- @param opts table Options passed from the original add_todo_item call (contains callbacks/messages).
+local function prompt_for_project(cfg, original_input, opts)
+	local scanned_projects = tags.scan_tags("%+", cfg.todo_file)
+	local seeded_projects = cfg.seeded_projects or {} -- Get from config
+
+	-- Combine and unique projects
+	local project_set = {}
+	for _, proj in ipairs(seeded_projects) do
+		project_set[proj] = true
+	end
+	for _, proj in ipairs(scanned_projects) do
+		project_set[proj] = true
+	end
+
+	local project_list = {}
+	for proj, _ in pairs(project_set) do
+		table.insert(project_list, "+" .. proj) -- Add the '+' prefix for display/selection
+	end
+	table.sort(project_list)
+
+	-- Add special options at the top
+	table.insert(project_list, 1, "No Project")
+	table.insert(project_list, 2, "Enter New Project")
+
+	vim.ui.select(project_list, { prompt = "Select Project ", kind = "todo_project_select" }, function(selected_project)
+		if selected_project == nil then
+			if opts.cancel_msg then
+				utils.notify(opts.cancel_msg, vim.log.levels.INFO)
+			end
+			if opts.on_cancel_callback then
+				opts.on_cancel_callback()
+			end
+			return
+		elseif selected_project == "No Project" then
+			-- Write original input without project
+			write_todo_to_file(
+				cfg.todo_file,
+				original_input,
+				opts.error_msg_prefix,
+				opts.success_msg_prefix,
+				opts.on_success_callback
+			)
+		elseif selected_project == "Enter New Project" then
+			-- Prompt for new project name
+			vim.ui.input({ prompt = "New Project Name (+)" }, function(new_project_name)
+				if new_project_name == nil or new_project_name == "" then
+					if opts.cancel_msg then
+						utils.notify(opts.cancel_msg, vim.log.levels.INFO)
+					end
+					if opts.on_cancel_callback then
+						opts.on_cancel_callback()
+					end
+					return
+				end
+				local trimmed_name = new_project_name:match("^%s*(.-)%s*$")
+				local final_todo = original_input .. " +" .. trimmed_name
+				write_todo_to_file(
+					cfg.todo_file,
+					final_todo,
+					opts.error_msg_prefix,
+					opts.success_msg_prefix,
+					opts.on_success_callback
+				)
+			end)
+		elseif selected_project then
+			local final_todo = original_input .. " " .. selected_project -- selected_project already has '+'
+			write_todo_to_file(
+				cfg.todo_file,
+				final_todo,
+				opts.error_msg_prefix,
+				opts.success_msg_prefix,
+				opts.on_success_callback
+			)
+		end
+	end)
+end
 
 --- Helper function to add a todo item with customizable behavior.
---- @param cfg table The plugin configuration table, expected to have `cfg.todo_file`.
+--- This function now includes the project selection logic if no project is initially provided.
+--- @param cfg table The plugin configuration table, expected to have `cfg.todo_file` and `cfg.seeded_projects`.
 --- @param opts table Options:
 ---   - prompt string: The prompt text for vim.ui.input.
 ---   - cancel_msg string|nil: The message to show if input is cancelled. If nil, no message.
@@ -29,42 +142,26 @@ local function add_todo_item(cfg, opts)
 
 	vim.ui.input({ prompt = prompt }, function(input)
 		if input == nil or input == "" then
-			-- Handle cancellation
 			if cancel_msg then
 				utils.notify(cancel_msg, vim.log.levels.INFO)
 			end
 			if on_cancel_callback then
 				on_cancel_callback()
 			end
-			return -- Always return after handling cancellation
+			return
 		end
 
-		-- Handle successful input (write to file, notify, callback)
-		local file = io.open(cfg.todo_file, "a")
-		if not file then
-			-- Handle file error
-			utils.notify(error_msg_prefix .. cfg.todo_file, vim.log.levels.ERROR)
-			-- Do NOT quit on error
-			return -- Return after handling error
+		if has_project_tag(input) then
+			write_todo_to_file(cfg.todo_file, input, error_msg_prefix, success_msg_prefix, on_success_callback)
+		else
+			prompt_for_project(cfg, input, opts) -- Pass opts to carry callbacks/messages
 		end
-
-		-- File write success
-		file:write(input .. "\n")
-		file:close()
-
-		if success_msg_prefix then
-			utils.notify(success_msg_prefix .. input, vim.log.levels.INFO)
-		end
-
-		if on_success_callback then
-			on_success_callback()
-		end
-		-- Quit logic is handled by the callbacks, not here
 	end)
 end
 
 --- Prompts the user for a new todo item and appends it to the configured todo file.
---- @param cfg table The plugin configuration table, expected to have `cfg.todo_file`.
+--- Includes project selection if no project is provided in the initial input.
+--- @param cfg table The plugin configuration table, expected to have `cfg.todo_file` and `cfg.seeded_projects`.
 function M.jot_todo(cfg)
 	add_todo_item(cfg, {
 		prompt = "New Todo: ",
@@ -72,7 +169,6 @@ function M.jot_todo(cfg)
 		error_msg_prefix = "Error opening todo file: ",
 		success_msg_prefix = "Todo added: ",
 		on_success_callback = function()
-			-- Logic specific to jot_todo: checktime on loaded buffers
 			for _, bufnr in ipairs(api.nvim_list_bufs()) do
 				if api.nvim_buf_is_loaded(bufnr) and api.nvim_buf_get_name(bufnr) == cfg.todo_file then
 					vim.cmd("silent! checktime")
@@ -85,8 +181,9 @@ function M.jot_todo(cfg)
 end
 
 --- Prompts the user for a new todo item, appends it to the configured todo file, and quits Neovim.
+--- Includes project selection if no project is provided in the initial input.
 --- Quits on cancellation or success, but not on file error. Does not notify on success.
---- @param cfg table The plugin configuration table, expected to have `cfg.todo_file`.
+--- @param cfg table The plugin configuration table, expected to have `cfg.todo_file` and `cfg.seeded_projects`.
 function M.jot_then_quit(cfg)
 	add_todo_item(cfg, {
 		prompt = "New Todo (and Quit): ",
