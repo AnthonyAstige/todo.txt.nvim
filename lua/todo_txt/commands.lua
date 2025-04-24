@@ -94,6 +94,11 @@ function M.create_commands(cfg)
 	api.nvim_create_user_command("TodoTxtJot", function()
 		jot.jot_todo(cfg)
 	end, { desc = "Jot down a new todo item" })
+
+	-- New command to jot and quit
+	api.nvim_create_user_command("TodoTxtJotThenQuit", function()
+		jot.jot_then_quit(cfg)
+	end, { desc = "Jot down a new todo item and quit Neovim" })
 end
 
 return M

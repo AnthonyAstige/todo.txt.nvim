@@ -38,4 +38,34 @@ function M.jot_todo(cfg)
 	end)
 end
 
+--- Prompts the user for a new todo item, appends it to the configured todo file, and quits Neovim.
+--- @param cfg table The plugin configuration table, expected to have `cfg.todo_file`.
+function M.jot_then_quit(cfg)
+	if not cfg.todo_file or cfg.todo_file == "" then
+		utils.notify("todo.txt file path is not configured.", vim.log.levels.WARN)
+		return
+	end
+
+	vim.ui.input({ prompt = "New Todo (and Quit): " }, function(input)
+		if input == nil or input == "" then
+			utils.notify("Jot cancelled. Not quitting.", vim.log.levels.INFO)
+			return
+		end
+
+		local file = io.open(cfg.todo_file, "a")
+		if not file then
+			utils.notify("Error opening todo file: " .. cfg.todo_file .. ". Not quitting.", vim.log.levels.ERROR)
+			return
+		end
+
+		file:write(input .. "\n")
+		file:close()
+
+		utils.notify("Todo added: " .. input .. ". Quitting.", vim.log.levels.INFO)
+
+		-- Quit Neovim after successfully adding the todo
+		vim.cmd.quit()
+	end)
+end
+
 return M
