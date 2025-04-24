@@ -28,8 +28,10 @@ M.setup = function(user_opts)
 	vim.g.todo_txt_context_pattern = cfg.startup.focus.context
 	vim.g.todo_txt_project_pattern = cfg.startup.focus.project
 
-	-- Restore previous focus state if present
-	state.load()
+	-- Restore previous focus state if present & enabled
+	if cfg.startup.load_focus_state then
+		state.load()
+	end
 
 	-- Create commands, keymaps, and setup folding autocmd
 	commands.create_commands(cfg)

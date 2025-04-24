@@ -34,6 +34,8 @@ M.defaults = {
 			context = "",
 		},
 		hyperfocus_enabled = true,
+		-- Whether to load and save the focus state (date, project, context) between Neovim sessions.
+		load_focus_state = true,
 	},
 
 	-- Projects to always include in the jot project selection list

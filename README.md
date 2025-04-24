@@ -43,6 +43,7 @@ return {
     --     project = nil, -- Focus on todo's with no project
     --     context = "",
     --   },
+    --   load_focus_state = true, -- Load the focus state (date, project, context) on new Neovim sessions?
     --   hyperfocus_enabled = true,
     -- }
 
