@@ -61,7 +61,6 @@ local function prompt_for_project(cfg, original_input, opts)
 
 	-- Add special options at the top
 	table.insert(project_list, 1, "No Project")
-	table.insert(project_list, 2, "Enter New Project")
 
 	vim.ui.select(project_list, { prompt = "Select Project ", kind = "todo_project_select" }, function(selected_project)
 		if selected_project == nil then
@@ -81,28 +80,6 @@ local function prompt_for_project(cfg, original_input, opts)
 				opts.success_msg_prefix,
 				opts.on_success_callback
 			)
-		elseif selected_project == "Enter New Project" then
-			-- Prompt for new project name
-			vim.ui.input({ prompt = "New Project Name (+)" }, function(new_project_name)
-				if new_project_name == nil or new_project_name == "" then
-					if opts.cancel_msg then
-						utils.notify(opts.cancel_msg, vim.log.levels.INFO)
-					end
-					if opts.on_cancel_callback then
-						opts.on_cancel_callback()
-					end
-					return
-				end
-				local trimmed_name = new_project_name:match("^%s*(.-)%s*$")
-				local final_todo = original_input .. " +" .. trimmed_name
-				write_todo_to_file(
-					cfg.todo_file,
-					final_todo,
-					opts.error_msg_prefix,
-					opts.success_msg_prefix,
-					opts.on_success_callback
-				)
-			end)
 		elseif selected_project then
 			local final_todo = original_input .. " " .. selected_project -- selected_project already has '+'
 			write_todo_to_file(
