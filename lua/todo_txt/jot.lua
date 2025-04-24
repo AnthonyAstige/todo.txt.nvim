@@ -103,6 +103,7 @@ end
 ---   - success_msg_prefix string|nil: The prefix for the success message. If nil, no message.
 ---   - on_success_callback function|nil: A function to call after the todo is successfully added and file is closed.
 ---   - on_cancel_callback function|nil: A function to call if input is cancelled.
+---   - prompt_for_project_if_missing boolean: If true, prompts for a project if none is provided initially. If false, adds the item without prompting.
 local function add_todo_item(cfg, opts)
 	opts = opts or {}
 	local prompt = opts.prompt or "Input: "
@@ -111,6 +112,7 @@ local function add_todo_item(cfg, opts)
 	local success_msg_prefix = opts.success_msg_prefix
 	local on_success_callback = opts.on_success_callback
 	local on_cancel_callback = opts.on_cancel_callback
+	local prompt_for_project_if_missing = opts.prompt_for_project_if_missing
 
 	if not cfg.todo_file or cfg.todo_file == "" then
 		utils.notify("todo.txt file path is not configured.", vim.log.levels.WARN)
@@ -131,7 +133,11 @@ local function add_todo_item(cfg, opts)
 		if has_project_tag(input) then
 			write_todo_to_file(cfg.todo_file, input, error_msg_prefix, success_msg_prefix, on_success_callback)
 		else
-			prompt_for_project(cfg, input, opts) -- Pass opts to carry callbacks/messages
+			if prompt_for_project_if_missing then
+				prompt_for_project(cfg, input, opts)
+			else
+				write_todo_to_file(cfg.todo_file, input, error_msg_prefix, success_msg_prefix, on_success_callback)
+			end
 		end
 	end)
 end
@@ -154,11 +160,12 @@ function M.jot_todo(cfg)
 			end
 		end,
 		-- on_cancel_callback is nil, default behavior (notify and return)
+		prompt_for_project_if_missing = true,
 	})
 end
 
 --- Prompts the user for a new todo item, appends it to the configured todo file, and quits Neovim.
---- Includes project selection if no project is provided in the initial input.
+--- If no project is provided in the initial input, the item is added without a project tag (no prompt).
 --- Quits on cancellation or success, but not on file error. Does not notify on success.
 --- @param cfg table The plugin configuration table, expected to have `cfg.todo_file` and `cfg.seeded_projects`.
 function M.jot_then_quit(cfg)
@@ -171,6 +178,7 @@ function M.jot_then_quit(cfg)
 		on_cancel_callback = function()
 			vim.cmd.quit()
 		end,
+		prompt_for_project_if_missing = false,
 	})
 end
 
