@@ -57,7 +57,7 @@ function M.create_buffer_keymaps(cfg, bufnr)
 			"n",
 			cfg.keymaps.hyperfocustoggle,
 			"<Cmd>TodoTxtHyperfocus<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Hyperfocus Toggle" })
+			vim.tbl_extend("force", map_opts, { desc = "Hyperfocus" })
 		)
 	end
 	if cfg.keymaps.project then
