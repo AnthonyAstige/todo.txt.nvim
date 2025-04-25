@@ -2,29 +2,16 @@ local M = {}
 
 local wk_status, wk = pcall(require, "which-key")
 
-function M.create_keymaps(cfg)
+--- Creates global keymaps (like opening the file or jotting).
+--- These are available regardless of filetype.
+--- @param cfg table The plugin configuration.
+function M.create_global_keymaps(cfg)
 	local map_opts = { noremap = true, silent = true }
 
 	if wk_status then
 		wk.add({
 			cfg.keymaps.top,
 			group = "Todo",
-			mode = { "n" },
-		})
-		wk.add({
-			cfg.keymaps.focus,
-			group = "Focus",
-			mode = { "n" },
-		})
-		wk.add({
-			cfg.keymaps.due,
-			group = "Due",
-			mode = { "n" },
-		})
-		wk.add({
-			cfg.keymaps.hyperfocustoggle,
-			"<Cmd>TodoTxtHyperfocus<CR>",
-			group = "Hyperfocus",
 			mode = { "n" },
 		})
 	end
@@ -38,6 +25,41 @@ function M.create_keymaps(cfg)
 		)
 	end
 
+	if cfg.keymaps.jot then
+		vim.keymap.set("n", cfg.keymaps.jot, "<Cmd>TodoTxtJot<CR>", vim.tbl_extend("force", map_opts, { desc = "Jot" }))
+	end
+end
+
+--- Creates buffer-local keymaps for focus-related actions.
+--- These are only active in buffers matching the configured filetypes.
+--- @param cfg table The plugin configuration.
+--- @param bufnr number The buffer number to apply keymaps to.
+function M.create_buffer_keymaps(cfg, bufnr)
+	local map_opts = { noremap = true, silent = true, buffer = bufnr }
+
+	if wk_status then
+		wk.add({
+			cfg.keymaps.focus,
+			group = "Focus",
+			mode = { "n" },
+			buffer = bufnr,
+		})
+		wk.add({
+			cfg.keymaps.due,
+			group = "Due",
+			mode = { "n" },
+			buffer = bufnr,
+		})
+	end
+
+	if cfg.keymaps.hyperfocustoggle then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.hyperfocustoggle,
+			"<Cmd>TodoTxtHyperfocus<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Hyperfocus Toggle" })
+		)
+	end
 	if cfg.keymaps.project then
 		vim.keymap.set(
 			"n",
@@ -78,10 +100,6 @@ function M.create_keymaps(cfg)
 			"<Cmd>TodoTxtRefresh<CR>",
 			vim.tbl_extend("force", map_opts, { desc = "Refresh" })
 		)
-	end
-
-	if cfg.keymaps.jot then
-		vim.keymap.set("n", cfg.keymaps.jot, "<Cmd>TodoTxtJot<CR>", vim.tbl_extend("force", map_opts, { desc = "Jot" }))
 	end
 
 	if cfg.keymaps.open_link then

@@ -33,11 +33,10 @@ M.setup = function(user_opts)
 		state.load()
 	end
 
-	-- Create commands, keymaps, and setup folding autocmd
 	commands.create_commands(cfg)
-	keymaps.create_keymaps(cfg)
+	keymaps.create_global_keymaps(cfg)
 
-	-- Setup autocmd for filetype detection (sort and fold)
+	-- Setup autocmd for filetype detection (sort, fold, buffer-local keymaps)
 	local group = vim.api.nvim_create_augroup("TodoTxtSetup", { clear = true })
 	vim.api.nvim_create_autocmd("FileType", {
 		pattern = cfg.filetypes,
@@ -49,6 +48,7 @@ M.setup = function(user_opts)
 			vim.keymap.set("n", "j", "j", map_opts)
 			vim.keymap.set("n", "k", "k", map_opts)
 
+			keymaps.create_buffer_keymaps(cfg, args.buf)
 			sorting.sort_buffer()
 			folding.setup_buffer_folding()
 		end,
