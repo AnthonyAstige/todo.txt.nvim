@@ -68,9 +68,11 @@ function M.is_focused(line)
 		if string.find(line, "@", 1, true) then
 			return false -- Line has a context tag, so out of focus
 		end
-	elseif context_pattern ~= "" then -- Filter requires a specific context tag
-		if not string.find(line, context_pattern, 1, true) then
-			return false -- Line does not have the required context tag
+	else
+		for _, pattern in ipairs(context_pattern) do
+			if not string.find(line, pattern, 1, true) then
+				return false -- Line missing one of the required context tags
+			end
 		end
 	end
 	-- Note: context_pattern == "" means no context filtering is applied.

@@ -31,7 +31,7 @@ M.defaults = {
 		focus = {
 			date = "now",
 			project = nil, -- Focus on todo's with no project
-			context = "",
+			context = {}, -- No filter default
 		},
 		hyperfocus_enabled = true,
 		-- Whether to load and save the focus state (date, project, context) between Neovim sessions.

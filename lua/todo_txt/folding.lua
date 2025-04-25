@@ -29,9 +29,20 @@ end
 
 function M.foldtext()
 	local context = vim.g.todo_txt_context_pattern
+	local context_str = ""
+	if context == nil then
+		context_str = "@none"
+	else
+		context_str = table.concat(context, ",")
+	end
+
 	local project = vim.g.todo_txt_project_pattern
-	local context_str = context or "@nil"
-	local project_str = project or "+nil"
+	local project_str = ""
+	if project == nil then
+		project_str = "+none"
+	else
+		project_str = project
+	end
 
 	local parts = {}
 	if context_str ~= "" then
@@ -40,12 +51,15 @@ function M.foldtext()
 	if project_str ~= "" then
 		table.insert(parts, project_str)
 	end
-
+	if vim.g.todo_txt_date_filter ~= "all" then
+		table.insert(parts, "due:" .. vim.g.todo_txt_date_filter)
+	end
 	local focus_str = table.concat(parts, " ")
 
 	local display_str = focus_str ~= "" and (focus_str .. " ") or ""
+	--vim.notify("Foldtext:" .. display_str)
 
-	return "Focus: " .. display_str .. "due:" .. vim.g.todo_txt_date_filter
+	return "Focus: " .. display_str
 end
 
 function M.setup_buffer_folding()

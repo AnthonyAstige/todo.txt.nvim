@@ -26,6 +26,12 @@ M.setup = function(user_opts)
 	-- Set global date_filter from config (may be overridden by saved state)
 	vim.g.todo_txt_date_filter = cfg.startup.focus.date
 	vim.g.todo_txt_context_pattern = cfg.startup.focus.context
+	-- Convert startup context config (table of names) to internal format (nil/table of patterns)
+	local patterns = {}
+	for _, ctx in ipairs(cfg.startup.focus.context) do
+		table.insert(patterns, "@" .. ctx)
+	end
+	vim.g.todo_txt_context_pattern = patterns
 	vim.g.todo_txt_project_pattern = cfg.startup.focus.project
 
 	-- Restore previous focus state if present & enabled

@@ -16,6 +16,79 @@ local function set_date_filter(filter)
 	folding.refresh_folding()
 end
 
+local function prompt_for_context(cfg)
+	local current_filter = vim.g.todo_txt_context_pattern
+	local items = tags.scan_tags("@", cfg.todo_file)
+
+	-- Prepare selection list
+	local select_options = { "Any Context", "No Context" }
+	-- Add existing contexts, filtering out those already selected if current_filter is a table
+	local selected_contexts_map = {}
+	if type(current_filter) == "table" then
+		for _, pattern in ipairs(current_filter) do
+			-- Store the name part, e.g., "home" from "@home"
+			selected_contexts_map[string.sub(pattern, 2)] = true
+		end
+	end
+
+	-- Add available contexts that are not already selected
+	for _, item in ipairs(items) do
+		if not selected_contexts_map[item] then
+			table.insert(select_options, item) -- Add the name, e.g., "home"
+		end
+	end
+
+	-- Build prompt string showing current selection
+	local prompt_str = "Set Context Filter"
+	if type(current_filter) == "table" and #current_filter > 0 then
+		prompt_str = "Add to or replace current Context Filter of " .. table.concat(current_filter, ", ") .. "> "
+	elseif current_filter == nil then
+		prompt_str = "Replace current Context Filter of @none> "
+	end
+
+	vim.ui.select(select_options, { prompt = prompt_str, kind = "todo_context_select" }, function(selected)
+		if selected == nil then
+			-- User cancelled
+			return
+		elseif selected == "Any Context" then
+			vim.g.todo_txt_context_pattern = {}
+		elseif selected == "No Context" then
+			vim.g.todo_txt_context_pattern = nil -- Indicate we want no context
+		elseif selected then
+			-- User selected a specific context name (e.g., "home")
+			local new_pattern = "@" .. fn.escape(selected, "@")
+			local filter = vim.g.todo_txt_context_pattern
+			local updated_filter
+
+			-- Determine the updated filter based on the current state
+			if type(filter) == "table" then
+				-- Current filter is already a table, add to it if not present
+				updated_filter = filter
+				local found = false
+				for _, existing_pattern in ipairs(updated_filter) do
+					if existing_pattern == new_pattern then
+						found = true
+						break
+					end
+				end
+				if not found then
+					table.insert(updated_filter, new_pattern)
+				end
+			else
+				updated_filter = { new_pattern }
+			end
+
+			vim.g.todo_txt_context_pattern = updated_filter
+		end
+
+		if selected ~= nil then
+			state.save()
+			sorting.sort_buffer()
+			folding.refresh_folding()
+		end
+	end)
+end
+
 function M.create_commands(cfg)
 	api.nvim_create_user_command("TodoTxtOpen", function()
 		if cfg.todo_file and cfg.todo_file ~= "" then
@@ -30,6 +103,11 @@ function M.create_commands(cfg)
 		table.insert(items, 1, "Any Project")
 		table.insert(items, 2, "No Project")
 		vim.ui.select(items, { prompt = "Project> ", kind = "todo_project" }, function(selected)
+			-- User cancelled
+			if selected == nil then
+				return
+			end
+
 			if selected == "No Project" then
 				vim.g.todo_txt_project_pattern = nil -- Indicate we want no project
 			elseif selected == "Any Project" then
@@ -44,22 +122,8 @@ function M.create_commands(cfg)
 	end, { desc = "Focus project (+Tag) todo's" })
 
 	api.nvim_create_user_command("TodoTxtContext", function()
-		local items = tags.scan_tags("@", cfg.todo_file)
-		table.insert(items, 1, "Any Context")
-		table.insert(items, 2, "No Context")
-		vim.ui.select(items, { prompt = "Context> ", kind = "todo_context" }, function(selected)
-			if selected == "No Context" then
-				vim.g.todo_txt_context_pattern = nil -- Indicate we want no context
-			elseif selected == "Any Context" then
-				vim.g.todo_txt_context_pattern = "" -- Clear focus
-			elseif selected then
-				vim.g.todo_txt_context_pattern = "@" .. fn.escape(selected, "@")
-			end
-			state.save()
-			sorting.sort_buffer()
-			folding.refresh_folding()
-		end)
-	end, { desc = "Focus context (@Tag) todo's" })
+		prompt_for_context(cfg)
+	end, { desc = "Focus context" })
 
 	api.nvim_create_user_command("TodoTxtUnfocus", function()
 		vim.g.todo_txt_context_pattern = ""
