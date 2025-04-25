@@ -126,7 +126,7 @@ function M.create_commands(cfg)
 	end, { desc = "Focus context" })
 
 	api.nvim_create_user_command("TodoTxtUnfocus", function()
-		vim.g.todo_txt_context_pattern = ""
+		vim.g.todo_txt_context_pattern = {}
 		vim.g.todo_txt_project_pattern = ""
 		set_date_filter("all")
 		state.save()
