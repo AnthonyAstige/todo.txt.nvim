@@ -8,7 +8,7 @@ function M.create_keymaps(cfg)
 	if wk_status then
 		wk.add({
 			cfg.keymaps.top,
-			group = "Todo.txt",
+			group = "Todo",
 			mode = { "n" },
 		})
 		wk.add({
@@ -64,21 +64,11 @@ function M.create_keymaps(cfg)
 	end
 
 	if cfg.keymaps.all then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.all,
-			"<Cmd>TodoTxtAll<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Due: All" })
-		)
+		vim.keymap.set("n", cfg.keymaps.all, "<Cmd>TodoTxtAll<CR>", vim.tbl_extend("force", map_opts, { desc = "Any" }))
 	end
 
 	if cfg.keymaps.now then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.now,
-			"<Cmd>TodoTxtNow<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Due: Now" })
-		)
+		vim.keymap.set("n", cfg.keymaps.now, "<Cmd>TodoTxtNow<CR>", vim.tbl_extend("force", map_opts, { desc = "Now" }))
 	end
 
 	if cfg.keymaps.refresh then
