@@ -33,7 +33,8 @@ return {
     --   unfocus = "<leader>tu", -- Unfocus / Clear all focus
     --   refresh = "<leader>tr", -- Refresh view (sort & fold)
     --   all = "<leader>tfda", -- Focus Due: All
-    --   now = "<leader>tfdn", -- Focus Due: Now
+    --   now = "<leader>tfdn", -- Focus Due: Now (today/past/undated)
+    --   due_only = "<leader>tfdd", -- Focus Due: Due only (today/past, excludes undated)
     --   open_link = "<leader>tl", -- Open link on current line
     -- },
 
@@ -66,7 +67,8 @@ return {
    - `<leader>tj` (or `:TodoTxtJot`): Prompts to quickly jot down and append a new todo item.
    - `<leader>tf+` (or `:TodoTxtProject`): Prompts to select a project (`+ProjectName`) to focus on.
    - `<leader>tf@` (or `:TodoTxtContext`): Prompts to select a context (`@ContextName`) to focus on.
-   - `<leader>tfdn` (or `:TodoTxtNow`): Focus on tasks due now (today, past due, or no due date).
+   - `<leader>tfdn` (or `:TodoTxtNow`): Focus on tasks implicitly due now (today, past due, or no due date).
+   - `<leader>tfdd` (or `:TodoTxtDue`): Focus on tasks explicitly due now (today or past due, excludes undated).
    - `<leader>tfda` (or `:TodoTxtAll`): Focus on tasks regardless of due date.
    - `<leader>tu` (or `:TodoTxtUnfocus`): Clears all current focuses (project, context, date).
    - `<leader>th` (or `:TodoTxtHyperfocus`): Toggle hyperfocus mode (shows only the current line).
