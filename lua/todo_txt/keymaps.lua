@@ -93,6 +93,10 @@ function M.create_buffer_keymaps(cfg, bufnr)
 		vim.keymap.set("n", cfg.keymaps.now, "<Cmd>TodoTxtNow<CR>", vim.tbl_extend("force", map_opts, { desc = "Now" }))
 	end
 
+	if cfg.keymaps.due_only then
+		vim.keymap.set("n", cfg.keymaps.due_only, "<Cmd>TodoTxtDue<CR>", vim.tbl_extend("force", map_opts, { desc = "Due only" }))
+	end
+
 	if cfg.keymaps.refresh then
 		vim.keymap.set(
 			"n",

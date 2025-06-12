@@ -18,7 +18,8 @@ M.defaults = {
 		unfocus = "<leader>tu", -- Unfocus / Clear all focus
 		refresh = "<leader>tr", -- Refresh view (sort & fold)
 		all = "<leader>tfda", -- Focus Due: All
-		now = "<leader>tfdn", -- Focus Due: Now
+		now = "<leader>tfdn", -- Focus Due: Now (today/past/undated)
+		due_only = "<leader>tfdd", -- Focus Due: Due only (today/past, excludes undated)
 		open_link = "<leader>tl", -- Open link on current line
 	},
 

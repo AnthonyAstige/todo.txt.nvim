@@ -152,6 +152,12 @@ function M.create_commands(cfg)
 		folding.refresh_folding()
 	end, { desc = "Focus todos due: today, past, or without due date" })
 
+	api.nvim_create_user_command("TodoTxtDue", function()
+		set_date_filter("due")
+		sorting.sort_buffer()
+		folding.refresh_folding()
+	end, { desc = "Focus todos due: today or past only (excludes undated)" })
+
 	api.nvim_create_user_command("TodoTxtHyperfocus", function()
 		hyperfocus.toggle()
 	end, { desc = "Toggle myopic focus (show only current line)" })

@@ -60,6 +60,10 @@ function M.is_focused(line)
 		if not (is_due(line) or has_no_due_date(line)) then
 			return false -- Not due now or undated, so out of focus for "now" filter
 		end
+	elseif date_filter == "due" then
+		if not is_due(line) then
+			return false -- Not due now, so out of focus for "due" filter
+		end
 	end
 	-- Note: "all" date filter doesn't exclude any lines based on date.
 
