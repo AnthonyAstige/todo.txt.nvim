@@ -9,11 +9,34 @@ local hyperfocus = require("todo_txt.hyperfocus")
 local jot = require("todo_txt.jot")
 local links = require("todo_txt.links")
 local state = require("todo_txt.state")
+local focus = require("todo_txt.focus")
 
 local function set_date_filter(filter)
 	vim.g.todo_txt_date_filter = filter
 	state.save()
 	folding.refresh_folding()
+end
+
+-- Scan for tags only in currently focused (visible) lines
+local function scan_visible_tags(sym)
+	local tag_map = {}
+	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+	
+	for _, line in ipairs(lines) do
+		if focus.is_focused(line) then
+			-- Match tags containing alphanumeric characters, underscores, colons, and hyphens
+			for tag in line:gmatch(sym .. "([%w_:-]+)") do
+				tag_map[tag] = true
+			end
+		end
+	end
+	
+	local tag_list = {}
+	for tag, _ in pairs(tag_map) do
+		table.insert(tag_list, tag)
+	end
+	table.sort(tag_list) -- Sort for consistent order
+	return tag_list
 end
 
 local function prompt_for_context(cfg)
@@ -125,7 +148,13 @@ function M.create_commands(cfg)
 
 	api.nvim_create_user_command("TodoTxtHideProject", function()
 		local current_hidden = vim.g.todo_txt_hidden_projects or {}
-		local items = tags.scan_tags("%+", cfg.todo_file)
+		-- If there's a project focus, show all projects; otherwise show only visible ones
+		local items
+		if vim.g.todo_txt_project_pattern and vim.g.todo_txt_project_pattern ~= "" then
+			items = tags.scan_tags("%+", cfg.todo_file)
+		else
+			items = scan_visible_tags("%+")
+		end
 
 		-- Filter out already hidden projects
 		local hidden_projects_map = {}
