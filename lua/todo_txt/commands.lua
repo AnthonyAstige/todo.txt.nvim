@@ -115,6 +115,8 @@ function M.create_commands(cfg)
 			elseif selected then
 				vim.g.todo_txt_project_pattern = "+" .. fn.escape(selected, "+")
 			end
+			-- Clear hidden projects when setting project focus
+			vim.g.todo_txt_hidden_projects = {}
 			state.save()
 			sorting.sort_buffer()
 			folding.refresh_folding()
@@ -179,6 +181,8 @@ function M.create_commands(cfg)
 				local hide_pattern = "-" .. fn.escape(selected, "-")
 				table.insert(current_hidden, hide_pattern)
 				vim.g.todo_txt_hidden_projects = current_hidden
+				-- Clear project focus when hiding projects
+				vim.g.todo_txt_project_pattern = ""
 			end
 
 			if selected ~= nil and selected ~= "Show Currently Hidden" then
