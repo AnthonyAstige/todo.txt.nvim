@@ -13,7 +13,7 @@ This is a pure Lua Neovim plugin with no build system. Common development tasks:
 This plugin implements a focus-based todo.txt management system using Vim's folding mechanism rather than buffer filtering:
 
 1. **Focus System**: Central concept where todos are filtered by:
-   - Date (now = today/overdue/undated, all = everything)
+   - Date (current = today/overdue/undated, all = everything, ...)
    - Context (@tag) - supports multiple contexts
    - Project (+tag) - single project focus
 
@@ -35,3 +35,10 @@ This plugin implements a focus-based todo.txt management system using Vim's fold
    - Global variables (`vim.g.*`) store current filter state
    - Modular design with clear separation of concerns
 
+## Important Development Notes
+
+- **Documentation Updates**: When making changes to commands, keymaps, or user-facing features, always update the README.md to reflect these changes. This includes:
+  - Command names and descriptions
+  - Keymap bindings
+  - Configuration options
+  - Usage instructions
