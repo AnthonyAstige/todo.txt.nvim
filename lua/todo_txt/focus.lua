@@ -56,9 +56,9 @@ function M.is_focused(line)
 	local project_pattern = vim.g.todo_txt_project_pattern
 
 	-- Check date filter first
-	if date_filter == "now" then
+	if date_filter == "current" then
 		if not (is_due(line) or has_no_due_date(line)) then
-			return false -- Not due now or undated, so out of focus for "now" filter
+			return false -- Not due now or undated, so out of focus for "current" filter
 		end
 	elseif date_filter == "due" then
 		if not is_due(line) then

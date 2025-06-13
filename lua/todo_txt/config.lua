@@ -18,7 +18,7 @@ M.defaults = {
 		unfocus = "<leader>tu", -- Unfocus / Clear all focus
 		refresh = "<leader>tr", -- Refresh view (sort & fold)
 		all = "<leader>tfda", -- Focus Due: All
-		now = "<leader>tfdn", -- Focus Due: Now (today/past/undated)
+		current = "<leader>tfdc", -- Focus Due: Current (today/past/undated)
 		due = "<leader>tfdd", -- Focus Due: Due (today/past, excludes undated)
 		scheduled = "<leader>tfds", -- Focus Due: Scheduled (any due date)
 		unscheduled = "<leader>tfdu", -- Focus Due: Unscheduled (no due date)
@@ -32,7 +32,7 @@ M.defaults = {
 
 	startup = {
 		focus = {
-			date = "now",
+			date = "current",
 			project = nil, -- Focus on todo's with no project
 			context = {}, -- No filter default
 		},

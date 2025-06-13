@@ -33,8 +33,8 @@ return {
     --   unfocus = "<leader>tu", -- Unfocus / Clear all focus
     --   refresh = "<leader>tr", -- Refresh view (sort & fold)
     --   all = "<leader>tfda", -- Focus Due: All
-    --   now = "<leader>tfdn", -- Focus Due: Now (today/past/undated)
-    --   due_only = "<leader>tfdd", -- Focus Due: Due only (today/past, excludes undated)
+    --   current = "<leader>tfdc", -- Focus Due: Current (today/past/undated)
+    --   due = "<leader>tfdd", -- Focus Due: Due (today/past, excludes undated)
     --   scheduled = "<leader>tfds", -- Focus Due: Scheduled (any due date)
     --   unscheduled = "<leader>tfdu", -- Focus Due: Unscheduled (no due date)
     --   open_link = "<leader>tl", -- Open link on current line
@@ -42,7 +42,7 @@ return {
 
     -- startup = {
     --   focus = {
-    --     date = "now",
+    --     date = "current",
     --     project = nil, -- Focus on todo's with no project
     --     context = {}, -- Optionally put a list of contexts here like { "home", "quick" }
     --   },
@@ -70,8 +70,8 @@ return {
    - `<leader>tf+` (or `:TodoTxtProject`): Prompts to select a project (`+ProjectName`) to focus on.
    - `<leader>tf@` (or `:TodoTxtContext`): Prompts to select a context (`@ContextName`) to focus on.
    - `<leader>tfda` (or `:TodoTxtAll`): Focus on all tasks regardless of due date.
-   - `<leader>tfdn` (or `:TodoTxtNow`): Focus on tasks due now (today, past due, or no due date).
-   - `<leader>tfdd` (or `:TodoTxtDue`): Focus on tasks due only (today or past due, excludes undated).
+   - `<leader>tfdc` (or `:TodoTxtCurrent`): Focus on tasks due currently (today, past due, or no due date).
+   - `<leader>tfdd` (or `:TodoTxtDue`): Focus on tasks due (today or past due, excludes undated).
    - `<leader>tfds` (or `:TodoTxtScheduled`): Focus on tasks with any due date.
    - `<leader>tfdu` (or `:TodoTxtUnscheduled`): Focus on tasks without a due date.
    - `<leader>tu` (or `:TodoTxtUnfocus`): Clears all current focuses (project, context, date).

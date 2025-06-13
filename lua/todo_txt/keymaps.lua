@@ -89,8 +89,8 @@ function M.create_buffer_keymaps(cfg, bufnr)
 		vim.keymap.set("n", cfg.keymaps.all, "<Cmd>TodoTxtAll<CR>", vim.tbl_extend("force", map_opts, { desc = "Any" }))
 	end
 
-	if cfg.keymaps.now then
-		vim.keymap.set("n", cfg.keymaps.now, "<Cmd>TodoTxtNow<CR>", vim.tbl_extend("force", map_opts, { desc = "Now" }))
+	if cfg.keymaps.current then
+		vim.keymap.set("n", cfg.keymaps.current, "<Cmd>TodoTxtCurrent<CR>", vim.tbl_extend("force", map_opts, { desc = "Current" }))
 	end
 
 	if cfg.keymaps.due then
