@@ -22,6 +22,7 @@ function M.load()
     vim.g.todo_txt_date_filter     = t.date_filter     or vim.g.todo_txt_date_filter
     vim.g.todo_txt_context_pattern = t.context_pattern or vim.g.todo_txt_context_pattern
     vim.g.todo_txt_project_pattern = t.project_pattern or vim.g.todo_txt_project_pattern
+    vim.g.todo_txt_hidden_projects = t.hidden_projects or vim.g.todo_txt_hidden_projects
   end
 end
 
@@ -30,6 +31,7 @@ function M.save()
     date_filter     = vim.g.todo_txt_date_filter,
     context_pattern = vim.g.todo_txt_context_pattern,
     project_pattern = vim.g.todo_txt_project_pattern,
+    hidden_projects = vim.g.todo_txt_hidden_projects,
   }))
 end
 

@@ -54,6 +54,7 @@ function M.is_focused(line)
 	local date_filter = vim.g.todo_txt_date_filter
 	local context_pattern = vim.g.todo_txt_context_pattern
 	local project_pattern = vim.g.todo_txt_project_pattern
+	local hidden_projects = vim.g.todo_txt_hidden_projects or {}
 
 	-- Check date filter first
 	if date_filter == "current" then
@@ -100,6 +101,15 @@ function M.is_focused(line)
 		end
 	end
 	-- Note: project_pattern == "" means no project filtering is applied.
+
+	-- Check if any hidden projects match this line
+	for _, hidden_pattern in ipairs(hidden_projects) do
+		-- Convert -project to +project for matching
+		local project_to_match = string.gsub(hidden_pattern, "^%-", "+")
+		if string.find(line, project_to_match, 1, true) then
+			return false -- Line has a hidden project tag, so out of focus
+		end
+	end
 
 	-- If none of the filters excluded the line, it's in focus
 	return true

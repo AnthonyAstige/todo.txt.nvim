@@ -29,6 +29,7 @@ return {
     --   due = "<leader>tfd", -- Due date focus submenu key
     --   hyperfocustoggle = "<leader>th", -- Toggle hyperfocus mode
     --   project = "<leader>tf+", -- Focus: Project
+    --   hide_project = "<leader>tf-", -- Hide: Project(s)
     --   context = "<leader>tf@", -- Focus: Context
     --   unfocus = "<leader>tu", -- Unfocus / Clear all focus
     --   refresh = "<leader>tr", -- Refresh view (sort & fold)
@@ -68,6 +69,7 @@ return {
    - `<leader>to` (or `:TodoTxtOpen`): Opens the configured `todo.txt` file.
    - `<leader>tj` (or `:TodoTxtJot`): Prompts to quickly jot down and append a new todo item.
    - `<leader>tf+` (or `:TodoTxtProject`): Prompts to select a project (`+ProjectName`) to focus on.
+   - `<leader>tf-` (or `:TodoTxtHideProject`): Prompts to select project(s) to hide from view. Supports multiple hidden projects.
    - `<leader>tf@` (or `:TodoTxtContext`): Prompts to select a context (`@ContextName`) to focus on.
    - `<leader>tfda` (or `:TodoTxtAll`): Focus on all tasks regardless of due date.
    - `<leader>tfdc` (or `:TodoTxtCurrent`): Focus on tasks due currently (today, past due, or no due date).

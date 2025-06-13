@@ -14,6 +14,7 @@ M.defaults = {
 		jot = "<leader>tj", -- Jot down a new todo
 		hyperfocustoggle = "<leader>th", -- Toggle hyperfocus mode
 		project = "<leader>tf+", -- Focus: Project
+		hide_project = "<leader>tf-", -- Hide: Project(s)
 		context = "<leader>tf@", -- Focus: Context
 		unfocus = "<leader>tu", -- Unfocus / Clear all focus
 		refresh = "<leader>tr", -- Refresh view (sort & fold)

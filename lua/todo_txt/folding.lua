@@ -51,6 +51,13 @@ function M.foldtext()
 	if project_str ~= "" then
 		table.insert(parts, project_str)
 	end
+	
+	-- Add hidden projects to display (after project focus, before due)
+	local hidden_projects = vim.g.todo_txt_hidden_projects or {}
+	for _, hidden_project in ipairs(hidden_projects) do
+		table.insert(parts, hidden_project)
+	end
+	
 	if vim.g.todo_txt_date_filter ~= "all" then
 		table.insert(parts, "due:" .. vim.g.todo_txt_date_filter)
 	end

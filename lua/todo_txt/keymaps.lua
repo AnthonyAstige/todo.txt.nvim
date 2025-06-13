@@ -68,6 +68,14 @@ function M.create_buffer_keymaps(cfg, bufnr)
 			vim.tbl_extend("force", map_opts, { desc = "Project" })
 		)
 	end
+	if cfg.keymaps.hide_project then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.hide_project,
+			"<Cmd>TodoTxtHideProject<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Hide Project" })
+		)
+	end
 	if cfg.keymaps.context then
 		vim.keymap.set(
 			"n",

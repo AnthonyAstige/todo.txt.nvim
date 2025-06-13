@@ -121,6 +121,74 @@ function M.create_commands(cfg)
 		end)
 	end, { desc = "Focus project (+Tag) todo's" })
 
+	api.nvim_create_user_command("TodoTxtHideProject", function()
+		local current_hidden = vim.g.todo_txt_hidden_projects or {}
+		local items = tags.scan_tags("%+", cfg.todo_file)
+
+		-- Filter out already hidden projects
+		local hidden_projects_map = {}
+		for _, pattern in ipairs(current_hidden) do
+			-- Store the name part, e.g., "work" from "-work"
+			hidden_projects_map[string.sub(pattern, 2)] = true
+		end
+
+		-- Add available projects that are not already hidden
+		local select_options = { "Clear All Hidden", "Show Currently Hidden" }
+		for _, item in ipairs(items) do
+			if not hidden_projects_map[item] then
+				table.insert(select_options, item)
+			end
+		end
+
+		-- Build prompt string showing current hidden projects
+		local prompt_str = "Hide Project"
+		if #current_hidden > 0 then
+			prompt_str = "Add to hidden projects (" .. table.concat(current_hidden, ", ") .. ")> "
+		end
+
+		vim.ui.select(select_options, { prompt = prompt_str, kind = "todo_hide_project" }, function(selected)
+			if selected == nil then
+				-- User cancelled
+				return
+			elseif selected == "Clear All Hidden" then
+				vim.g.todo_txt_hidden_projects = {}
+			elseif selected == "Show Currently Hidden" then
+				if #current_hidden > 0 then
+					-- Allow unhiding specific projects
+					vim.ui.select(current_hidden, { prompt = "Unhide Project> " }, function(unhide_pattern)
+						if unhide_pattern then
+							local new_hidden = {}
+							for _, pattern in ipairs(current_hidden) do
+								if pattern ~= unhide_pattern then
+									table.insert(new_hidden, pattern)
+								end
+							end
+							vim.g.todo_txt_hidden_projects = new_hidden
+							state.save()
+							sorting.sort_buffer()
+							folding.refresh_folding()
+						end
+					end)
+					return
+				else
+					vim.notify("No projects are currently hidden", vim.log.levels.INFO)
+					return
+				end
+			elseif selected then
+				-- User selected a specific project to hide
+				local hide_pattern = "-" .. fn.escape(selected, "-")
+				table.insert(current_hidden, hide_pattern)
+				vim.g.todo_txt_hidden_projects = current_hidden
+			end
+
+			if selected ~= nil and selected ~= "Show Currently Hidden" then
+				state.save()
+				sorting.sort_buffer()
+				folding.refresh_folding()
+			end
+		end)
+	end, { desc = "Hide project(s) from view" })
+
 	api.nvim_create_user_command("TodoTxtContext", function()
 		prompt_for_context(cfg)
 	end, { desc = "Focus context" })
@@ -128,6 +196,7 @@ function M.create_commands(cfg)
 	api.nvim_create_user_command("TodoTxtUnfocus", function()
 		vim.g.todo_txt_context_pattern = {}
 		vim.g.todo_txt_project_pattern = ""
+		vim.g.todo_txt_hidden_projects = {}
 		set_date_filter("all")
 		state.save()
 		sorting.sort_buffer()

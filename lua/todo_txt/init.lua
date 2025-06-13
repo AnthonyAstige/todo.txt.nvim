@@ -33,6 +33,7 @@ M.setup = function(user_opts)
 	end
 	vim.g.todo_txt_context_pattern = patterns
 	vim.g.todo_txt_project_pattern = cfg.startup.focus.project
+	vim.g.todo_txt_hidden_projects = vim.g.todo_txt_hidden_projects or {}
 
 	-- Restore previous focus state if present & enabled
 	if cfg.startup.load_focus_state then
