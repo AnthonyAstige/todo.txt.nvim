@@ -97,6 +97,14 @@ function M.create_buffer_keymaps(cfg, bufnr)
 		vim.keymap.set("n", cfg.keymaps.due_only, "<Cmd>TodoTxtDue<CR>", vim.tbl_extend("force", map_opts, { desc = "Due only" }))
 	end
 
+	if cfg.keymaps.scheduled then
+		vim.keymap.set("n", cfg.keymaps.scheduled, "<Cmd>TodoTxtScheduled<CR>", vim.tbl_extend("force", map_opts, { desc = "Scheduled" }))
+	end
+
+	if cfg.keymaps.unscheduled then
+		vim.keymap.set("n", cfg.keymaps.unscheduled, "<Cmd>TodoTxtUnscheduled<CR>", vim.tbl_extend("force", map_opts, { desc = "Unscheduled" }))
+	end
+
 	if cfg.keymaps.refresh then
 		vim.keymap.set(
 			"n",

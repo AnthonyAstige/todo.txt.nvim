@@ -20,6 +20,8 @@ M.defaults = {
 		all = "<leader>tfda", -- Focus Due: All
 		now = "<leader>tfdn", -- Focus Due: Now (today/past/undated)
 		due_only = "<leader>tfdd", -- Focus Due: Due only (today/past, excludes undated)
+		scheduled = "<leader>tfds", -- Focus Due: Scheduled (any due date)
+		unscheduled = "<leader>tfdu", -- Focus Due: Unscheduled (no due date)
 		open_link = "<leader>tl", -- Open link on current line
 	},
 
