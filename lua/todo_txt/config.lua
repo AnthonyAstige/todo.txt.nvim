@@ -11,6 +11,7 @@ M.defaults = {
 		open_file = "<leader>to", -- Open the configured todo.txt file
 		focus = "<leader>tf", -- Focus submenu key
 		due = "<leader>tfd", -- Due date focus submenu key
+		estimate = "<leader>tfe", -- Estimate focus submenu key
 		jot = "<leader>tj", -- Jot down a new todo
 		hyperfocustoggle = "<leader>th", -- Toggle hyperfocus mode
 		project = "<leader>tf+", -- Focus: Project
@@ -23,6 +24,13 @@ M.defaults = {
 		due = "<leader>tfdd", -- Focus Due: Due (today/past, excludes undated)
 		scheduled = "<leader>tfds", -- Focus Due: Scheduled (any due date)
 		unscheduled = "<leader>tfdu", -- Focus Due: Unscheduled (no due date)
+		estimate_short = "<leader>tfes", -- Focus Estimate: Short (≤15m)
+		estimate_medium = "<leader>tfem", -- Focus Estimate: Medium (16-60m)
+		estimate_long = "<leader>tfel", -- Focus Estimate: Long (>60m ≤4h)
+		estimate_day = "<leader>tfed", -- Focus Estimate: Day (>4h ≤5d or d-suffix)
+		estimate_week = "<leader>tfew", -- Focus Estimate: Week (>5d or w-suffix)
+		estimate_has = "<leader>tfea", -- Focus Estimate: Has any estimate
+		estimate_none = "<leader>tfen", -- Focus Estimate: Has no estimate
 		open_link = "<leader>tl", -- Open link on current line
 	},
 

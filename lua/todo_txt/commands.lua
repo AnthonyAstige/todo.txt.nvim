@@ -230,6 +230,7 @@ function M.create_commands(cfg)
 		vim.g.todo_txt_context_pattern = {}
 		vim.g.todo_txt_project_pattern = ""
 		vim.g.todo_txt_hidden_projects = {}
+		vim.g.todo_txt_estimate_filter = "all"
 		set_date_filter("all")
 		state.save()
 		sorting.sort_buffer()
@@ -244,6 +245,8 @@ function M.create_commands(cfg)
 
 	api.nvim_create_user_command("TodoTxtAll", function()
 		set_date_filter("all")
+		vim.g.todo_txt_estimate_filter = "all"
+		state.save()
 		sorting.sort_buffer()
 		folding.refresh_folding()
 	end, { desc = "Focus todos due: all" })
@@ -271,6 +274,56 @@ function M.create_commands(cfg)
 		sorting.sort_buffer()
 		folding.refresh_folding()
 	end, { desc = "Focus todos without a due date" })
+
+	-- Estimate filtering commands
+	api.nvim_create_user_command("TodoTxtHasEstimate", function()
+		vim.g.todo_txt_estimate_filter = "has"
+		state.save()
+		sorting.sort_buffer()
+		folding.refresh_folding()
+	end, { desc = "Focus todos with any estimate" })
+
+	api.nvim_create_user_command("TodoTxtNoEstimate", function()
+		vim.g.todo_txt_estimate_filter = "none"
+		state.save()
+		sorting.sort_buffer()
+		folding.refresh_folding()
+	end, { desc = "Focus todos without estimate" })
+
+	api.nvim_create_user_command("TodoTxtShort", function()
+		vim.g.todo_txt_estimate_filter = "short"
+		state.save()
+		sorting.sort_buffer()
+		folding.refresh_folding()
+	end, { desc = "Focus todos with short estimate (≤15m)" })
+
+	api.nvim_create_user_command("TodoTxtMedium", function()
+		vim.g.todo_txt_estimate_filter = "medium"
+		state.save()
+		sorting.sort_buffer()
+		folding.refresh_folding()
+	end, { desc = "Focus todos with medium estimate (16-60m)" })
+
+	api.nvim_create_user_command("TodoTxtLong", function()
+		vim.g.todo_txt_estimate_filter = "long"
+		state.save()
+		sorting.sort_buffer()
+		folding.refresh_folding()
+	end, { desc = "Focus todos with long estimate (>60m ≤4h)" })
+
+	api.nvim_create_user_command("TodoTxtDays", function()
+		vim.g.todo_txt_estimate_filter = "day"
+		state.save()
+		sorting.sort_buffer()
+		folding.refresh_folding()
+	end, { desc = "Focus todos with day-sized estimate (>4h ≤5d or d-suffix)" })
+
+	api.nvim_create_user_command("TodoTxtWeeks", function()
+		vim.g.todo_txt_estimate_filter = "week"
+		state.save()
+		sorting.sort_buffer()
+		folding.refresh_folding()
+	end, { desc = "Focus todos with week-sized estimate (>5d or w-suffix)" })
 
 	api.nvim_create_user_command("TodoTxtHyperfocus", function()
 		hyperfocus.toggle()

@@ -1,5 +1,7 @@
 local M = {}
 
+local estimate = require("todo_txt.estimate")
+
 -- Helper function to check if a line has a project tag (e.g., +ProjectName)
 local function has_project_tag(line)
   -- match '+tag' at start of line or preceded by whitespace,
@@ -45,16 +47,16 @@ end
 --- @param line string The line content to check.
 --- @return boolean True if the line is in focus, false otherwise.
 function M.is_focused(line)
-	-- TODO: Get rid of bandaid and the blank line always showing?
-	-- Part of (foling.lua).ensure_first_line_blank bandaid
+	-- Empty lines are removed during sorting, so we shouldn't encounter them
 	if line == "" then
-		return true
+		return false
 	end
 
 	local date_filter = vim.g.todo_txt_date_filter
 	local context_pattern = vim.g.todo_txt_context_pattern
 	local project_pattern = vim.g.todo_txt_project_pattern
 	local hidden_projects = vim.g.todo_txt_hidden_projects or {}
+	local estimate_filter = vim.g.todo_txt_estimate_filter or "all"
 
 	-- Check date filter first
 	if date_filter == "current" then
@@ -109,6 +111,11 @@ function M.is_focused(line)
 		if string.find(line, project_to_match, 1, true) then
 			return false -- Line has a hidden project tag, so out of focus
 		end
+	end
+
+	-- Check estimate filter
+	if not estimate.matches_filter(line, estimate_filter) then
+		return false -- Line doesn't match the estimate filter
 	end
 
 	-- If none of the filters excluded the line, it's in focus
