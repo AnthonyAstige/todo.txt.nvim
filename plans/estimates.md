@@ -20,12 +20,12 @@ _This document defines the enhanced “time estimate” capability for **todo.tx
 
 ## 2  Focus / Filter Model
 
-| Filter Name       | Definition (normalised minutes)             | Typical Use               |
-| ----------------- | ------------------------------------------- | ------------------------- |
-| **all** (default) | No filtering on estimate.                   | See everything.           |
-| **short**         |  ≤ 15 m.                                    | Quick wins / micro‑tasks. |
-| **medium**        |  16 – 60 m.                                 | Moderate blocks.          |
-| **long**          |  > 60 m and ≤ 4 h (240 m).                  | Deep‑work sessions.       |
+| Filter Name       | Definition (normalised minutes)               | Typical Use               |
+| ----------------- | --------------------------------------------- | ------------------------- |
+| **all** (default) | No filtering on estimate.                     | See everything.           |
+| **short**         |  ≤ 15 m.                                      | Quick wins / micro‑tasks. |
+| **medium**        |  16 – 60 m.                                   | Moderate blocks.          |
+| **long**          |  > 60 m and ≤ 4 h (240 m).                    | Deep‑work sessions.       |
 | **day**           |  > 4 h and ≤ 5 days (1200 m) _or_ `d` suffix. | Multi‑session day‑sized.  |
 | **week**          |  > 5 days (>1200 m) _or_ `w` suffix.          | Multi‑day / week‑long.    |
 
