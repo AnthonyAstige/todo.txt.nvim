@@ -25,6 +25,15 @@ function M.create_global_keymaps(cfg)
 		)
 	end
 
+	if cfg.keymaps.open_file_alt then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.open_file_alt,
+			"<Cmd>TodoTxtOpen<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Open todo.txt" })
+		)
+	end
+
 	if cfg.keymaps.jot then
 		vim.keymap.set("n", cfg.keymaps.jot, "<Cmd>TodoTxtJot<CR>", vim.tbl_extend("force", map_opts, { desc = "Jot" }))
 	end

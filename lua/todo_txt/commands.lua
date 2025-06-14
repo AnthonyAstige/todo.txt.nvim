@@ -115,6 +115,8 @@ end
 function M.create_commands(cfg)
 	api.nvim_create_user_command("TodoTxtOpen", function()
 		if cfg.todo_file and cfg.todo_file ~= "" then
+			local todo_dir = vim.fn.fnamemodify(cfg.todo_file, ":h")
+			vim.cmd.cd(todo_dir)
 			vim.cmd.edit(cfg.todo_file)
 		else
 			vim.notify("todo.txt file path is not configured.", vim.log.levels.WARN)
