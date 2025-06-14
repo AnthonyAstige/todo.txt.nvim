@@ -1,6 +1,6 @@
 # Time‑Estimate Feature — Specification Draft (v0.2)
 
-_This document defines the enhanced “time estimate” capability for **todo.txt.nvim**. Days and weeks support has been added. Edit freely._
+_This document defines the enhanced “time estimate” capability for **todo.txt.nvim**._
 
 ---
 
