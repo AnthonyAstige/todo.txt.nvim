@@ -80,7 +80,6 @@ keymaps = {
     estimate_long   = "<leader>tfel", -- >60 m ≤4 h
     estimate_day    = "<leader>tfed", -- >4 h ≤5 days or d‑suffix
     estimate_week   = "<leader>tfew", -- >5 days or w‑suffix
-  estimate_set    = "<leader>tfe=", -- reserved for editing command
 }
 ```
 
