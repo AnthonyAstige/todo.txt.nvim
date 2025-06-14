@@ -4,9 +4,9 @@ local estimate = require("todo_txt.estimate")
 
 -- Helper function to check if a line has a project tag (e.g., +ProjectName)
 local function has_project_tag(line)
-  -- match '+tag' at start of line or preceded by whitespace,
-  -- with at least one non-space character after '+'
-  return string.match(line, "^%+%S+") or string.match(line, "%s%+%S+")
+	-- match '+tag' at start of line or preceded by whitespace,
+	-- with at least one non-space character after '+'
+	return string.match(line, "^%+%S+") or string.match(line, "%s%+%S+")
 end
 
 -- Helper function to check if a line has no due date tag.
@@ -47,9 +47,10 @@ end
 --- @param line string The line content to check.
 --- @return boolean True if the line is in focus, false otherwise.
 function M.is_focused(line)
-	-- Empty lines are removed during sorting, so we shouldn't encounter them
+	-- TODO: Get rid of bandaid and the blank line always showing?
+	-- Part of (folding.lua).ensure_first_line_blank bandaid
 	if line == "" then
-		return false
+		return true
 	end
 
 	local date_filter = vim.g.todo_txt_date_filter
