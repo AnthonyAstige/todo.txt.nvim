@@ -84,14 +84,3 @@ keymaps = {
 ```
 
 _Users may override any key._
-
----
-
-## 8  Future‑Facing Notes (non‑MVP)
-
-- Aggregate time totals (minutes → h/d/w) in statusline.
-- Optional colour‑coding by bucket (short = green, week = red, etc.).
-
----
-
-_End of draft v0.2 — incorporates day/week support._
