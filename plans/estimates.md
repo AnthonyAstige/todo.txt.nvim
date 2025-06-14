@@ -20,14 +20,16 @@ _This document defines the enhanced “time estimate” capability for **todo.tx
 
 ## 2  Focus / Filter Model
 
-| Filter Name       | Definition (normalised minutes)               | Typical Use               |
-| ----------------- | --------------------------------------------- | ------------------------- |
-| **all** (default) | No filtering on estimate.                     | See everything.           |
-| **short**         |  ≤ 15 m.                                      | Quick wins / micro‑tasks. |
-| **medium**        |  16 – 60 m.                                   | Moderate blocks.          |
-| **long**          |  > 60 m and ≤ 4 h (240 m).                    | Deep‑work sessions.       |
-| **day**           |  > 4 h and ≤ 5 days (1200 m) _or_ `d` suffix. | Multi‑session day‑sized.  |
-| **week**          |  > 5 days (>1200 m) _or_ `w` suffix.          | Multi‑day / week‑long.    |
+| Filter Name       | Definition (normalised minutes)               | Typical Use                |
+| ----------------- | --------------------------------------------- | -------------------------- |
+| **all** (default) | No filtering on estimate.                     | See everything.            |
+| **has estimate**  | Has any `est:` tag.                           | See all estimated tasks.   |
+| **no estimate**   | Has no `est:` tag.                            | See all unestimated tasks. |
+| **short**         |  ≤ 15 m.                                      | Quick wins / micro‑tasks.  |
+| **medium**        |  16 – 60 m.                                   | Moderate blocks.           |
+| **long**          |  > 60 m and ≤ 4 h (240 m).                    | Deep‑work sessions.        |
+| **days**          |  > 4 h and ≤ 5 days (1200 m) _or_ `d` suffix. | Multi‑session day‑sized.   |
+| **weeks**         |  > 5 days (>1200 m) _or_ `w` suffix.          | Multi‑day / week‑long.     |
 
 > \*\***Implementation note** — a line with `est:1d` always belongs to _day_ filter; `est:1w` belongs to _week_ filter.
 
@@ -39,12 +41,14 @@ _Filtering remains additive with project/context/date rules._
 
 | Command (:`…`)              | Default Keymap | Effect                               |
 | --------------------------- | -------------- | ------------------------------------ |
+| **TodoTxtAll** _(existing)_ | `<leader>tfda` | Clears estimate filter (and others). |
+| **TodoTxtHasEstimate**      | `<leader>tfea` | Focus → _has estimate_.              |
+| **TodoTxtNoEstimate**       | `<leader>tfen` | Focus → _no estimate_.               |
 | **TodoTxtShort**            | `<leader>tfes` | Focus → _short_.                     |
 | **TodoTxtMedium**           | `<leader>tfem` | Focus → _medium_.                    |
 | **TodoTxtLong**             | `<leader>tfel` | Focus → _long_.                      |
 | **TodoTxtDays**             | `<leader>tfed` | Focus → _day_.                       |
 | **TodoTxtWeeks**            | `<leader>tfew` | Focus → _week_.                      |
-| **TodoTxtAll** _(existing)_ | `<leader>tfda` | Clears estimate filter (and others). |
 
 _All commands persist focus state just like current project/context/date filters._
 
@@ -80,6 +84,8 @@ keymaps = {
     estimate_long   = "<leader>tfel", -- >60 m ≤4 h
     estimate_day    = "<leader>tfed", -- >4 h ≤5 days or d‑suffix
     estimate_week   = "<leader>tfew", -- >5 days or w‑suffix
+  estimate_has    = "<leader>tfea", -- has any estimate
+  estimate_none   = "<leader>tfen", -- has no estimate
 }
 ```
 
