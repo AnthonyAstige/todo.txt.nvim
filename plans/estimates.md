@@ -12,7 +12,7 @@ _This document defines the enhanced “time estimate” capability for **todo.tx
 - Optional suffixes accepted (plugin always stores as minutes internally):
 
   - `h` → hours  (`est:2h` = 120 m).
-  - `d` → days   (`est:1d` = **4 h = 240 m**).
+  - `d` → days   (`est:1d` = 4 h = 240 m).
   - `w` → weeks  (`est:1w` = 5 days × 4 h = 1200 m).
 - Only one `est:` tag per task is supported.
 
