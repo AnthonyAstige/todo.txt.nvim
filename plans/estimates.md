@@ -53,8 +53,9 @@ _All commands persist focus state just like current project/context/date filters
 ## 4  Sorting Behaviour
 
 1. Primary sort: _focused vs. unfocused_ (existing logic).
-2. Secondary: **smaller estimate first** (numeric minutes after normalisation).
-3. Tertiary: alphabetical.
+2. Secondary: _Priority_ (A, B, C, etc., then no priority).
+3. Tertiary: **smaller estimate first** (numeric minutes after normalisation).
+4. Quaternary: alphabetical.
 
 ---
 
