@@ -45,7 +45,7 @@ function M.create_buffer_keymaps(cfg, bufnr)
 			buffer = bufnr,
 		})
 		wk.add({
-			cfg.keymaps.due,
+			cfg.keymaps.due_menu,
 			group = "Due",
 			mode = { "n" },
 			buffer = bufnr,
@@ -104,7 +104,12 @@ function M.create_buffer_keymaps(cfg, bufnr)
 	end
 
 	if cfg.keymaps.current then
-		vim.keymap.set("n", cfg.keymaps.current, "<Cmd>TodoTxtCurrent<CR>", vim.tbl_extend("force", map_opts, { desc = "Current" }))
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.current,
+			"<Cmd>TodoTxtCurrent<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Current" })
+		)
 	end
 
 	if cfg.keymaps.due then
@@ -112,40 +117,85 @@ function M.create_buffer_keymaps(cfg, bufnr)
 	end
 
 	if cfg.keymaps.scheduled then
-		vim.keymap.set("n", cfg.keymaps.scheduled, "<Cmd>TodoTxtScheduled<CR>", vim.tbl_extend("force", map_opts, { desc = "Scheduled" }))
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.scheduled,
+			"<Cmd>TodoTxtScheduled<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Scheduled" })
+		)
 	end
 
 	if cfg.keymaps.unscheduled then
-		vim.keymap.set("n", cfg.keymaps.unscheduled, "<Cmd>TodoTxtUnscheduled<CR>", vim.tbl_extend("force", map_opts, { desc = "Unscheduled" }))
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.unscheduled,
+			"<Cmd>TodoTxtUnscheduled<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Unscheduled" })
+		)
 	end
 
 	-- Estimate keymaps
 	if cfg.keymaps.estimate_short then
-		vim.keymap.set("n", cfg.keymaps.estimate_short, "<Cmd>TodoTxtShort<CR>", vim.tbl_extend("force", map_opts, { desc = "Short (≤15m)" }))
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.estimate_short,
+			"<Cmd>TodoTxtShort<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Short (≤15m)" })
+		)
 	end
 
 	if cfg.keymaps.estimate_medium then
-		vim.keymap.set("n", cfg.keymaps.estimate_medium, "<Cmd>TodoTxtMedium<CR>", vim.tbl_extend("force", map_opts, { desc = "Medium (16-60m)" }))
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.estimate_medium,
+			"<Cmd>TodoTxtMedium<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Medium (16-60m)" })
+		)
 	end
 
 	if cfg.keymaps.estimate_long then
-		vim.keymap.set("n", cfg.keymaps.estimate_long, "<Cmd>TodoTxtLong<CR>", vim.tbl_extend("force", map_opts, { desc = "Long (>60m ≤4h)" }))
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.estimate_long,
+			"<Cmd>TodoTxtLong<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Long (>60m ≤4h)" })
+		)
 	end
 
 	if cfg.keymaps.estimate_day then
-		vim.keymap.set("n", cfg.keymaps.estimate_day, "<Cmd>TodoTxtDays<CR>", vim.tbl_extend("force", map_opts, { desc = "Day-sized" }))
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.estimate_day,
+			"<Cmd>TodoTxtDays<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Day-sized" })
+		)
 	end
 
 	if cfg.keymaps.estimate_week then
-		vim.keymap.set("n", cfg.keymaps.estimate_week, "<Cmd>TodoTxtWeeks<CR>", vim.tbl_extend("force", map_opts, { desc = "Week-sized" }))
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.estimate_week,
+			"<Cmd>TodoTxtWeeks<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Week-sized" })
+		)
 	end
 
 	if cfg.keymaps.estimate_has then
-		vim.keymap.set("n", cfg.keymaps.estimate_has, "<Cmd>TodoTxtHasEstimate<CR>", vim.tbl_extend("force", map_opts, { desc = "Has estimate" }))
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.estimate_has,
+			"<Cmd>TodoTxtHasEstimate<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Has estimate" })
+		)
 	end
 
 	if cfg.keymaps.estimate_none then
-		vim.keymap.set("n", cfg.keymaps.estimate_none, "<Cmd>TodoTxtNoEstimate<CR>", vim.tbl_extend("force", map_opts, { desc = "No estimate" }))
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.estimate_none,
+			"<Cmd>TodoTxtNoEstimate<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "No estimate" })
+		)
 	end
 
 	if cfg.keymaps.refresh then
