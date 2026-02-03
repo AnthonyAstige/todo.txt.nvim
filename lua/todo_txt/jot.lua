@@ -7,8 +7,9 @@ local tags = require("todo_txt.tags") -- Added dependency
 
 --- Run post-jot processing asynchronously
 --- @param todo_dir string The directory containing the todo.txt file
-local function run_post_jot(todo_dir)
-	vim.fn.jobstart({ "npm", "run", "post-jot" }, {
+--- @param on_done function|nil Optional callback to run after the job finishes
+local function run_post_jot(todo_dir, on_done)
+	local job_id = vim.fn.jobstart({ "npm", "run", "post-jot" }, {
 		cwd = todo_dir,
 		on_exit = function(_, exit_code)
 			vim.schedule(function()
@@ -19,9 +20,17 @@ local function run_post_jot(todo_dir)
 				else
 					utils.notify("Post-jot failed (exit " .. exit_code .. ")", vim.log.levels.WARN)
 				end
+				if on_done then
+					on_done()
+				end
 			end)
 		end,
 	})
+
+	if job_id <= 0 and on_done then
+		-- Job failed to start, run callback immediately
+		on_done()
+	end
 end
 
 local function has_project_tag(line)
@@ -197,7 +206,11 @@ function M.jot_then_quit(cfg)
 		prompt = "New Todo (and Quit): ",
 		error_msg_prefix = "Error opening todo file: ",
 		on_success_callback = function()
-			vim.cmd.quit()
+			-- Run post-jot processing asynchronously before quitting
+			local todo_dir = vim.fn.fnamemodify(cfg.todo_file, ":h")
+			run_post_jot(todo_dir, function()
+				vim.cmd.quit()
+			end)
 		end,
 		on_cancel_callback = function()
 			vim.cmd.quit()
