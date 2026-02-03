@@ -5,6 +5,25 @@ local api = vim.api
 local utils = require("todo_txt.utils")
 local tags = require("todo_txt.tags") -- Added dependency
 
+--- Run post-jot processing asynchronously
+--- @param todo_dir string The directory containing the todo.txt file
+local function run_post_jot(todo_dir)
+	vim.fn.jobstart({ "npm", "run", "post-jot" }, {
+		cwd = todo_dir,
+		on_exit = function(_, exit_code)
+			vim.schedule(function()
+				if exit_code == 0 then
+					utils.notify("Post-jot complete (auto-tagged + committed)", vim.log.levels.INFO)
+					-- Reload buffer to show auto-tagged task
+					vim.cmd("silent! checktime")
+				else
+					utils.notify("Post-jot failed (exit " .. exit_code .. ")", vim.log.levels.WARN)
+				end
+			end)
+		end,
+	})
+end
+
 local function has_project_tag(line)
 	return string.match(line, "^%+%S+") or string.match(line, "%s%+%S+")
 end
@@ -144,6 +163,7 @@ end
 
 --- Prompts the user for a new todo item and appends it to the configured todo file.
 --- Includes project selection if no project is provided in the initial input.
+--- After success, runs post-jot processing asynchronously.
 --- @param cfg table The plugin configuration table, expected to have `cfg.todo_file` and `cfg.seeded_projects`.
 function M.jot_todo(cfg)
 	add_todo_item(cfg, {
@@ -158,6 +178,10 @@ function M.jot_todo(cfg)
 					break
 				end
 			end
+
+			-- Run post-jot processing asynchronously
+			local todo_dir = vim.fn.fnamemodify(cfg.todo_file, ":h")
+			run_post_jot(todo_dir)
 		end,
 		-- on_cancel_callback is nil, default behavior (notify and return)
 		prompt_for_project_if_missing = true,
