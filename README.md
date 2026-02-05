@@ -23,73 +23,36 @@ A Neovim plugin to dynamically focus on todo's in your `todo.txt` file based on 
 
 Place somewhere like `~/.config/nvim/lua/plugins/todo.txt.lua`:
 
-The plugin comes with the following default configuration:
-
 ```lua
 return {
   "AnthonyAstige/todo.txt.nvim",
   opts = {
     -- todo_file = "~/path/to/your/todo.txt",
-
-    -- Keymap Grammar: <leader>tf = Focus, then category (p/c/d/e), then action (+/-/a/0)
-    -- keymaps = {
-    --   top = "<leader>t", -- Base menu key
-    --   open_file = "<leader>to", -- Open todo.txt file
-    --   open_file_alt = "<leader>tt", -- Alternative open shortcut
-    --   focus = "<leader>tf", -- Focus submenu key
-    --   jot = "<leader>tj", -- Jot down a new todo
-    --   hyperfocustoggle = "<leader>th", -- Toggle hyperfocus mode
-    --   unfocus = "<leader>tu", -- Clear all focus
-    --   refresh = "<leader>tr", -- Refresh view
-    --   open_link = "<leader>tl", -- Open link on current line
-    --
-    --   -- Project: <leader>tfp
-    --   project_menu = "<leader>tfp", -- Project submenu
-    --   project_add = "<leader>tfp+", -- Add/select project
-    --   project_hide = "<leader>tfp-", -- Hide project
-    --   project_any = "<leader>tfpa", -- Any project
-    --   project_none = "<leader>tfp0", -- No project
-    --
-    --   -- Context: <leader>tfc
-    --   context_menu = "<leader>tfc", -- Context submenu
-    --   context_add = "<leader>tfc+", -- Add context
-    --   context_hide = "<leader>tfc-", -- Hide context
-    --   context_any = "<leader>tfca", -- Any context
-    --   context_none = "<leader>tfc0", -- No context
-    --
-    --   -- Due: <leader>tfd
-    --   due_menu = "<leader>tfd", -- Due submenu
-    --   due_any = "<leader>tfda", -- Any due status
-    --   due_current = "<leader>tfdc", -- Current (today/past/undated)
-    --   due_due = "<leader>tfdd", -- Due (today/past only)
-    --   due_scheduled = "<leader>tfds", -- Scheduled (has due date)
-    --   due_unscheduled = "<leader>tfdu", -- Unscheduled (no due date)
-    --
-    --   -- Estimate: <leader>tfe
-    --   estimate_menu = "<leader>tfe", -- Estimate submenu
-    --   estimate_has = "<leader>tfe~", -- Has estimate
-    --   estimate_none = "<leader>tfe0", -- No estimate
-    --   estimate_max = "<leader>tfe<", -- Set max bound
-    --   estimate_min = "<leader>tfe>", -- Set min bound
-    --   estimate_any = "<leader>tfea", -- Any estimate
-    -- },
-
-    -- startup = {
-    --   focus = {
-    --     date = "current",
-    --     project = nil, -- Focus on todo's with no project
-    --     context = {}, -- Optionally put a list of contexts here like { "home", "quick" }
-    --   },
-    --   load_focus_state = true,
-    --   hyperfocus_enabled = true,
-    -- }
-
-    -- filetypes = { "todo", "todos", "todo.txt" },
   },
 }
 ```
 
 ## Usage
+
+### Keymap Grammar
+
+The keymaps follow a consistent grammar that makes them easy to remember:
+
+```
+<leader>t    = Todo
+<leader>tf   = Focus
+<leader>tfX  = Focus category (p=Project, c=Context, d=Due, e=Estimate)
+```
+
+**Universal actions (same across all categories):**
+- `a` = Any (clear filter, show all)
+- `~` = Has (items with that attribute)
+- `0` = None (items without that attribute)
+
+**Category-specific actions:**
+- Project/Context: `+` (add/focus specific), `-` (hide/exclude)
+- Due: `c` (current), `d` (due)
+- Estimate: `<` (max bound), `>` (min bound)
 
 ### Time Estimates
 
@@ -102,25 +65,6 @@ Add time estimates to your tasks using the `~` prefix:
 - `~1mo` - 1 month
 - `~1y` - 1 year
 
-The plugin converts all estimates to minutes internally:
-- `m` suffix: minutes
-- `h` suffix: hours (multiplied by 60)
-- `d` suffix: days (multiplied by 240, assuming 4 hours of productive work per day)
-- `w` suffix: weeks (multiplied by 1200, assuming 5 days * 4 hours per week)
-- `mo` suffix: months (multiplied by 4800, assuming 4 weeks per month)
-- `y` suffix: years (multiplied by 57600, assuming 12 months per year)
-
-### Keymap Grammar
-
-The keymaps follow a consistent grammar:
-- `<leader>t` - Todo menu
-- `<leader>tf` - Focus submenu
-- `<leader>tfX` - Focus category (p=Project, c=Context, d=Due, e=Estimate)
-- `<leader>tfX+` - Add/include specific item
-- `<leader>tfX-` - Hide/exclude specific item
-- `<leader>tfXa` - Any (clear filter)
-- `<leader>tfX0` - None (items without that attribute)
-
 ### Commands and Keymaps
 
 **Basic Operations:**
@@ -132,32 +76,90 @@ The keymaps follow a consistent grammar:
 - `<leader>tl` (`:TodoTxtOpenLink`): Open links on the current line.
 
 **Project Filtering (`<leader>tfp`):**
-- `<leader>tfp+` (`:TodoTxtProjectAdd`): Select a project to focus on.
-- `<leader>tfp-` (`:TodoTxtProjectHide`): Hide project(s) from view.
-- `<leader>tfpa` (`:TodoTxtProjectAny`): Clear project filter (show any).
-- `<leader>tfp0` (`:TodoTxtProjectNone`): Focus tasks without projects.
+| Key | Command | Description |
+|-----|---------|-------------|
+| `+` | `:TodoTxtProjectAdd` | Add/focus specific project |
+| `-` | `:TodoTxtProjectHide` | Hide project(s) |
+| `a` | `:TodoTxtProjectAny` | Any (clear filter) |
+| `~` | `:TodoTxtProjectHas` | Has project |
+| `0` | `:TodoTxtProjectNone` | No project |
 
 **Context Filtering (`<leader>tfc`):**
-- `<leader>tfc+` (`:TodoTxtContextAdd`): Add a context to focus on.
-- `<leader>tfc-` (`:TodoTxtContextHide`): Hide context(s) from view.
-- `<leader>tfca` (`:TodoTxtContextAny`): Clear context filter (show any).
-- `<leader>tfc0` (`:TodoTxtContextNone`): Focus tasks without contexts.
+| Key | Command | Description |
+|-----|---------|-------------|
+| `+` | `:TodoTxtContextAdd` | Add/focus specific context |
+| `-` | `:TodoTxtContextHide` | Hide context(s) |
+| `a` | `:TodoTxtContextAny` | Any (clear filter) |
+| `~` | `:TodoTxtContextHas` | Has context |
+| `0` | `:TodoTxtContextNone` | No context |
 
 **Due Date Filtering (`<leader>tfd`):**
-- `<leader>tfda` (`:TodoTxtDueAny`): Any due status (show all).
-- `<leader>tfdc` (`:TodoTxtDueCurrent`): Current (today, past due, or no due date).
-- `<leader>tfdd` (`:TodoTxtDueDue`): Due (today or past due, excludes undated).
-- `<leader>tfds` (`:TodoTxtDueScheduled`): Scheduled (has any due date).
-- `<leader>tfdu` (`:TodoTxtDueUnscheduled`): Unscheduled (no due date).
+| Key | Command | Description |
+|-----|---------|-------------|
+| `a` | `:TodoTxtDueAny` | Any (clear filter) |
+| `~` | `:TodoTxtDueHas` | Has due date |
+| `0` | `:TodoTxtDueNone` | No due date |
+| `c` | `:TodoTxtDueCurrent` | Current (today/past/undated) |
+| `d` | `:TodoTxtDueDue` | Due (today/past only) |
 
 **Estimate Filtering (`<leader>tfe`):**
-- `<leader>tfe~` (`:TodoTxtEstimateHas`): Focus tasks with any estimate.
-- `<leader>tfe0` (`:TodoTxtEstimateNone`): Focus tasks without estimates.
-- `<leader>tfe<` (`:TodoTxtEstimateMax`): Set max bound (prompts for value like `2h`).
-- `<leader>tfe>` (`:TodoTxtEstimateMin`): Set min bound (prompts for value like `30m`).
-- `<leader>tfea` (`:TodoTxtEstimateAny`): Clear estimate filter (show any).
+| Key | Command | Description |
+|-----|---------|-------------|
+| `a` | `:TodoTxtEstimateAny` | Any (clear filter) |
+| `~` | `:TodoTxtEstimateHas` | Has estimate |
+| `0` | `:TodoTxtEstimateNone` | No estimate |
+| `<` | `:TodoTxtEstimateMax` | Set max bound |
+| `>` | `:TodoTxtEstimateMin` | Set min bound |
 
-The min/max bounds work together to create ranges. For example, `<leader>tfe>` with `30m` then `<leader>tfe<` with `2h` shows tasks estimated between 30 minutes and 2 hours.
+The estimate min/max bounds work together to create ranges. For example, `<leader>tfe>` with `30m` then `<leader>tfe<` with `2h` shows tasks estimated between 30 minutes and 2 hours.
+
+### Default Keymaps
+
+```lua
+keymaps = {
+  top = "<leader>t",
+  open_file = "<leader>to",
+  open_file_alt = "<leader>tt",
+  focus = "<leader>tf",
+  jot = "<leader>tj",
+  hyperfocustoggle = "<leader>th",
+  unfocus = "<leader>tu",
+  refresh = "<leader>tr",
+  open_link = "<leader>tl",
+
+  -- Project: <leader>tfp
+  project_menu = "<leader>tfp",
+  project_add = "<leader>tfp+",
+  project_hide = "<leader>tfp-",
+  project_any = "<leader>tfpa",
+  project_has = "<leader>tfp~",
+  project_none = "<leader>tfp0",
+
+  -- Context: <leader>tfc
+  context_menu = "<leader>tfc",
+  context_add = "<leader>tfc+",
+  context_hide = "<leader>tfc-",
+  context_any = "<leader>tfca",
+  context_has = "<leader>tfc~",
+  context_none = "<leader>tfc0",
+
+  -- Due: <leader>tfd
+  due_menu = "<leader>tfd",
+  due_any = "<leader>tfda",
+  due_has = "<leader>tfd~",
+  due_none = "<leader>tfd0",
+  due_current = "<leader>tfdc",
+  due_due = "<leader>tfdd",
+
+  -- Estimate: <leader>tfe
+  estimate_menu = "<leader>tfe",
+  estimate_any = "<leader>tfea",
+  estimate_has = "<leader>tfe~",
+  estimate_none = "<leader>tfe0",
+  estimate_max = "<leader>tfe<",
+  estimate_min = "<leader>tfe>",
+}
+```
 
 ### Sorting
 

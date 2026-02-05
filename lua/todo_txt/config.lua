@@ -6,7 +6,9 @@ M.defaults = {
 	todo_file = vim.fn.expand("~/todo.txt/todo.txt"),
 
 	-- Keymaps for plugin actions
-	-- Grammar: <leader>tf = Focus, then category (p/c/d/e), then action (+/-/a/0)
+	-- Grammar: <leader>tf = Focus, then category (p/c/d/e), then action
+	-- Universal actions: a=any, ~=has, 0=none
+	-- Category-specific: +/- for project/context, c/d for due, </> for estimate
 	keymaps = {
 		top = "<leader>t", -- Base menu key
 		open_file = "<leader>to", -- Open the configured todo.txt file
@@ -23,6 +25,7 @@ M.defaults = {
 		project_add = "<leader>tfp+", -- Add/select project to focus
 		project_hide = "<leader>tfp-", -- Hide project
 		project_any = "<leader>tfpa", -- Any project (clear filter)
+		project_has = "<leader>tfp~", -- Has project (tasks with any project)
 		project_none = "<leader>tfp0", -- No project (tasks without projects)
 
 		-- Context submenu: <leader>tfc
@@ -30,23 +33,24 @@ M.defaults = {
 		context_add = "<leader>tfc+", -- Add context to focus
 		context_hide = "<leader>tfc-", -- Hide context
 		context_any = "<leader>tfca", -- Any context (clear filter)
+		context_has = "<leader>tfc~", -- Has context (tasks with any context)
 		context_none = "<leader>tfc0", -- No context (tasks without contexts)
 
 		-- Due submenu: <leader>tfd
 		due_menu = "<leader>tfd", -- Due date focus submenu key
 		due_any = "<leader>tfda", -- Any due status (all)
+		due_has = "<leader>tfd~", -- Has due date (scheduled)
+		due_none = "<leader>tfd0", -- No due date (unscheduled)
 		due_current = "<leader>tfdc", -- Current (today/past/undated)
-		due_due = "<leader>tfdd", -- Due (today/past, excludes undated)
-		due_scheduled = "<leader>tfds", -- Scheduled (any due date)
-		due_unscheduled = "<leader>tfdu", -- Unscheduled (no due date)
+		due_due = "<leader>tfdd", -- Due (today/past only)
 
 		-- Estimate submenu: <leader>tfe
 		estimate_menu = "<leader>tfe", -- Estimate submenu key
-		estimate_has = "<leader>tfe~", -- Has any estimate
+		estimate_any = "<leader>tfea", -- Any estimate (clear filter)
+		estimate_has = "<leader>tfe~", -- Has estimate
 		estimate_none = "<leader>tfe0", -- No estimate
 		estimate_max = "<leader>tfe<", -- Set max bound
 		estimate_min = "<leader>tfe>", -- Set min bound
-		estimate_any = "<leader>tfea", -- Any estimate (clear filter)
 	},
 
 	-- Filetypes to activate folding and commands for

@@ -118,13 +118,14 @@ function M.create_buffer_keymaps(cfg, bufnr)
 	end
 
 	-- ==================== PROJECT KEYMAPS ====================
+	-- Grammar: + (add), - (hide), a (any), ~ (has), 0 (none)
 
 	if cfg.keymaps.project_add then
 		vim.keymap.set(
 			"n",
 			cfg.keymaps.project_add,
 			"<Cmd>TodoTxtProjectAdd<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Add/Focus" })
+			vim.tbl_extend("force", map_opts, { desc = "Add" })
 		)
 	end
 
@@ -146,6 +147,15 @@ function M.create_buffer_keymaps(cfg, bufnr)
 		)
 	end
 
+	if cfg.keymaps.project_has then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.project_has,
+			"<Cmd>TodoTxtProjectHas<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Has" })
+		)
+	end
+
 	if cfg.keymaps.project_none then
 		vim.keymap.set(
 			"n",
@@ -156,6 +166,7 @@ function M.create_buffer_keymaps(cfg, bufnr)
 	end
 
 	-- ==================== CONTEXT KEYMAPS ====================
+	-- Grammar: + (add), - (hide), a (any), ~ (has), 0 (none)
 
 	if cfg.keymaps.context_add then
 		vim.keymap.set(
@@ -184,6 +195,15 @@ function M.create_buffer_keymaps(cfg, bufnr)
 		)
 	end
 
+	if cfg.keymaps.context_has then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.context_has,
+			"<Cmd>TodoTxtContextHas<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Has" })
+		)
+	end
+
 	if cfg.keymaps.context_none then
 		vim.keymap.set(
 			"n",
@@ -194,6 +214,7 @@ function M.create_buffer_keymaps(cfg, bufnr)
 	end
 
 	-- ==================== DUE DATE KEYMAPS ====================
+	-- Grammar: a (any), ~ (has), 0 (none), c (current), d (due)
 
 	if cfg.keymaps.due_any then
 		vim.keymap.set(
@@ -201,6 +222,24 @@ function M.create_buffer_keymaps(cfg, bufnr)
 			cfg.keymaps.due_any,
 			"<Cmd>TodoTxtDueAny<CR>",
 			vim.tbl_extend("force", map_opts, { desc = "Any" })
+		)
+	end
+
+	if cfg.keymaps.due_has then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.due_has,
+			"<Cmd>TodoTxtDueHas<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Has" })
+		)
+	end
+
+	if cfg.keymaps.due_none then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.due_none,
+			"<Cmd>TodoTxtDueNone<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "None" })
 		)
 	end
 
@@ -222,32 +261,24 @@ function M.create_buffer_keymaps(cfg, bufnr)
 		)
 	end
 
-	if cfg.keymaps.due_scheduled then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.due_scheduled,
-			"<Cmd>TodoTxtDueScheduled<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Scheduled" })
-		)
-	end
-
-	if cfg.keymaps.due_unscheduled then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.due_unscheduled,
-			"<Cmd>TodoTxtDueUnscheduled<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Unscheduled" })
-		)
-	end
-
 	-- ==================== ESTIMATE KEYMAPS ====================
+	-- Grammar: a (any), ~ (has), 0 (none), < (max), > (min)
+
+	if cfg.keymaps.estimate_any then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.estimate_any,
+			"<Cmd>TodoTxtEstimateAny<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Any" })
+		)
+	end
 
 	if cfg.keymaps.estimate_has then
 		vim.keymap.set(
 			"n",
 			cfg.keymaps.estimate_has,
 			"<Cmd>TodoTxtEstimateHas<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Has (~)" })
+			vim.tbl_extend("force", map_opts, { desc = "Has" })
 		)
 	end
 
@@ -256,7 +287,7 @@ function M.create_buffer_keymaps(cfg, bufnr)
 			"n",
 			cfg.keymaps.estimate_none,
 			"<Cmd>TodoTxtEstimateNone<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "None (0)" })
+			vim.tbl_extend("force", map_opts, { desc = "None" })
 		)
 	end
 
@@ -265,7 +296,7 @@ function M.create_buffer_keymaps(cfg, bufnr)
 			"n",
 			cfg.keymaps.estimate_max,
 			"<Cmd>TodoTxtEstimateMax<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Max ≤" })
+			vim.tbl_extend("force", map_opts, { desc = "Max" })
 		)
 	end
 
@@ -274,16 +305,7 @@ function M.create_buffer_keymaps(cfg, bufnr)
 			"n",
 			cfg.keymaps.estimate_min,
 			"<Cmd>TodoTxtEstimateMin<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Min ≥" })
-		)
-	end
-
-	if cfg.keymaps.estimate_any then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.estimate_any,
-			"<Cmd>TodoTxtEstimateAny<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Any" })
+			vim.tbl_extend("force", map_opts, { desc = "Min" })
 		)
 	end
 end

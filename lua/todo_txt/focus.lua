@@ -85,7 +85,11 @@ function M.is_focused(line)
 		if string.find(line, "@", 1, true) then
 			return false -- Line has a context tag, so out of focus
 		end
-	else
+	elseif context_pattern == "has" then -- Filter requires *any* context tag
+		if not string.find(line, "@", 1, true) then
+			return false -- Line has no context tag, so out of focus
+		end
+	elseif type(context_pattern) == "table" then
 		for _, pattern in ipairs(context_pattern) do
 			if not string.find(line, pattern, 1, true) then
 				return false -- Line missing one of the required context tags
@@ -107,6 +111,10 @@ function M.is_focused(line)
 	if project_pattern == nil then -- Filter requires *no* project tag
 		if has_project_tag(line) then
 			return false -- Line has a project tag, so out of focus
+		end
+	elseif project_pattern == "has" then -- Filter requires *any* project tag
+		if not has_project_tag(line) then
+			return false -- Line has no project tag, so out of focus
 		end
 	elseif project_pattern ~= "" then -- Filter requires a specific project tag
 		if not string.find(line, project_pattern, 1, true) then

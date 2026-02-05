@@ -166,6 +166,12 @@ function M.create_commands(cfg)
 		refresh()
 	end, { desc = "Clear project filter (show any)" })
 
+	api.nvim_create_user_command("TodoTxtProjectHas", function()
+		vim.g.todo_txt_project_pattern = "has"
+		vim.g.todo_txt_hidden_projects = {}
+		refresh()
+	end, { desc = "Focus tasks with any project" })
+
 	api.nvim_create_user_command("TodoTxtProjectNone", function()
 		vim.g.todo_txt_project_pattern = nil
 		vim.g.todo_txt_hidden_projects = {}
@@ -283,6 +289,12 @@ function M.create_commands(cfg)
 		refresh()
 	end, { desc = "Clear context filter (show any)" })
 
+	api.nvim_create_user_command("TodoTxtContextHas", function()
+		vim.g.todo_txt_context_pattern = "has"
+		vim.g.todo_txt_hidden_contexts = {}
+		refresh()
+	end, { desc = "Focus tasks with any context" })
+
 	api.nvim_create_user_command("TodoTxtContextNone", function()
 		vim.g.todo_txt_context_pattern = nil
 		vim.g.todo_txt_hidden_contexts = {}
@@ -296,25 +308,25 @@ function M.create_commands(cfg)
 		refresh()
 	end, { desc = "Any due status (show all)" })
 
+	api.nvim_create_user_command("TodoTxtDueHas", function()
+		vim.g.todo_txt_date_filter = "scheduled"
+		refresh()
+	end, { desc = "Has due date (scheduled)" })
+
+	api.nvim_create_user_command("TodoTxtDueNone", function()
+		vim.g.todo_txt_date_filter = "unscheduled"
+		refresh()
+	end, { desc = "No due date (unscheduled)" })
+
 	api.nvim_create_user_command("TodoTxtDueCurrent", function()
 		vim.g.todo_txt_date_filter = "current"
 		refresh()
-	end, { desc = "Due: today, past, or without due date" })
+	end, { desc = "Current: today, past, or undated" })
 
 	api.nvim_create_user_command("TodoTxtDueDue", function()
 		vim.g.todo_txt_date_filter = "due"
 		refresh()
-	end, { desc = "Due: today or past only (excludes undated)" })
-
-	api.nvim_create_user_command("TodoTxtDueScheduled", function()
-		vim.g.todo_txt_date_filter = "scheduled"
-		refresh()
-	end, { desc = "Due: has any due date" })
-
-	api.nvim_create_user_command("TodoTxtDueUnscheduled", function()
-		vim.g.todo_txt_date_filter = "unscheduled"
-		refresh()
-	end, { desc = "Due: no due date" })
+	end, { desc = "Due: today or past only" })
 
 	-- ==================== ESTIMATE COMMANDS ====================
 

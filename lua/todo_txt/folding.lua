@@ -33,7 +33,9 @@ function M.foldtext()
 	local context_str = ""
 	if context == nil then
 		context_str = "@none"
-	else
+	elseif context == "has" then
+		context_str = "@has"
+	elseif type(context) == "table" then
 		context_str = table.concat(context, ",")
 	end
 
@@ -41,7 +43,9 @@ function M.foldtext()
 	local project_str = ""
 	if project == nil then
 		project_str = "+none"
-	else
+	elseif project == "has" then
+		project_str = "+has"
+	elseif project ~= "" then
 		project_str = project
 	end
 
