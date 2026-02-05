@@ -64,7 +64,7 @@ function M.foldtext()
 
 	local estimate_filter = vim.g.todo_txt_estimate_filter
 	if estimate_filter and estimate_filter ~= "all" then
-		table.insert(parts, "est:" .. estimate_filter)
+		table.insert(parts, "~" .. estimate_filter)
 	end
 
 	local focus_str = table.concat(parts, " ")

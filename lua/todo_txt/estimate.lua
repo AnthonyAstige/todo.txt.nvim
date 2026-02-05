@@ -5,7 +5,11 @@ local function parse_estimate(tag_value)
 		return nil
 	end
 
-	local num, suffix = tag_value:match("^(%d+)([hdw]?)$")
+	-- Match number followed by unit: m, h, d, w, mo, y
+	local num, suffix = tag_value:match("^(%d+)(mo?)$")
+	if not num then
+		num, suffix = tag_value:match("^(%d+)([hdwy])$")
+	end
 	if not num then
 		return nil
 	end
@@ -15,19 +19,25 @@ local function parse_estimate(tag_value)
 		return nil
 	end
 
-	if suffix == "h" then
+	if suffix == "m" then
+		return num
+	elseif suffix == "h" then
 		return num * 60
 	elseif suffix == "d" then
 		return num * 240
 	elseif suffix == "w" then
 		return num * 1200
-	else
-		return num
+	elseif suffix == "mo" then
+		return num * 4800
+	elseif suffix == "y" then
+		return num * 57600
 	end
+
+	return nil
 end
 
 function M.get_estimate(line)
-	local est_tag = line:match("est:(%S+)")
+	local est_tag = line:match("~(%S+)")
 	return parse_estimate(est_tag)
 end
 
@@ -50,13 +60,13 @@ function M.matches_filter(line, filter)
 		if not minutes then
 			return false
 		end
-		local est_tag = line:match("est:(%S+)")
+		local est_tag = line:match("~(%S+)")
 		return (minutes > 240 and minutes <= 1200) or (est_tag and est_tag:match("d$"))
 	elseif filter == "week" then
 		if not minutes then
 			return false
 		end
-		local est_tag = line:match("est:(%S+)")
+		local est_tag = line:match("~(%S+)")
 		return minutes > 1200 or (est_tag and est_tag:match("w$"))
 	end
 
