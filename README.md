@@ -6,7 +6,7 @@ A Neovim plugin to dynamically focus on todo's in your `todo.txt` file based on 
 
 - **Project and Context Filtering**: Focus on specific projects (`+Project`) or contexts (`@Context`)
 - **Date-based Filtering**: View tasks by due date (current, due, scheduled, unscheduled)
-- **Time Estimates**: Filter tasks by estimated time using `est:` tags
+- **Time Estimates**: Filter tasks by estimated time using `~` tags (e.g., `~30m`, `~2h`)
 - **Hyperfocus Mode**: Show only the current line for distraction-free editing
 - **Smart Sorting**: Automatically sorts by focus status, priority, estimate, then alphabetically
 - **Quick Capture**: Jot down new todos with project selection
@@ -83,17 +83,22 @@ return {
 
 ### Time Estimates
 
-Add time estimates to your tasks using the `est:` tag:
+Add time estimates to your tasks using the `~` prefix:
 
-- `est:15` - 15 minutes
-- `est:2h` - 2 hours
-- `est:3d` - 3 days  
-- `est:1w` - 1 week
+- `~15m` - 15 minutes
+- `~2h` - 2 hours
+- `~3d` - 3 days
+- `~1w` - 1 week
+- `~1mo` - 1 month
+- `~1y` - 1 year
 
 The plugin converts all estimates to minutes internally:
+- `m` suffix: minutes
 - `h` suffix: hours (multiplied by 60)
 - `d` suffix: days (multiplied by 240, assuming 4 hours of productive work per day)
 - `w` suffix: weeks (multiplied by 1200, assuming 5 days * 4 hours per week)
+- `mo` suffix: months (multiplied by 4800, assuming 4 weeks per month)
+- `y` suffix: years (multiplied by 57600, assuming 12 months per year)
 
 ### Commands and Keymaps
 
