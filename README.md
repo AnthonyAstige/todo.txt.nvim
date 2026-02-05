@@ -56,6 +56,8 @@ return {
     --   estimate_week = "<leader>tfew", -- Focus Estimate: Week (>5d or w-suffix)
     --   estimate_has = "<leader>tfea", -- Focus Estimate: Has any estimate
     --   estimate_none = "<leader>tfen", -- Focus Estimate: Has no estimate
+    --   estimate_less_than = "<leader>tf<", -- Focus Estimate: ≤ custom threshold
+    --   estimate_greater_than = "<leader>tf>", -- Focus Estimate: ≥ custom threshold
     --   open_link = "<leader>tl", -- Open link on current line
     -- },
 
@@ -134,6 +136,8 @@ The plugin converts all estimates to minutes internally:
    - `<leader>tfew` (or `:TodoTxtWeeks`): Focus on tasks with week-sized estimates (>5 days or with 'w' suffix).
    - `<leader>tfea` (or `:TodoTxtHasEstimate`): Focus on tasks with any time estimate.
    - `<leader>tfen` (or `:TodoTxtNoEstimate`): Focus on tasks without time estimates.
+   - `<leader>tf<` (or `:TodoTxtEstimateLessThan`): Prompts for a threshold and shows tasks with estimates ≤ that value.
+   - `<leader>tf>` (or `:TodoTxtEstimateGreaterThan`): Prompts for a threshold and shows tasks with estimates ≥ that value.
 
 ### Sorting
 

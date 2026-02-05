@@ -10,6 +10,7 @@ local jot = require("todo_txt.jot")
 local links = require("todo_txt.links")
 local state = require("todo_txt.state")
 local focus = require("todo_txt.focus")
+local estimate = require("todo_txt.estimate")
 
 local function set_date_filter(filter)
 	vim.g.todo_txt_date_filter = filter
@@ -326,6 +327,40 @@ function M.create_commands(cfg)
 		sorting.sort_buffer()
 		folding.refresh_folding()
 	end, { desc = "Focus todos with week-sized estimate (>5d or w-suffix)" })
+
+	api.nvim_create_user_command("TodoTxtEstimateLessThan", function()
+		vim.ui.input({ prompt = "Show estimates ≤ (e.g., 30m, 2h): " }, function(input)
+			if not input or input == "" then
+				return
+			end
+			local minutes = estimate.parse_estimate_string(input)
+			if not minutes then
+				vim.notify("Invalid estimate format. Use: 5m, 2h, 3d, 1w, 1mo, 1y", vim.log.levels.WARN)
+				return
+			end
+			vim.g.todo_txt_estimate_filter = "<" .. minutes
+			state.save()
+			sorting.sort_buffer()
+			folding.refresh_folding()
+		end)
+	end, { desc = "Focus todos with estimate ≤ threshold" })
+
+	api.nvim_create_user_command("TodoTxtEstimateGreaterThan", function()
+		vim.ui.input({ prompt = "Show estimates ≥ (e.g., 30m, 2h): " }, function(input)
+			if not input or input == "" then
+				return
+			end
+			local minutes = estimate.parse_estimate_string(input)
+			if not minutes then
+				vim.notify("Invalid estimate format. Use: 5m, 2h, 3d, 1w, 1mo, 1y", vim.log.levels.WARN)
+				return
+			end
+			vim.g.todo_txt_estimate_filter = ">" .. minutes
+			state.save()
+			sorting.sort_buffer()
+			folding.refresh_folding()
+		end)
+	end, { desc = "Focus todos with estimate ≥ threshold" })
 
 	api.nvim_create_user_command("TodoTxtHyperfocus", function()
 		hyperfocus.toggle()

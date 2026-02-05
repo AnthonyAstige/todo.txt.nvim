@@ -1,14 +1,16 @@
 local M = {}
 
-local function parse_estimate(tag_value)
-	if not tag_value then
+-- Parse an estimate string like "5m", "2h", "3d" into minutes
+-- Exported for use in commands.lua
+function M.parse_estimate_string(str)
+	if not str or str == "" then
 		return nil
 	end
 
 	-- Match number followed by unit: m, h, d, w, mo, y
-	local num, suffix = tag_value:match("^(%d+)(mo?)$")
+	local num, suffix = str:match("^(%d+)(mo?)$")
 	if not num then
-		num, suffix = tag_value:match("^(%d+)([hdwy])$")
+		num, suffix = str:match("^(%d+)([hdwy])$")
 	end
 	if not num then
 		return nil
@@ -38,7 +40,7 @@ end
 
 function M.get_estimate(line)
 	local est_tag = line:match("~(%S+)")
-	return parse_estimate(est_tag)
+	return M.parse_estimate_string(est_tag)
 end
 
 function M.matches_filter(line, filter)
@@ -68,6 +70,20 @@ function M.matches_filter(line, filter)
 		end
 		local est_tag = line:match("~(%S+)")
 		return minutes > 1200 or (est_tag and est_tag:match("w$"))
+	else
+		-- Check for custom threshold filters like "<60" or ">120"
+		local op, threshold = filter:match("^([<>])(%d+)$")
+		if op and threshold then
+			threshold = tonumber(threshold)
+			if not minutes then
+				return false
+			end
+			if op == "<" then
+				return minutes <= threshold
+			else -- op == ">"
+				return minutes >= threshold
+			end
+		end
 	end
 
 	return true

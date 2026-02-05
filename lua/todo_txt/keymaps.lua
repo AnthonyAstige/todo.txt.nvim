@@ -207,6 +207,24 @@ function M.create_buffer_keymaps(cfg, bufnr)
 		)
 	end
 
+	if cfg.keymaps.estimate_less_than then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.estimate_less_than,
+			"<Cmd>TodoTxtEstimateLessThan<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Estimate ≤" })
+		)
+	end
+
+	if cfg.keymaps.estimate_greater_than then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.estimate_greater_than,
+			"<Cmd>TodoTxtEstimateGreaterThan<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Estimate ≥" })
+		)
+	end
+
 	if cfg.keymaps.refresh then
 		vim.keymap.set(
 			"n",

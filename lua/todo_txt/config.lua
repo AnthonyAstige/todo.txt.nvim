@@ -32,6 +32,8 @@ M.defaults = {
 		estimate_week = "<leader>tfew", -- Focus Estimate: Week (>5d or w-suffix)
 		estimate_has = "<leader>tfea", -- Focus Estimate: Has any estimate
 		estimate_none = "<leader>tfen", -- Focus Estimate: Has no estimate
+		estimate_less_than = "<leader>tf<", -- Focus Estimate: Less than or equal to threshold
+		estimate_greater_than = "<leader>tf>", -- Focus Estimate: Greater than or equal to threshold
 		open_link = "<leader>tl", -- Open link on current line
 	},
 
