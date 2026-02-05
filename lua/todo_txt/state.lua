@@ -23,6 +23,7 @@ function M.load()
     vim.g.todo_txt_context_pattern = t.context_pattern or vim.g.todo_txt_context_pattern
     vim.g.todo_txt_project_pattern = t.project_pattern or vim.g.todo_txt_project_pattern
     vim.g.todo_txt_hidden_projects = t.hidden_projects or vim.g.todo_txt_hidden_projects
+    vim.g.todo_txt_hidden_contexts = t.hidden_contexts or vim.g.todo_txt_hidden_contexts
     vim.g.todo_txt_estimate_filter = t.estimate_filter or vim.g.todo_txt_estimate_filter
   end
 end
@@ -33,6 +34,7 @@ function M.save()
     context_pattern = vim.g.todo_txt_context_pattern,
     project_pattern = vim.g.todo_txt_project_pattern,
     hidden_projects = vim.g.todo_txt_hidden_projects,
+    hidden_contexts = vim.g.todo_txt_hidden_contexts,
     estimate_filter = vim.g.todo_txt_estimate_filter,
   }))
 end

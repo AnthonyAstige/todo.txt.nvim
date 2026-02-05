@@ -12,9 +12,9 @@ local state = require("todo_txt.state")
 local focus = require("todo_txt.focus")
 local estimate = require("todo_txt.estimate")
 
-local function set_date_filter(filter)
-	vim.g.todo_txt_date_filter = filter
+local function refresh()
 	state.save()
+	sorting.sort_buffer()
 	folding.refresh_folding()
 end
 
@@ -22,98 +22,25 @@ end
 local function scan_visible_tags(sym)
 	local tag_map = {}
 	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-	
+
 	for _, line in ipairs(lines) do
 		if focus.is_focused(line) then
-			-- Match tags containing alphanumeric characters, underscores, colons, and hyphens
 			for tag in line:gmatch(sym .. "([%w_:-]+)") do
 				tag_map[tag] = true
 			end
 		end
 	end
-	
+
 	local tag_list = {}
 	for tag, _ in pairs(tag_map) do
 		table.insert(tag_list, tag)
 	end
-	table.sort(tag_list) -- Sort for consistent order
+	table.sort(tag_list)
 	return tag_list
 end
 
-local function prompt_for_context(cfg)
-	local current_filter = vim.g.todo_txt_context_pattern
-	local items = tags.scan_tags("@", cfg.todo_file)
-
-	-- Prepare selection list
-	local select_options = { "Any Context", "No Context" }
-	-- Add existing contexts, filtering out those already selected if current_filter is a table
-	local selected_contexts_map = {}
-	if type(current_filter) == "table" then
-		for _, pattern in ipairs(current_filter) do
-			-- Store the name part, e.g., "home" from "@home"
-			selected_contexts_map[string.sub(pattern, 2)] = true
-		end
-	end
-
-	-- Add available contexts that are not already selected
-	for _, item in ipairs(items) do
-		if not selected_contexts_map[item] then
-			table.insert(select_options, item) -- Add the name, e.g., "home"
-		end
-	end
-
-	-- Build prompt string showing current selection
-	local prompt_str = "Set Context Filter"
-	if type(current_filter) == "table" and #current_filter > 0 then
-		prompt_str = "Add to or replace current Context Filter of " .. table.concat(current_filter, ", ") .. "> "
-	elseif current_filter == nil then
-		prompt_str = "Replace current Context Filter of @none> "
-	end
-
-	vim.ui.select(select_options, { prompt = prompt_str, kind = "todo_context_select" }, function(selected)
-		if selected == nil then
-			-- User cancelled
-			return
-		elseif selected == "Any Context" then
-			vim.g.todo_txt_context_pattern = {}
-		elseif selected == "No Context" then
-			vim.g.todo_txt_context_pattern = nil -- Indicate we want no context
-		elseif selected then
-			-- User selected a specific context name (e.g., "home")
-			local new_pattern = "@" .. fn.escape(selected, "@")
-			local filter = vim.g.todo_txt_context_pattern
-			local updated_filter
-
-			-- Determine the updated filter based on the current state
-			if type(filter) == "table" then
-				-- Current filter is already a table, add to it if not present
-				updated_filter = filter
-				local found = false
-				for _, existing_pattern in ipairs(updated_filter) do
-					if existing_pattern == new_pattern then
-						found = true
-						break
-					end
-				end
-				if not found then
-					table.insert(updated_filter, new_pattern)
-				end
-			else
-				updated_filter = { new_pattern }
-			end
-
-			vim.g.todo_txt_context_pattern = updated_filter
-		end
-
-		if selected ~= nil then
-			state.save()
-			sorting.sort_buffer()
-			folding.refresh_folding()
-		end
-	end)
-end
-
 function M.create_commands(cfg)
+	-- Basic operations
 	api.nvim_create_user_command("TodoTxtOpen", function()
 		if cfg.todo_file and cfg.todo_file ~= "" then
 			local todo_dir = vim.fn.fnamemodify(cfg.todo_file, ":h")
@@ -124,34 +51,59 @@ function M.create_commands(cfg)
 		end
 	end, { desc = "Open the configured todo.txt file" })
 
-	api.nvim_create_user_command("TodoTxtProject", function()
+	api.nvim_create_user_command("TodoTxtUnfocus", function()
+		vim.g.todo_txt_context_pattern = {}
+		vim.g.todo_txt_project_pattern = ""
+		vim.g.todo_txt_hidden_projects = {}
+		vim.g.todo_txt_hidden_contexts = {}
+		vim.g.todo_txt_estimate_filter = "all"
+		vim.g.todo_txt_date_filter = "all"
+		state.save()
+		sorting.sort_buffer()
+		hyperfocus.disable_hyperfocus()
+		folding.refresh_folding()
+	end, { desc = "Clear all focus" })
+
+	api.nvim_create_user_command("TodoTxtRefresh", function()
+		sorting.sort_buffer()
+		folding.refresh_folding()
+	end, { desc = "Sort and refresh folding" })
+
+	api.nvim_create_user_command("TodoTxtHyperfocus", function()
+		hyperfocus.toggle()
+	end, { desc = "Toggle myopic focus (show only current line)" })
+
+	api.nvim_create_user_command("TodoTxtJot", function()
+		jot.jot_todo(cfg)
+	end, { desc = "Jot down a new todo item" })
+
+	api.nvim_create_user_command("TodoTxtJotThenQuit", function()
+		jot.jot_then_quit(cfg)
+	end, { desc = "Jot down a new todo item and quit Neovim" })
+
+	api.nvim_create_user_command("TodoTxtOpenLink", function()
+		links.open_link_on_current_line(cfg)
+	end, { desc = "Open link on current line" })
+
+	-- ==================== PROJECT COMMANDS ====================
+
+	api.nvim_create_user_command("TodoTxtProjectAdd", function()
 		local items = tags.scan_tags("%+", cfg.todo_file)
-		table.insert(items, 1, "Any Project")
-		table.insert(items, 2, "No Project")
-		vim.ui.select(items, { prompt = "Project> ", kind = "todo_project" }, function(selected)
-			-- User cancelled
-			if selected == nil then
-				return
-			end
-
-			if selected == "No Project" then
-				vim.g.todo_txt_project_pattern = nil -- Indicate we want no project
-			elseif selected == "Any Project" then
-				vim.g.todo_txt_project_pattern = "" -- Clear focus
-			elseif selected then
+		if #items == 0 then
+			vim.notify("No projects found", vim.log.levels.INFO)
+			return
+		end
+		vim.ui.select(items, { prompt = "Focus Project> ", kind = "todo_project" }, function(selected)
+			if selected then
 				vim.g.todo_txt_project_pattern = "+" .. fn.escape(selected, "+")
+				vim.g.todo_txt_hidden_projects = {}
+				refresh()
 			end
-			-- Clear hidden projects when setting project focus
-			vim.g.todo_txt_hidden_projects = {}
-			state.save()
-			sorting.sort_buffer()
-			folding.refresh_folding()
 		end)
-	end, { desc = "Focus project (+Tag) todo's" })
+	end, { desc = "Select a project to focus on" })
 
-	api.nvim_create_user_command("TodoTxtHideProject", function()
+	api.nvim_create_user_command("TodoTxtProjectHide", function()
 		local current_hidden = vim.g.todo_txt_hidden_projects or {}
-		-- If there's a project focus, show all projects; otherwise show only visible ones
 		local items
 		if vim.g.todo_txt_project_pattern and vim.g.todo_txt_project_pattern ~= "" then
 			items = tags.scan_tags("%+", cfg.todo_file)
@@ -159,138 +111,221 @@ function M.create_commands(cfg)
 			items = scan_visible_tags("%+")
 		end
 
-		-- Filter out already hidden projects
-		local hidden_projects_map = {}
+		local hidden_map = {}
 		for _, pattern in ipairs(current_hidden) do
-			-- Store the name part, e.g., "work" from "-work"
-			hidden_projects_map[string.sub(pattern, 2)] = true
+			hidden_map[string.sub(pattern, 2)] = true
 		end
 
-		-- Add available projects that are not already hidden
 		local select_options = { "Clear All Hidden", "Show Currently Hidden" }
 		for _, item in ipairs(items) do
-			if not hidden_projects_map[item] then
+			if not hidden_map[item] then
 				table.insert(select_options, item)
 			end
 		end
 
-		-- Build prompt string showing current hidden projects
 		local prompt_str = "Hide Project"
 		if #current_hidden > 0 then
-			prompt_str = "Add to hidden projects (" .. table.concat(current_hidden, ", ") .. ")> "
+			prompt_str = "Hide Project (" .. table.concat(current_hidden, ", ") .. ")> "
 		end
 
 		vim.ui.select(select_options, { prompt = prompt_str, kind = "todo_hide_project" }, function(selected)
 			if selected == nil then
-				-- User cancelled
 				return
 			elseif selected == "Clear All Hidden" then
 				vim.g.todo_txt_hidden_projects = {}
+				refresh()
 			elseif selected == "Show Currently Hidden" then
 				if #current_hidden > 0 then
-					-- Allow unhiding specific projects
-					vim.ui.select(current_hidden, { prompt = "Unhide Project> " }, function(unhide_pattern)
-						if unhide_pattern then
+					vim.ui.select(current_hidden, { prompt = "Unhide Project> " }, function(unhide)
+						if unhide then
 							local new_hidden = {}
 							for _, pattern in ipairs(current_hidden) do
-								if pattern ~= unhide_pattern then
+								if pattern ~= unhide then
 									table.insert(new_hidden, pattern)
 								end
 							end
 							vim.g.todo_txt_hidden_projects = new_hidden
-							state.save()
-							sorting.sort_buffer()
-							folding.refresh_folding()
+							refresh()
 						end
 					end)
-					return
 				else
 					vim.notify("No projects are currently hidden", vim.log.levels.INFO)
-					return
 				end
 			elseif selected then
-				-- User selected a specific project to hide
-				local hide_pattern = "-" .. fn.escape(selected, "-")
-				table.insert(current_hidden, hide_pattern)
+				table.insert(current_hidden, "-" .. fn.escape(selected, "-"))
 				vim.g.todo_txt_hidden_projects = current_hidden
-				-- Clear project focus when hiding projects
 				vim.g.todo_txt_project_pattern = ""
-			end
-
-			if selected ~= nil and selected ~= "Show Currently Hidden" then
-				state.save()
-				sorting.sort_buffer()
-				folding.refresh_folding()
+				refresh()
 			end
 		end)
 	end, { desc = "Hide project(s) from view" })
 
-	api.nvim_create_user_command("TodoTxtContext", function()
-		prompt_for_context(cfg)
-	end, { desc = "Focus context" })
-
-	api.nvim_create_user_command("TodoTxtUnfocus", function()
-		vim.g.todo_txt_context_pattern = {}
+	api.nvim_create_user_command("TodoTxtProjectAny", function()
 		vim.g.todo_txt_project_pattern = ""
 		vim.g.todo_txt_hidden_projects = {}
-		vim.g.todo_txt_estimate_filter = "all"
-		set_date_filter("all")
-		state.save()
-		sorting.sort_buffer()
-		hyperfocus.disable_hyperfocus()
-		folding.refresh_folding()
-	end, { desc = "Clear all focus" })
+		refresh()
+	end, { desc = "Clear project filter (show any)" })
 
-	api.nvim_create_user_command("TodoTxtSort", function()
-		sorting.sort_buffer()
-		folding.refresh_folding()
-	end, { desc = "Sort buffer by focus then alphabetically" })
+	api.nvim_create_user_command("TodoTxtProjectNone", function()
+		vim.g.todo_txt_project_pattern = nil
+		vim.g.todo_txt_hidden_projects = {}
+		refresh()
+	end, { desc = "Focus tasks without projects" })
 
-	api.nvim_create_user_command("TodoTxtAll", function()
-		set_date_filter("all")
-		vim.g.todo_txt_estimate_filter = "all"
-		state.save()
-		sorting.sort_buffer()
-		folding.refresh_folding()
-	end, { desc = "Focus todos due: all" })
+	-- ==================== CONTEXT COMMANDS ====================
 
-	api.nvim_create_user_command("TodoTxtCurrent", function()
-		set_date_filter("current")
-		sorting.sort_buffer()
-		folding.refresh_folding()
-	end, { desc = "Focus todos due: today, past, or without due date" })
+	api.nvim_create_user_command("TodoTxtContextAdd", function()
+		local current_filter = vim.g.todo_txt_context_pattern or {}
+		local items = tags.scan_tags("@", cfg.todo_file)
 
-	api.nvim_create_user_command("TodoTxtDue", function()
-		set_date_filter("due")
-		sorting.sort_buffer()
-		folding.refresh_folding()
-	end, { desc = "Focus todos due: today or past only (excludes undated)" })
+		local selected_map = {}
+		if type(current_filter) == "table" then
+			for _, pattern in ipairs(current_filter) do
+				selected_map[string.sub(pattern, 2)] = true
+			end
+		end
 
-	api.nvim_create_user_command("TodoTxtScheduled", function()
-		set_date_filter("scheduled")
-		sorting.sort_buffer()
-		folding.refresh_folding()
-	end, { desc = "Focus todos with any due date" })
+		local select_options = {}
+		for _, item in ipairs(items) do
+			if not selected_map[item] then
+				table.insert(select_options, item)
+			end
+		end
 
-	api.nvim_create_user_command("TodoTxtUnscheduled", function()
-		set_date_filter("unscheduled")
-		sorting.sort_buffer()
-		folding.refresh_folding()
-	end, { desc = "Focus todos without a due date" })
+		if #select_options == 0 then
+			vim.notify("No more contexts available to add", vim.log.levels.INFO)
+			return
+		end
 
-	-- Estimate filtering commands
-	api.nvim_create_user_command("TodoTxtHasEstimate", function()
+		local prompt_str = "Add Context"
+		if type(current_filter) == "table" and #current_filter > 0 then
+			prompt_str = "Add Context (" .. table.concat(current_filter, ", ") .. ")> "
+		end
+
+		vim.ui.select(select_options, { prompt = prompt_str, kind = "todo_context" }, function(selected)
+			if selected then
+				local new_pattern = "@" .. fn.escape(selected, "@")
+				local filter = vim.g.todo_txt_context_pattern
+				if type(filter) == "table" then
+					table.insert(filter, new_pattern)
+					vim.g.todo_txt_context_pattern = filter
+				else
+					vim.g.todo_txt_context_pattern = { new_pattern }
+				end
+				vim.g.todo_txt_hidden_contexts = {}
+				refresh()
+			end
+		end)
+	end, { desc = "Add a context to focus on" })
+
+	api.nvim_create_user_command("TodoTxtContextHide", function()
+		local current_hidden = vim.g.todo_txt_hidden_contexts or {}
+		local items
+		local context_filter = vim.g.todo_txt_context_pattern
+		if type(context_filter) == "table" and #context_filter > 0 then
+			items = tags.scan_tags("@", cfg.todo_file)
+		else
+			items = scan_visible_tags("@")
+		end
+
+		local hidden_map = {}
+		for _, pattern in ipairs(current_hidden) do
+			hidden_map[string.sub(pattern, 2)] = true
+		end
+
+		local select_options = { "Clear All Hidden", "Show Currently Hidden" }
+		for _, item in ipairs(items) do
+			if not hidden_map[item] then
+				table.insert(select_options, item)
+			end
+		end
+
+		local prompt_str = "Hide Context"
+		if #current_hidden > 0 then
+			prompt_str = "Hide Context (" .. table.concat(current_hidden, ", ") .. ")> "
+		end
+
+		vim.ui.select(select_options, { prompt = prompt_str, kind = "todo_hide_context" }, function(selected)
+			if selected == nil then
+				return
+			elseif selected == "Clear All Hidden" then
+				vim.g.todo_txt_hidden_contexts = {}
+				refresh()
+			elseif selected == "Show Currently Hidden" then
+				if #current_hidden > 0 then
+					vim.ui.select(current_hidden, { prompt = "Unhide Context> " }, function(unhide)
+						if unhide then
+							local new_hidden = {}
+							for _, pattern in ipairs(current_hidden) do
+								if pattern ~= unhide then
+									table.insert(new_hidden, pattern)
+								end
+							end
+							vim.g.todo_txt_hidden_contexts = new_hidden
+							refresh()
+						end
+					end)
+				else
+					vim.notify("No contexts are currently hidden", vim.log.levels.INFO)
+				end
+			elseif selected then
+				table.insert(current_hidden, "-" .. fn.escape(selected, "-"))
+				vim.g.todo_txt_hidden_contexts = current_hidden
+				vim.g.todo_txt_context_pattern = {}
+				refresh()
+			end
+		end)
+	end, { desc = "Hide context(s) from view" })
+
+	api.nvim_create_user_command("TodoTxtContextAny", function()
+		vim.g.todo_txt_context_pattern = {}
+		vim.g.todo_txt_hidden_contexts = {}
+		refresh()
+	end, { desc = "Clear context filter (show any)" })
+
+	api.nvim_create_user_command("TodoTxtContextNone", function()
+		vim.g.todo_txt_context_pattern = nil
+		vim.g.todo_txt_hidden_contexts = {}
+		refresh()
+	end, { desc = "Focus tasks without contexts" })
+
+	-- ==================== DUE DATE COMMANDS ====================
+
+	api.nvim_create_user_command("TodoTxtDueAny", function()
+		vim.g.todo_txt_date_filter = "all"
+		refresh()
+	end, { desc = "Any due status (show all)" })
+
+	api.nvim_create_user_command("TodoTxtDueCurrent", function()
+		vim.g.todo_txt_date_filter = "current"
+		refresh()
+	end, { desc = "Due: today, past, or without due date" })
+
+	api.nvim_create_user_command("TodoTxtDueDue", function()
+		vim.g.todo_txt_date_filter = "due"
+		refresh()
+	end, { desc = "Due: today or past only (excludes undated)" })
+
+	api.nvim_create_user_command("TodoTxtDueScheduled", function()
+		vim.g.todo_txt_date_filter = "scheduled"
+		refresh()
+	end, { desc = "Due: has any due date" })
+
+	api.nvim_create_user_command("TodoTxtDueUnscheduled", function()
+		vim.g.todo_txt_date_filter = "unscheduled"
+		refresh()
+	end, { desc = "Due: no due date" })
+
+	-- ==================== ESTIMATE COMMANDS ====================
+
+	api.nvim_create_user_command("TodoTxtEstimateHas", function()
 		vim.g.todo_txt_estimate_filter = "has"
-		state.save()
-		sorting.sort_buffer()
-		folding.refresh_folding()
+		refresh()
 	end, { desc = "Focus todos with any estimate" })
 
-	api.nvim_create_user_command("TodoTxtNoEstimate", function()
+	api.nvim_create_user_command("TodoTxtEstimateNone", function()
 		vim.g.todo_txt_estimate_filter = "none"
-		state.save()
-		sorting.sort_buffer()
-		folding.refresh_folding()
+		refresh()
 	end, { desc = "Focus todos without estimate" })
 
 	api.nvim_create_user_command("TodoTxtEstimateMax", function()
@@ -310,11 +345,9 @@ function M.create_commands(cfg)
 				return
 			end
 			estimate.set_max_bound(minutes)
-			state.save()
-			sorting.sort_buffer()
-			folding.refresh_folding()
+			refresh()
 		end)
-	end, { desc = "Set max estimate bound (preserves min)" })
+	end, { desc = "Set max estimate bound" })
 
 	api.nvim_create_user_command("TodoTxtEstimateMin", function()
 		local current_min, _ = estimate.get_bounds()
@@ -333,34 +366,14 @@ function M.create_commands(cfg)
 				return
 			end
 			estimate.set_min_bound(minutes)
-			state.save()
-			sorting.sort_buffer()
-			folding.refresh_folding()
+			refresh()
 		end)
-	end, { desc = "Set min estimate bound (preserves max)" })
+	end, { desc = "Set min estimate bound" })
 
-	api.nvim_create_user_command("TodoTxtHyperfocus", function()
-		hyperfocus.toggle()
-	end, { desc = "Toggle myopic focus (show only current line)" })
-
-	api.nvim_create_user_command("TodoTxtRefresh", function()
-		sorting.sort_buffer()
-		folding.refresh_folding()
-	end, { desc = "Sort and refresh folding" })
-
-	api.nvim_create_user_command("TodoTxtJot", function()
-		jot.jot_todo(cfg)
-	end, { desc = "Jot down a new todo item" })
-
-	api.nvim_create_user_command("TodoTxtJotThenQuit", function()
-		jot.jot_then_quit(cfg)
-	end, {
-		desc = "Jot down a new todo item and quit Neovim. Helps OS level shortcuts.",
-	})
-
-	api.nvim_create_user_command("TodoTxtOpenLink", function()
-		links.open_link_on_current_line(cfg)
-	end, { desc = "Open link on current line" })
+	api.nvim_create_user_command("TodoTxtEstimateAny", function()
+		vim.g.todo_txt_estimate_filter = "all"
+		refresh()
+	end, { desc = "Clear estimate filter (show any)" })
 end
 
 return M

@@ -46,10 +46,23 @@ end
 function M.create_buffer_keymaps(cfg, bufnr)
 	local map_opts = { noremap = true, silent = true, buffer = bufnr }
 
+	-- Register which-key groups for submenus
 	if wk_status then
 		wk.add({
 			cfg.keymaps.focus,
 			group = "Focus",
+			mode = { "n" },
+			buffer = bufnr,
+		})
+		wk.add({
+			cfg.keymaps.project_menu,
+			group = "Project",
+			mode = { "n" },
+			buffer = bufnr,
+		})
+		wk.add({
+			cfg.keymaps.context_menu,
+			group = "Context",
 			mode = { "n" },
 			buffer = bufnr,
 		})
@@ -59,8 +72,15 @@ function M.create_buffer_keymaps(cfg, bufnr)
 			mode = { "n" },
 			buffer = bufnr,
 		})
+		wk.add({
+			cfg.keymaps.estimate_menu,
+			group = "Estimate",
+			mode = { "n" },
+			buffer = bufnr,
+		})
 	end
 
+	-- Basic operations
 	if cfg.keymaps.hyperfocustoggle then
 		vim.keymap.set(
 			"n",
@@ -69,108 +89,13 @@ function M.create_buffer_keymaps(cfg, bufnr)
 			vim.tbl_extend("force", map_opts, { desc = "Hyperfocus" })
 		)
 	end
-	if cfg.keymaps.project then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.project,
-			"<Cmd>TodoTxtProject<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Project" })
-		)
-	end
-	if cfg.keymaps.hide_project then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.hide_project,
-			"<Cmd>TodoTxtHideProject<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Hide Project" })
-		)
-	end
-	if cfg.keymaps.context then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.context,
-			"<Cmd>TodoTxtContext<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Context" })
-		)
-	end
+
 	if cfg.keymaps.unfocus then
 		vim.keymap.set(
 			"n",
 			cfg.keymaps.unfocus,
 			"<Cmd>TodoTxtUnfocus<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Unfocus" })
-		)
-	end
-
-	if cfg.keymaps.all then
-		vim.keymap.set("n", cfg.keymaps.all, "<Cmd>TodoTxtAll<CR>", vim.tbl_extend("force", map_opts, { desc = "Any" }))
-	end
-
-	if cfg.keymaps.current then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.current,
-			"<Cmd>TodoTxtCurrent<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Current" })
-		)
-	end
-
-	if cfg.keymaps.due then
-		vim.keymap.set("n", cfg.keymaps.due, "<Cmd>TodoTxtDue<CR>", vim.tbl_extend("force", map_opts, { desc = "Due" }))
-	end
-
-	if cfg.keymaps.scheduled then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.scheduled,
-			"<Cmd>TodoTxtScheduled<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Scheduled" })
-		)
-	end
-
-	if cfg.keymaps.unscheduled then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.unscheduled,
-			"<Cmd>TodoTxtUnscheduled<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Unscheduled" })
-		)
-	end
-
-	-- Estimate keymaps
-	if cfg.keymaps.estimate_has then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.estimate_has,
-			"<Cmd>TodoTxtHasEstimate<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Has estimate" })
-		)
-	end
-
-	if cfg.keymaps.estimate_none then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.estimate_none,
-			"<Cmd>TodoTxtNoEstimate<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "No estimate" })
-		)
-	end
-
-	if cfg.keymaps.estimate_max then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.estimate_max,
-			"<Cmd>TodoTxtEstimateMax<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Estimate ≤ (max)" })
-		)
-	end
-
-	if cfg.keymaps.estimate_min then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.estimate_min,
-			"<Cmd>TodoTxtEstimateMin<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Estimate ≥ (min)" })
+			vim.tbl_extend("force", map_opts, { desc = "Unfocus all" })
 		)
 	end
 
@@ -189,6 +114,176 @@ function M.create_buffer_keymaps(cfg, bufnr)
 			cfg.keymaps.open_link,
 			"<Cmd>TodoTxtOpenLink<CR>",
 			vim.tbl_extend("force", map_opts, { desc = "Open link" })
+		)
+	end
+
+	-- ==================== PROJECT KEYMAPS ====================
+
+	if cfg.keymaps.project_add then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.project_add,
+			"<Cmd>TodoTxtProjectAdd<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Add/Focus" })
+		)
+	end
+
+	if cfg.keymaps.project_hide then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.project_hide,
+			"<Cmd>TodoTxtProjectHide<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Hide" })
+		)
+	end
+
+	if cfg.keymaps.project_any then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.project_any,
+			"<Cmd>TodoTxtProjectAny<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Any" })
+		)
+	end
+
+	if cfg.keymaps.project_none then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.project_none,
+			"<Cmd>TodoTxtProjectNone<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "None" })
+		)
+	end
+
+	-- ==================== CONTEXT KEYMAPS ====================
+
+	if cfg.keymaps.context_add then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.context_add,
+			"<Cmd>TodoTxtContextAdd<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Add" })
+		)
+	end
+
+	if cfg.keymaps.context_hide then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.context_hide,
+			"<Cmd>TodoTxtContextHide<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Hide" })
+		)
+	end
+
+	if cfg.keymaps.context_any then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.context_any,
+			"<Cmd>TodoTxtContextAny<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Any" })
+		)
+	end
+
+	if cfg.keymaps.context_none then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.context_none,
+			"<Cmd>TodoTxtContextNone<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "None" })
+		)
+	end
+
+	-- ==================== DUE DATE KEYMAPS ====================
+
+	if cfg.keymaps.due_any then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.due_any,
+			"<Cmd>TodoTxtDueAny<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Any" })
+		)
+	end
+
+	if cfg.keymaps.due_current then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.due_current,
+			"<Cmd>TodoTxtDueCurrent<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Current" })
+		)
+	end
+
+	if cfg.keymaps.due_due then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.due_due,
+			"<Cmd>TodoTxtDueDue<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Due" })
+		)
+	end
+
+	if cfg.keymaps.due_scheduled then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.due_scheduled,
+			"<Cmd>TodoTxtDueScheduled<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Scheduled" })
+		)
+	end
+
+	if cfg.keymaps.due_unscheduled then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.due_unscheduled,
+			"<Cmd>TodoTxtDueUnscheduled<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Unscheduled" })
+		)
+	end
+
+	-- ==================== ESTIMATE KEYMAPS ====================
+
+	if cfg.keymaps.estimate_has then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.estimate_has,
+			"<Cmd>TodoTxtEstimateHas<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Has (~)" })
+		)
+	end
+
+	if cfg.keymaps.estimate_none then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.estimate_none,
+			"<Cmd>TodoTxtEstimateNone<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "None (0)" })
+		)
+	end
+
+	if cfg.keymaps.estimate_max then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.estimate_max,
+			"<Cmd>TodoTxtEstimateMax<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Max ≤" })
+		)
+	end
+
+	if cfg.keymaps.estimate_min then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.estimate_min,
+			"<Cmd>TodoTxtEstimateMin<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Min ≥" })
+		)
+	end
+
+	if cfg.keymaps.estimate_any then
+		vim.keymap.set(
+			"n",
+			cfg.keymaps.estimate_any,
+			"<Cmd>TodoTxtEstimateAny<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Any" })
 		)
 	end
 end

@@ -57,6 +57,7 @@ function M.is_focused(line)
 	local context_pattern = vim.g.todo_txt_context_pattern
 	local project_pattern = vim.g.todo_txt_project_pattern
 	local hidden_projects = vim.g.todo_txt_hidden_projects or {}
+	local hidden_contexts = vim.g.todo_txt_hidden_contexts or {}
 	local estimate_filter = vim.g.todo_txt_estimate_filter or "all"
 
 	-- Check date filter first
@@ -91,7 +92,16 @@ function M.is_focused(line)
 			end
 		end
 	end
-	-- Note: context_pattern == "" means no context filtering is applied.
+	-- Note: context_pattern == {} means no context filtering is applied.
+
+	-- Check if any hidden contexts match this line
+	for _, hidden_pattern in ipairs(hidden_contexts) do
+		-- Convert -context to @context for matching
+		local context_to_match = string.gsub(hidden_pattern, "^%-", "@")
+		if string.find(line, context_to_match, 1, true) then
+			return false -- Line has a hidden context tag, so out of focus
+		end
+	end
 
 	-- Check project filter
 	if project_pattern == nil then -- Filter requires *no* project tag

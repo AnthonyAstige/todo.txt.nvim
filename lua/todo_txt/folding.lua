@@ -53,10 +53,16 @@ function M.foldtext()
 		table.insert(parts, project_str)
 	end
 
-	-- Add hidden projects to display (after project focus, before due)
+	-- Add hidden projects to display
 	local hidden_projects = vim.g.todo_txt_hidden_projects or {}
 	for _, hidden_project in ipairs(hidden_projects) do
 		table.insert(parts, hidden_project)
+	end
+
+	-- Add hidden contexts to display
+	local hidden_contexts = vim.g.todo_txt_hidden_contexts or {}
+	for _, hidden_context in ipairs(hidden_contexts) do
+		table.insert(parts, hidden_context)
 	end
 
 	if vim.g.todo_txt_date_filter ~= "all" then
