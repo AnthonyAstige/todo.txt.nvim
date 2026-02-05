@@ -88,14 +88,37 @@ function M.create_commands(cfg)
 	-- ==================== PROJECT COMMANDS ====================
 
 	api.nvim_create_user_command("TodoTxtProjectAdd", function()
+		local current_project = vim.g.todo_txt_project_pattern or ""
 		local items = tags.scan_tags("%+", cfg.todo_file)
 		if #items == 0 then
 			vim.notify("No projects found", vim.log.levels.INFO)
 			return
 		end
-		vim.ui.select(items, { prompt = "Focus Project> ", kind = "todo_project" }, function(selected)
-			if selected then
+
+		local items_set = {}
+		for _, item in ipairs(items) do
+			items_set[item] = true
+		end
+
+		local select_options = { "[Clear]" }
+		for _, item in ipairs(items) do
+			table.insert(select_options, item)
+		end
+
+		local prompt_str = "Focus Project"
+		if current_project ~= "" and current_project ~= "has" then
+			prompt_str = "Focus Project (" .. current_project .. ")> "
+		end
+
+		vim.ui.select(select_options, { prompt = prompt_str, kind = "todo_project" }, function(selected)
+			if selected == nil then
+				return
+			elseif items_set[selected] then
 				vim.g.todo_txt_project_pattern = "+" .. fn.escape(selected, "+")
+				vim.g.todo_txt_hidden_projects = {}
+				refresh()
+			else
+				vim.g.todo_txt_project_pattern = ""
 				vim.g.todo_txt_hidden_projects = {}
 				refresh()
 			end
@@ -116,9 +139,11 @@ function M.create_commands(cfg)
 			hidden_map[string.sub(pattern, 2)] = true
 		end
 
-		local select_options = { "Clear All Hidden", "Show Currently Hidden" }
+		local items_set = {}
+		local select_options = { "[Clear]" }
 		for _, item in ipairs(items) do
 			if not hidden_map[item] then
+				items_set[item] = true
 				table.insert(select_options, item)
 			end
 		end
@@ -131,30 +156,13 @@ function M.create_commands(cfg)
 		vim.ui.select(select_options, { prompt = prompt_str, kind = "todo_hide_project" }, function(selected)
 			if selected == nil then
 				return
-			elseif selected == "Clear All Hidden" then
-				vim.g.todo_txt_hidden_projects = {}
-				refresh()
-			elseif selected == "Show Currently Hidden" then
-				if #current_hidden > 0 then
-					vim.ui.select(current_hidden, { prompt = "Unhide Project> " }, function(unhide)
-						if unhide then
-							local new_hidden = {}
-							for _, pattern in ipairs(current_hidden) do
-								if pattern ~= unhide then
-									table.insert(new_hidden, pattern)
-								end
-							end
-							vim.g.todo_txt_hidden_projects = new_hidden
-							refresh()
-						end
-					end)
-				else
-					vim.notify("No projects are currently hidden", vim.log.levels.INFO)
-				end
-			elseif selected then
+			elseif items_set[selected] then
 				table.insert(current_hidden, "-" .. fn.escape(selected, "-"))
 				vim.g.todo_txt_hidden_projects = current_hidden
 				vim.g.todo_txt_project_pattern = ""
+				refresh()
+			else
+				vim.g.todo_txt_hidden_projects = {}
 				refresh()
 			end
 		end)
@@ -191,16 +199,13 @@ function M.create_commands(cfg)
 			end
 		end
 
-		local select_options = {}
+		local items_set = {}
+		local select_options = { "[Clear]" }
 		for _, item in ipairs(items) do
 			if not selected_map[item] then
+				items_set[item] = true
 				table.insert(select_options, item)
 			end
-		end
-
-		if #select_options == 0 then
-			vim.notify("No more contexts available to add", vim.log.levels.INFO)
-			return
 		end
 
 		local prompt_str = "Add Context"
@@ -209,7 +214,9 @@ function M.create_commands(cfg)
 		end
 
 		vim.ui.select(select_options, { prompt = prompt_str, kind = "todo_context" }, function(selected)
-			if selected then
+			if selected == nil then
+				return
+			elseif items_set[selected] then
 				local new_pattern = "@" .. fn.escape(selected, "@")
 				local filter = vim.g.todo_txt_context_pattern
 				if type(filter) == "table" then
@@ -218,6 +225,10 @@ function M.create_commands(cfg)
 				else
 					vim.g.todo_txt_context_pattern = { new_pattern }
 				end
+				vim.g.todo_txt_hidden_contexts = {}
+				refresh()
+			else
+				vim.g.todo_txt_context_pattern = {}
 				vim.g.todo_txt_hidden_contexts = {}
 				refresh()
 			end
@@ -239,9 +250,11 @@ function M.create_commands(cfg)
 			hidden_map[string.sub(pattern, 2)] = true
 		end
 
-		local select_options = { "Clear All Hidden", "Show Currently Hidden" }
+		local items_set = {}
+		local select_options = { "[Clear]" }
 		for _, item in ipairs(items) do
 			if not hidden_map[item] then
+				items_set[item] = true
 				table.insert(select_options, item)
 			end
 		end
@@ -254,30 +267,13 @@ function M.create_commands(cfg)
 		vim.ui.select(select_options, { prompt = prompt_str, kind = "todo_hide_context" }, function(selected)
 			if selected == nil then
 				return
-			elseif selected == "Clear All Hidden" then
-				vim.g.todo_txt_hidden_contexts = {}
-				refresh()
-			elseif selected == "Show Currently Hidden" then
-				if #current_hidden > 0 then
-					vim.ui.select(current_hidden, { prompt = "Unhide Context> " }, function(unhide)
-						if unhide then
-							local new_hidden = {}
-							for _, pattern in ipairs(current_hidden) do
-								if pattern ~= unhide then
-									table.insert(new_hidden, pattern)
-								end
-							end
-							vim.g.todo_txt_hidden_contexts = new_hidden
-							refresh()
-						end
-					end)
-				else
-					vim.notify("No contexts are currently hidden", vim.log.levels.INFO)
-				end
-			elseif selected then
+			elseif items_set[selected] then
 				table.insert(current_hidden, "-" .. fn.escape(selected, "-"))
 				vim.g.todo_txt_hidden_contexts = current_hidden
 				vim.g.todo_txt_context_pattern = {}
+				refresh()
+			else
+				vim.g.todo_txt_hidden_contexts = {}
 				refresh()
 			end
 		end)
