@@ -1,6 +1,7 @@
 local M = {}
 
 local focus = require("todo_txt.focus")
+local estimate = require("todo_txt.estimate")
 
 -- TODO: Fix below bug without this bandaid
 --- Inserts a blank line at the beginning of the buffer if one doesn't exist.
@@ -64,7 +65,16 @@ function M.foldtext()
 
 	local estimate_filter = vim.g.todo_txt_estimate_filter
 	if estimate_filter and estimate_filter ~= "all" then
-		table.insert(parts, "~" .. estimate_filter)
+		local filter_type, min, max = estimate.parse_filter(estimate_filter)
+		if filter_type == "has" then
+			table.insert(parts, "~has")
+		elseif filter_type == "none" then
+			table.insert(parts, "~none")
+		elseif filter_type == "range" then
+			local min_str = min and estimate.format_minutes(min) or ""
+			local max_str = max and estimate.format_minutes(max) or ""
+			table.insert(parts, "~" .. min_str .. "-" .. max_str)
+		end
 	end
 
 	local focus_str = table.concat(parts, " ")

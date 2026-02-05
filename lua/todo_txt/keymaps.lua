@@ -59,12 +59,6 @@ function M.create_buffer_keymaps(cfg, bufnr)
 			mode = { "n" },
 			buffer = bufnr,
 		})
-		wk.add({
-			cfg.keymaps.estimate,
-			group = "Estimate",
-			mode = { "n" },
-			buffer = bufnr,
-		})
 	end
 
 	if cfg.keymaps.hyperfocustoggle then
@@ -144,51 +138,6 @@ function M.create_buffer_keymaps(cfg, bufnr)
 	end
 
 	-- Estimate keymaps
-	if cfg.keymaps.estimate_short then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.estimate_short,
-			"<Cmd>TodoTxtShort<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Short (≤15m)" })
-		)
-	end
-
-	if cfg.keymaps.estimate_medium then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.estimate_medium,
-			"<Cmd>TodoTxtMedium<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Medium (16-60m)" })
-		)
-	end
-
-	if cfg.keymaps.estimate_long then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.estimate_long,
-			"<Cmd>TodoTxtLong<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Long (>60m ≤4h)" })
-		)
-	end
-
-	if cfg.keymaps.estimate_day then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.estimate_day,
-			"<Cmd>TodoTxtDays<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Day-sized" })
-		)
-	end
-
-	if cfg.keymaps.estimate_week then
-		vim.keymap.set(
-			"n",
-			cfg.keymaps.estimate_week,
-			"<Cmd>TodoTxtWeeks<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Week-sized" })
-		)
-	end
-
 	if cfg.keymaps.estimate_has then
 		vim.keymap.set(
 			"n",
@@ -207,21 +156,21 @@ function M.create_buffer_keymaps(cfg, bufnr)
 		)
 	end
 
-	if cfg.keymaps.estimate_less_than then
+	if cfg.keymaps.estimate_max then
 		vim.keymap.set(
 			"n",
-			cfg.keymaps.estimate_less_than,
-			"<Cmd>TodoTxtEstimateLessThan<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Estimate ≤" })
+			cfg.keymaps.estimate_max,
+			"<Cmd>TodoTxtEstimateMax<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Estimate ≤ (max)" })
 		)
 	end
 
-	if cfg.keymaps.estimate_greater_than then
+	if cfg.keymaps.estimate_min then
 		vim.keymap.set(
 			"n",
-			cfg.keymaps.estimate_greater_than,
-			"<Cmd>TodoTxtEstimateGreaterThan<CR>",
-			vim.tbl_extend("force", map_opts, { desc = "Estimate ≥" })
+			cfg.keymaps.estimate_min,
+			"<Cmd>TodoTxtEstimateMin<CR>",
+			vim.tbl_extend("force", map_opts, { desc = "Estimate ≥ (min)" })
 		)
 	end
 
